@@ -5,6 +5,7 @@ import com.virtualpet.models.User;
 public class SubRequest {
     private String name;
     private User user;
+    private Long subId;
 
     public String getName() {
         return name;
@@ -21,4 +22,13 @@ public class SubRequest {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Long getSubId() {
+        return subId;
+    }
+
+    public void setSubId(Long subId) {
+        this.subId = subId;
+    }
+
 }

@@ -43,9 +43,9 @@ public class User {
     @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
-
     private Set<Role> roles;
+
+    private Integer maxNumberOfSubs = 5;
 
     public long getId() {
         return id;
@@ -85,5 +85,21 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Sub> getSubs() {
+        return subs;
+    }
+
+    public void setSubs(List<Sub> subs) {
+        this.subs = subs;
+    }
+
+    public Integer getMaxNumberOfSubs() {
+        return maxNumberOfSubs;
+    }
+
+    public void setMaxNumberOfSubs(Integer maxNumberOfSubs) {
+        this.maxNumberOfSubs = maxNumberOfSubs;
     }
 }

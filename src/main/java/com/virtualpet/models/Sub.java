@@ -3,7 +3,7 @@ package com.virtualpet.models;
 import javax.persistence.*;
 
 @Entity
-public class Sub {
+public class Sub extends SubAbstract {
 
 
     @Id
@@ -11,27 +11,29 @@ public class Sub {
     private Long id;
 
     private String name;
-
-    private Integer attack;
-
     private Integer money;
-
-    private Integer defence;
-
     @OneToOne
     private Inventory inventory;
-
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user) {
-        this.name = name;
-        this.attack = attack;
-        this.money = 0;
-        this.defence = defence;
-        this.inventory = inventory;
-        this.user = user;
-    }
-
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private SubType subType;
+
+    public Sub(){
+
+    }
+    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath) {
+        this.setName(name);
+        this.setAttack(attack);
+        this.money = 0;
+        this.setDefence(defence);
+        this.inventory = inventory;
+        this.user = user;
+        this.subType = subType;
+        setModelPath(modelPath);
+        setIconPath(iconPath);
+    }
 
     public Long getId() {
         return id;
@@ -41,20 +43,12 @@ public class Sub {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Inventory getInventory() {
+        return inventory;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAttack() {
-        return attack;
-    }
-
-    public void setAttack(Integer attack) {
-        this.attack = attack;
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public User getUser() {
@@ -65,6 +59,14 @@ public class Sub {
         this.user = user;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getMoney() {
         return money;
     }
@@ -73,19 +75,11 @@ public class Sub {
         this.money = money;
     }
 
-    public Integer getDefence() {
-        return defence;
+    public SubType getSubType() {
+        return subType;
     }
 
-    public void setDefence(Integer defence) {
-        this.defence = defence;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+    public void setSubType(SubType subType) {
+        this.subType = subType;
     }
 }
