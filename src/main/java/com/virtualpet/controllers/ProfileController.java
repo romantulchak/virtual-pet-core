@@ -1,6 +1,8 @@
 package com.virtualpet.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dtos.SubDTO;
+import com.virtualpet.models.Views;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.services.ProfileService;
 import com.virtualpet.services.impl.ProfileServiceImpl;
@@ -28,6 +30,7 @@ public class ProfileController {
 
     @GetMapping("/getSubsForUser")
     @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.SubView.class)
     public List<SubDTO> getSubsForUser(Authentication authentication){
         return profileService.getSubsForUser(authentication);
     }
@@ -38,5 +41,16 @@ public class ProfileController {
         return profileService.createSubForUser(subRequest);
     }
 
+    @DeleteMapping("/deleteSubForUser")
+    @PreAuthorize("hasRole('USER') and @userSecurity.hasUserId(authentication, #subRequest.user.id)")
+    public ResponseEntity<?> deleteSub(@RequestBody SubRequest subRequest, Authentication authentication){
+        return profileService.deleteSubForUser(subRequest, authentication);
+    }
 
+    @GetMapping("/getInfoAboutSub")
+    @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.SubView.class)
+    public SubDTO chooseSub(@RequestBody SubRequest subRequest, Authentication authentication){
+        return profileService.chooseSub(subRequest, authentication);
+    }
 }

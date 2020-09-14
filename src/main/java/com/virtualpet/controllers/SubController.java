@@ -1,5 +1,7 @@
 package com.virtualpet.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dtos.SubDTO;
 import com.virtualpet.dtos.SubTypeDTO;
 import com.virtualpet.services.impl.SubServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +33,6 @@ public class SubController {
     public ResponseEntity<?> deleteSubType(@PathVariable("id") Long id){
         return subService.deleteSub(id);
     }
+
+
 }

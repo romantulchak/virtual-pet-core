@@ -1,5 +1,7 @@
 package com.virtualpet.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,13 +10,20 @@ public class Sub extends SubAbstract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.SubView.class)
     private Long id;
 
+
+    @JsonView(Views.SubView.class)
     private String name;
+
+    @JsonView(Views.SubView.class)
     private Integer money;
     @OneToOne
+    @JsonView(Views.SubView.class)
     private Inventory inventory;
     @ManyToOne
+    @JsonView(Views.SubView.class)
     private User user;
 
     @ManyToOne

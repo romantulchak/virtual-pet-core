@@ -68,4 +68,26 @@ public class ProfileServiceImpl implements ProfileService {
         }
         return new ResponseEntity<>(new MessageResponse("Bad"), HttpStatus.BAD_GATEWAY);
     }
+
+    @Override
+    public ResponseEntity<?> deleteSubForUser(SubRequest subRequest, Authentication authentication) {
+        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        if(sub != null && user.getId().equals(sub.getUser().getId())){
+            subRepository.delete(sub);
+            return new ResponseEntity<>(new MessageResponse("Sub " + sub.getName() + " was removed"), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(new MessageResponse("Something wrong"), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public SubDTO chooseSub(SubRequest subRequest, Authentication authentication) {
+        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        if(sub != null && user.getId().equals(sub.getUser().getId())){
+            return subToSubDTO(sub);
+        }
+        return null;
+    }
 }

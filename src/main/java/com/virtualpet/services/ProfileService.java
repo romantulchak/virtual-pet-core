@@ -11,5 +11,6 @@ public interface ProfileService {
 
     List<SubDTO> getSubsForUser(Authentication authentication);
     ResponseEntity<?> createSubForUser(SubRequest subRequest);
-
+    ResponseEntity<?> deleteSubForUser(SubRequest subRequest, Authentication authentication);
+    SubDTO chooseSub(SubRequest subRequest, Authentication authentication);
 }

@@ -1,23 +1,35 @@
 package com.virtualpet.dtos;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.models.Inventory;
 import com.virtualpet.models.Sub;
+import com.virtualpet.models.User;
+import com.virtualpet.models.Views;
 
 import javax.persistence.OneToOne;
 
 public class SubDTO {
 
+    @JsonView(Views.SubView.class)
     private Long id;
 
+    @JsonView(Views.SubView.class)
     private String name;
 
+    @JsonView(Views.SubView.class)
     private Integer attack;
 
+    @JsonView(Views.SubView.class)
     private Integer money;
 
+    @JsonView(Views.SubView.class)
     private Integer defence;
 
+    @JsonView(Views.SubView.class)
     private Inventory inventory;
+
+    @JsonView(Views.SubView.class)
+    private User user;
 
     public SubDTO(Sub sub) {
         this.id = sub.getId();
@@ -26,6 +38,7 @@ public class SubDTO {
         this.defence = sub.getDefence();
         this.money = sub.getMoney();
         this.inventory = sub.getInventory();
+        this.user = sub.getUser();
     }
 
     public Long getId() {
@@ -74,5 +87,13 @@ public class SubDTO {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

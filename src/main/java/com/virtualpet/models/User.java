@@ -1,5 +1,7 @@
 package com.virtualpet.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,9 +17,11 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.SubView.class)
     private long id;
 
     @NotBlank
+    @JsonView(Views.SubView.class)
     private String username;
 
     @Email
