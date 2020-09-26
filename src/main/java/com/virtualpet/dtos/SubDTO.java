@@ -20,7 +20,7 @@ public class SubDTO {
     private Integer attack;
 
     @JsonView(Views.SubView.class)
-    private Integer money;
+    private Double money;
 
     @JsonView(Views.SubView.class)
     private Integer defence;
@@ -31,6 +31,14 @@ public class SubDTO {
     @JsonView(Views.SubView.class)
     private User user;
 
+    @JsonView(Views.SubView.class)
+    private Integer moneyUpLevel;
+    @JsonView(Views.SubView.class)
+    private Double moneyUpPrice;
+
+    @JsonView(Views.SubView.class)
+    private Integer moneyMultiplier;
+
     public SubDTO(Sub sub) {
         this.id = sub.getId();
         this.name = sub.getName();
@@ -39,6 +47,9 @@ public class SubDTO {
         this.money = sub.getMoney();
         this.inventory = sub.getInventory();
         this.user = sub.getUser();
+        this.moneyUpLevel = sub.getMoneyUpLevel();
+        this.moneyUpPrice = sub.getMoneyUpPrice();
+        this.moneyMultiplier = sub.getMoneyMultiplier();
     }
 
     public Long getId() {
@@ -65,11 +76,11 @@ public class SubDTO {
         this.attack = attack;
     }
 
-    public Integer getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
@@ -95,5 +106,29 @@ public class SubDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Double getMoneyUpPrice() {
+        return moneyUpPrice;
+    }
+
+    public void setMoneyUpPrice(Double moneyUpPrice) {
+        this.moneyUpPrice = moneyUpPrice;
+    }
+
+    public Integer getMoneyUpLevel() {
+        return moneyUpLevel;
+    }
+
+    public void setMoneyUpLevel(Integer moneyUpLevel) {
+        this.moneyUpLevel = moneyUpLevel;
+    }
+
+    public Integer getMoneyMultiplier() {
+        return moneyMultiplier;
+    }
+
+    public void setMoneyMultiplier(Integer moneyMultiplier) {
+        this.moneyMultiplier = moneyMultiplier;
     }
 }

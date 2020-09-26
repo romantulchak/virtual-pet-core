@@ -53,4 +53,5 @@ public class ProfileController {
     public SubDTO chooseSub(@RequestBody SubRequest subRequest, Authentication authentication){
         return profileService.chooseSub(subRequest, authentication);
     }
+
 }

@@ -1,0 +1,12 @@
+package com.virtualpet.services;
+
+import com.virtualpet.dtos.SubDTO;
+import com.virtualpet.payload.request.SubRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+
+public interface GameService {
+
+    ResponseEntity<?> moneyByClick(SubRequest subRequest,int clickByClick);
+    ResponseEntity<?> upMoneyLevel(SubRequest subRequest);
+}
