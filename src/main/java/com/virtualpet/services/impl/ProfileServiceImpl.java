@@ -1,6 +1,7 @@
 package com.virtualpet.services.impl;
 
 import com.virtualpet.dtos.SubDTO;
+import com.virtualpet.dtos.SubTypeDTO;
 import com.virtualpet.models.Inventory;
 import com.virtualpet.models.Sub;
 import com.virtualpet.models.SubType;
@@ -28,7 +29,6 @@ public class ProfileServiceImpl implements ProfileService {
     private InventoryRepository inventoryRepository;
     private SubTypeRepository subTypeRepository;
     private UserRepository userRepository;
-
     @Autowired
     public ProfileServiceImpl(SubRepository subRepository, InventoryRepository inventoryRepository, SubTypeRepository subTypeRepository, UserRepository userRepository){
         this.subRepository = subRepository;
@@ -50,21 +50,24 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<?> createSubForUser(SubRequest subRequest) {
-        if(subRequest != null && !subRepository.existsByName(subRequest.getName()) ){
-            User user = userRepository.findById(subRequest.getUser().getId()).orElse(null);
-            if(user != null && !(subRepository.countSubByUser(user) >= user.getMaxNumberOfSubs()) ) {
-                SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(VerifyError::new);
-                Inventory inventory = new Inventory();
-                inventoryRepository.save(inventory);
-                System.out.println(subType.getIconPath());
-                System.out.println(subType.getModelPath());
+    public ResponseEntity<?> createSubForUser(SubRequest subRequest, Authentication authentication) {
+        if(subRequest != null){
+            if(!subRepository.existsByName(subRequest.getName())){
+                UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
+                User user = userRepository.findById(userInSystem.getId()).orElse(null);
+                if(user != null && !(subRepository.countSubByUser(user) >= user.getMaxNumberOfSubs()) ) {
 
-                Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), subRequest.getUser(), subType, subType.getModelPath(), subType.getIconPath());
-                subRepository.save(sub);
-                return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
-            }else
-                return new ResponseEntity<>(new MessageResponse("You already have the maximum number of Sub in your account"), HttpStatus.OK);
+                    SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(VerifyError::new);
+                    Inventory inventory = new Inventory();
+                    inventoryRepository.save(inventory);
+                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath());
+                    subRepository.save(sub);
+                    return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
+                }else
+                    return new ResponseEntity<>(new MessageResponse("You already have the maximum number of Sub in your account"), HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(new MessageResponse("Hero with the same name already exist"), HttpStatus.BAD_REQUEST);
+            }
         }
         return new ResponseEntity<>(new MessageResponse("Bad"), HttpStatus.BAD_GATEWAY);
     }
@@ -89,5 +92,16 @@ public class ProfileServiceImpl implements ProfileService {
             return subToSubDTO(sub);
         }
         return null;
+    }
+
+    @Override
+    public List<SubTypeDTO> getSubTypes() {
+        List<SubType> subTypes = subTypeRepository.findAll();
+        return subTypes.stream().map(this::convertSubTypeToDTO).collect(Collectors.toList());
+
+    }
+
+    private SubTypeDTO convertSubTypeToDTO(SubType subType){
+        return new SubTypeDTO(subType);
     }
 }

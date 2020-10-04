@@ -2,6 +2,7 @@ package com.virtualpet.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dtos.SubDTO;
+import com.virtualpet.dtos.SubTypeDTO;
 import com.virtualpet.models.Views;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.services.ProfileService;
@@ -36,15 +37,19 @@ public class ProfileController {
     }
 
     @PostMapping("/createSub")
-    @PreAuthorize("hasRole('USER') and @userSecurity.hasUserId(authentication, #subRequest.user.id)")
-    public ResponseEntity<?> createSub(@RequestBody SubRequest subRequest){
-        return profileService.createSubForUser(subRequest);
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createSub(@RequestBody SubRequest subRequest, Authentication authentication){
+        return profileService.createSubForUser(subRequest, authentication);
     }
 
     @DeleteMapping("/deleteSubForUser")
     @PreAuthorize("hasRole('USER') and @userSecurity.hasUserId(authentication, #subRequest.user.id)")
     public ResponseEntity<?> deleteSub(@RequestBody SubRequest subRequest, Authentication authentication){
         return profileService.deleteSubForUser(subRequest, authentication);
+    }
+    @GetMapping("/getSubTypes")
+    public List<SubTypeDTO> getSubTypes(){
+        return profileService.getSubTypes();
     }
 
     @GetMapping("/getInfoAboutSub")

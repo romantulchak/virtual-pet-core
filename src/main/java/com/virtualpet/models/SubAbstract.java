@@ -6,7 +6,6 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class SubAbstract {
 
-
     private Integer attack;
 
     private Integer defence;
@@ -24,6 +23,7 @@ public abstract class SubAbstract {
         this.attack = attack;
         this.defence = defence;
     }
+
 
 
     public Integer getAttack() {

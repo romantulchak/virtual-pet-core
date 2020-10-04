@@ -13,6 +13,8 @@ public class SubType extends SubAbstract{
 
     public LocalDateTime localDateTime;
 
+    public String subName;
+
     @OneToMany(mappedBy = "subType")
     private List<Sub> subs;
 
@@ -49,5 +51,13 @@ public class SubType extends SubAbstract{
 
     public void setSubs(List<Sub> subs) {
         this.subs = subs;
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 }
