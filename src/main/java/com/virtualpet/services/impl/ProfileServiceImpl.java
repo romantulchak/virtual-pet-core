@@ -85,8 +85,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public SubDTO chooseSub(SubRequest subRequest, Authentication authentication) {
-        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+    public SubDTO chooseSub(long heroId, long userId, Authentication authentication) {
+        Sub sub = subRepository.findById(heroId).orElse(null);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if(sub != null && user.getId().equals(sub.getUser().getId())){
             return subToSubDTO(sub);

@@ -13,6 +13,6 @@ public interface ProfileService {
     List<SubDTO> getSubsForUser(Authentication authentication);
     ResponseEntity<?> createSubForUser(SubRequest subRequest, Authentication authentication);
     ResponseEntity<?> deleteSubForUser(SubRequest subRequest, Authentication authentication);
-    SubDTO chooseSub(SubRequest subRequest, Authentication authentication);
+    SubDTO chooseSub(long heroId, long userId, Authentication authentication);
     List<SubTypeDTO> getSubTypes();
 }

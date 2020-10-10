@@ -55,8 +55,8 @@ public class ProfileController {
     @GetMapping("/getInfoAboutSub")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.SubView.class)
-    public SubDTO chooseSub(@RequestBody SubRequest subRequest, Authentication authentication){
-        return profileService.chooseSub(subRequest, authentication);
+    public SubDTO chooseSub(@RequestParam(value = "subId") long subId, @RequestParam(value = "userId") long userId, Authentication authentication){
+        return profileService.chooseSub(subId, userId, authentication);
     }
 
 }

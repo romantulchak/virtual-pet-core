@@ -4,6 +4,7 @@ import com.virtualpet.components.UserAccess;
 import com.virtualpet.dtos.SubDTO;
 import com.virtualpet.models.Sub;
 import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.response.MessageResponse;
 import com.virtualpet.repos.SubRepository;
 import com.virtualpet.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,23 @@ public class GameServiceImpl implements GameService {
                 sub.setMoneyUpLevel(sub.getMoneyUpLevel() + 1);
                 sub.setMoneyMultiplier(5 * sub.getMoneyUpLevel());
                 subRepository.save(sub);
-                return new ResponseEntity<>("Ok", HttpStatus.OK);
+                return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
             }else{
-                return new ResponseEntity<>("You don't have enough money", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new MessageResponse("You don't have enough money"), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>("Something wrong", HttpStatus.OK);
+        return new ResponseEntity<>( new MessageResponse("Something wrong"), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> saveMoney(SubRequest subRequest, long money) {
+        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+        if(sub != null){
+            sub.setMoney(sub.getMoney() + money);
+            subRepository.save(sub);
+            return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new MessageResponse("Something wrong"), HttpStatus.OK);
     }
 }

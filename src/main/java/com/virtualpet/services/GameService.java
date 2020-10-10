@@ -9,4 +9,6 @@ public interface GameService {
 
     ResponseEntity<?> moneyByClick(SubRequest subRequest,int clickByClick);
     ResponseEntity<?> upMoneyLevel(SubRequest subRequest);
+
+    ResponseEntity<?> saveMoney(SubRequest subRequest, long money);
 }

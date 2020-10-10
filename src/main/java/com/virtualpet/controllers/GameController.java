@@ -30,5 +30,10 @@ public class GameController {
         return gameService.upMoneyLevel(subRequest);
     }
 
+    @PutMapping("/saveMoney/{money}")
+    public ResponseEntity<?> saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money){
+        return gameService.saveMoney(subRequest, money);
+    }
+
 
 }
