@@ -20,7 +20,7 @@ public class SubDTO {
     private Integer attack;
 
     @JsonView(Views.SubView.class)
-    private Double money;
+    private Long money;
 
     @JsonView(Views.SubView.class)
     private Integer defence;
@@ -34,7 +34,7 @@ public class SubDTO {
     @JsonView(Views.SubView.class)
     private Integer moneyUpLevel;
     @JsonView(Views.SubView.class)
-    private Double moneyUpPrice;
+    private Long moneyUpPrice;
 
     @JsonView(Views.SubView.class)
     private Integer moneyMultiplier;
@@ -76,14 +76,6 @@ public class SubDTO {
         this.attack = attack;
     }
 
-    public Double getMoney() {
-        return money;
-    }
-
-    public void setMoney(Double money) {
-        this.money = money;
-    }
-
     public Integer getDefence() {
         return defence;
     }
@@ -108,12 +100,20 @@ public class SubDTO {
         this.user = user;
     }
 
-    public Double getMoneyUpPrice() {
+    public Long getMoneyUpPrice() {
         return moneyUpPrice;
     }
 
-    public void setMoneyUpPrice(Double moneyUpPrice) {
+    public void setMoneyUpPrice(Long moneyUpPrice) {
         this.moneyUpPrice = moneyUpPrice;
+    }
+
+    public Long getMoney() {
+        return money;
+    }
+
+    public void setMoney(Long money) {
+        this.money = money;
     }
 
     public Integer getMoneyUpLevel() {

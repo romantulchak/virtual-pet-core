@@ -18,7 +18,7 @@ public class Sub extends SubAbstract {
     private String name;
 
     @JsonView(Views.SubView.class)
-    private Double money;
+    private Long money;
     @OneToOne
     @JsonView(Views.SubView.class)
     private Inventory inventory;
@@ -28,7 +28,7 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private Integer moneyUpLevel;
     @JsonView(Views.SubView.class)
-    private Double moneyUpPrice;
+    private Long moneyUpPrice;
 
     @ManyToOne
     private SubType subType;
@@ -42,13 +42,13 @@ public class Sub extends SubAbstract {
     public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath) {
         this.setName(name);
         this.setAttack(attack);
-        this.money = 0.0;
+        this.money = 0L;
         this.setDefence(defence);
         this.inventory = inventory;
         this.user = user;
         this.moneyUpLevel = 1;
         this.subType = subType;
-        this.moneyUpPrice = 50.0;
+        this.moneyUpPrice = 50L;
         this.moneyMultiplier = 5;
         setModelPath(modelPath);
         setIconPath(iconPath);
@@ -86,13 +86,6 @@ public class Sub extends SubAbstract {
         this.name = name;
     }
 
-    public Double getMoney() {
-        return money;
-    }
-
-    public void setMoney(Double money) {
-        this.money = money;
-    }
 
     public SubType getSubType() {
         return subType;
@@ -110,11 +103,19 @@ public class Sub extends SubAbstract {
         this.moneyUpLevel = moneyUpLevel;
     }
 
-    public Double getMoneyUpPrice() {
+    public Long getMoney() {
+        return money;
+    }
+
+    public void setMoney(Long money) {
+        this.money = money;
+    }
+
+    public Long getMoneyUpPrice() {
         return moneyUpPrice;
     }
 
-    public void setMoneyUpPrice(Double moneyUpPrice) {
+    public void setMoneyUpPrice(Long moneyUpPrice) {
         this.moneyUpPrice = moneyUpPrice;
     }
 

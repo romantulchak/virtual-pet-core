@@ -1,7 +1,9 @@
 package com.virtualpet.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.components.UserAccess;
 import com.virtualpet.dtos.SubDTO;
+import com.virtualpet.models.Views;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.services.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +22,15 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping("/click/{numberOfClick}")
-    public ResponseEntity<?> click(@RequestBody SubRequest subRequest, @PathVariable("numberOfClick") int clicks){
-        return gameService.moneyByClick(subRequest, clicks);
-    }
 
-    @PostMapping("/upMoneyLevel")
+    @PutMapping("/upMoneyLevel")
+    @JsonView(Views.SubView.class)
     public ResponseEntity<?> upMoneyLevel(@RequestBody SubRequest subRequest){
         return gameService.upMoneyLevel(subRequest);
     }
 
     @PutMapping("/saveMoney/{money}")
+    @JsonView(Views.SubView.class)
     public ResponseEntity<?> saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money){
         return gameService.saveMoney(subRequest, money);
     }
