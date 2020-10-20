@@ -3,6 +3,7 @@ package com.virtualpet.models;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Inventory {
@@ -16,6 +17,8 @@ public class Inventory {
     @JsonView(Views.InventoryView.class)
     private Sub sub;
 
+    @ManyToMany(mappedBy = "inventories")
+    private List<Item> items;
 
     public Long getId() {
         return id;
@@ -31,5 +34,13 @@ public class Inventory {
 
     public void setSub(Sub sub) {
         this.sub = sub;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

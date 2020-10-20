@@ -2,16 +2,10 @@ package com.virtualpet.services.impl;
 
 import com.virtualpet.dtos.SubDTO;
 import com.virtualpet.dtos.SubTypeDTO;
-import com.virtualpet.models.Inventory;
-import com.virtualpet.models.Sub;
-import com.virtualpet.models.SubType;
-import com.virtualpet.models.User;
+import com.virtualpet.models.*;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.payload.response.MessageResponse;
-import com.virtualpet.repos.InventoryRepository;
-import com.virtualpet.repos.SubRepository;
-import com.virtualpet.repos.SubTypeRepository;
-import com.virtualpet.repos.UserRepository;
+import com.virtualpet.repos.*;
 import com.virtualpet.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +23,14 @@ public class ProfileServiceImpl implements ProfileService {
     private InventoryRepository inventoryRepository;
     private SubTypeRepository subTypeRepository;
     private UserRepository userRepository;
+    private LevelRepository levelRepository;
     @Autowired
-    public ProfileServiceImpl(SubRepository subRepository, InventoryRepository inventoryRepository, SubTypeRepository subTypeRepository, UserRepository userRepository){
+    public ProfileServiceImpl(SubRepository subRepository, InventoryRepository inventoryRepository, SubTypeRepository subTypeRepository, UserRepository userRepository, LevelRepository levelRepository){
         this.subRepository = subRepository;
         this.inventoryRepository = inventoryRepository;
         this.subTypeRepository = subTypeRepository;
         this.userRepository = userRepository;
+        this.levelRepository = levelRepository;
     }
 
 
@@ -59,8 +55,10 @@ public class ProfileServiceImpl implements ProfileService {
 
                     SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(VerifyError::new);
                     Inventory inventory = new Inventory();
+                    Level level = new Level();
+                    levelRepository.save(level);
                     inventoryRepository.save(inventory);
-                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath());
+                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level);
                     subRepository.save(sub);
                     return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
                 }else

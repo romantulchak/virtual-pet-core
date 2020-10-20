@@ -3,6 +3,7 @@ package com.virtualpet.models;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Sub extends SubAbstract {
@@ -36,10 +37,13 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private Integer moneyMultiplier;
 
+    @ManyToOne
+    private Level level;
+
     public Sub(){
 
     }
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath) {
+    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level) {
         this.setName(name);
         this.setAttack(attack);
         this.money = 0L;
@@ -52,6 +56,7 @@ public class Sub extends SubAbstract {
         this.moneyMultiplier = 5;
         setModelPath(modelPath);
         setIconPath(iconPath);
+        this.level = level;
     }
 
     public Long getId() {
@@ -125,5 +130,13 @@ public class Sub extends SubAbstract {
 
     public void setMoneyMultiplier(Integer moneyMultiplier) {
         this.moneyMultiplier = moneyMultiplier;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 }
