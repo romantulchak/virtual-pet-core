@@ -5,10 +5,10 @@ import com.virtualpet.dtos.SubDTO;
 import com.virtualpet.models.Views;
 import org.springframework.http.HttpStatus;
 
-public class SubResponse {
+public class SubResponse<T> {
 
     @JsonView(Views.SubView.class)
-    private SubDTO subDTO;
+    private T subDTO;
 
     @JsonView(Views.SubView.class)
     private String messageResponse;
@@ -18,7 +18,7 @@ public class SubResponse {
     public SubResponse(){
 
     }
-    public SubResponse(SubDTO subDTO, String messageResponse, HttpStatus httpStatus){
+    public SubResponse(T subDTO, String messageResponse, HttpStatus httpStatus){
         this.subDTO = subDTO;
         this.messageResponse = messageResponse;
         this.httpStatus = httpStatus;
@@ -32,11 +32,11 @@ public class SubResponse {
         this.messageResponse = messageResponse;
     }
 
-    public SubDTO getSubDTO() {
+    public T getSubDTO() {
         return subDTO;
     }
 
-    public void setSubDTO(SubDTO subDTO) {
+    public void setSubDTO(T subDTO) {
         this.subDTO = subDTO;
     }
 

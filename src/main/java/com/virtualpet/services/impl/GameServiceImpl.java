@@ -52,12 +52,12 @@ public class GameServiceImpl implements GameService {
                 sub.setMoneyUpLevel(sub.getMoneyUpLevel() + 1);
                 sub.setMoneyMultiplier(5 * sub.getMoneyUpLevel());
                 subRepository.save(sub);
-                return new ResponseEntity<>(new SubResponse(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
+                return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
             }else{
-                return new ResponseEntity<>(new SubResponse(new SubDTO(sub), "You don't have enough money",HttpStatus.BAD_REQUEST), HttpStatus.OK);
+                return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "You don't have enough money",HttpStatus.BAD_REQUEST), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>( new SubResponse(null,"Something wrong", HttpStatus.BAD_REQUEST), HttpStatus.OK);
+        return new ResponseEntity<>( new SubResponse<SubDTO>(null,"Something wrong", HttpStatus.BAD_REQUEST), HttpStatus.OK);
     }
 
     @Override
@@ -66,9 +66,9 @@ public class GameServiceImpl implements GameService {
         if(sub != null){
             sub.setMoney(sub.getMoney() + money);
             subRepository.save(sub);
-            return new ResponseEntity<>(new SubResponse(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
+            return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new SubResponse(null, "Something wrong", HttpStatus.BAD_REQUEST), HttpStatus.OK);
+        return new ResponseEntity<>(new SubResponse<SubDTO>(null, "Something wrong", HttpStatus.BAD_REQUEST), HttpStatus.OK);
     }
 
     @Override
@@ -91,6 +91,36 @@ public class GameServiceImpl implements GameService {
 
         return null;
     }
+
+    @Override
+    public ResponseEntity<?> upSubAttack(SubRequest subRequest) {
+        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+        if(sub != null){
+            long price = Math.round(sub.getSubAttack().getAttackMoneyUp() * Math.pow(1.09, sub.getSubAttack().getAttackUpLevel()));
+            System.out.println(price);
+            if(sub.getSubAttack().getAttackMoneyUp() <= sub.getMoney()){
+                sub.setMoney(sub.getMoney() - sub.getSubAttack().getAttackMoneyUp());
+                sub.getSubAttack().setAttackMoneyUp(price);
+                sub.getSubAttack().setAttackUpLevel(sub.getSubAttack().getAttackUpLevel() + 1);
+                sub.getSubAttack().setAttackMultiplier(5 * sub.getMoneyUpLevel());
+                sub.setAttack(sub.getAttack() + ((int)(0.6 * sub.getSubAttack().getAttackUpLevel())) );
+                subRepository.save(sub);
+                return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
+            }else {
+
+                return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "You don't have enough money", HttpStatus.OK), HttpStatus.OK);
+            }
+
+
+        }
+
+
+
+
+        return new ResponseEntity<>(new SubResponse<SubDTO>(null, "Sub not found", HttpStatus.OK), HttpStatus.OK);
+
+    }
+
 
     private void initBosses(Level level) {
         if(bosses.isEmpty()){

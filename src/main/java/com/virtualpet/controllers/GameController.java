@@ -43,5 +43,9 @@ public class GameController {
         return gameService.getBoss(subId);
     }
 
-
+    @PutMapping("/upSubAttack")
+    @JsonView(Views.SubView.class)
+    public ResponseEntity<?> upSubAttack(@RequestBody SubRequest subRequest){
+        return gameService.upSubAttack(subRequest);
+    }
 }

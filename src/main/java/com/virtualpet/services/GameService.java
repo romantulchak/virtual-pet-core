@@ -15,4 +15,6 @@ public interface GameService {
     ResponseEntity<?> saveMoney(SubRequest subRequest, long money);
 
     BossLevelDTO getBoss(long subId);
+
+    ResponseEntity<?> upSubAttack(SubRequest subRequest);
 }

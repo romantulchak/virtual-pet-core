@@ -40,10 +40,13 @@ public class Sub extends SubAbstract {
     @ManyToOne
     private Level level;
 
+    @Embedded
+    private SubAttack subAttack;
+
     public Sub(){
 
     }
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level) {
+    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack) {
         this.setName(name);
         this.setAttack(attack);
         this.money = 0L;
@@ -57,6 +60,7 @@ public class Sub extends SubAbstract {
         setModelPath(modelPath);
         setIconPath(iconPath);
         this.level = level;
+        this.subAttack = subAttack;
     }
 
     public Long getId() {
@@ -138,5 +142,13 @@ public class Sub extends SubAbstract {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public SubAttack getSubAttack() {
+        return subAttack;
+    }
+
+    public void setSubAttack(SubAttack subAttack) {
+        this.subAttack = subAttack;
     }
 }

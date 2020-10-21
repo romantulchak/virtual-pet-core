@@ -58,7 +58,7 @@ public class ProfileServiceImpl implements ProfileService {
                     Level level = new Level();
                     levelRepository.save(level);
                     inventoryRepository.save(inventory);
-                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level);
+                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack());
                     subRepository.save(sub);
                     return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
                 }else

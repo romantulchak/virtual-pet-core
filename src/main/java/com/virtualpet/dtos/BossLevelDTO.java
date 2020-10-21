@@ -19,6 +19,7 @@ public class BossLevelDTO {
     public BossLevelDTO(Boss boss, double multiplier, int level) {
         this.boss = boss;
         this.boss.setHealth((int)(boss.getHealth() + (boss.getHealth() * multiplier)));
+        this.boss.setDroppedMoney((int)(boss.getDroppedMoney() + (boss.getDroppedMoney() * multiplier)));
         this.level = level;
     }
 
