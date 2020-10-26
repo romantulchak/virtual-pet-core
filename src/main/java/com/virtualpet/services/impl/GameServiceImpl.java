@@ -46,8 +46,8 @@ public class GameServiceImpl implements GameService {
         Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
         if(sub != null){
             long price = Math.round(sub.getMoneyUpPrice() * Math.pow(1.07, sub.getMoneyUpLevel()));
-            if(sub.getMoneyUpPrice() <= sub.getMoney()) {
-                sub.setMoney(sub.getMoney() - sub.getMoneyUpPrice());
+            if(sub.getMoneyUpPrice() <= sub.getCurrency().getMoney()) {
+                sub.getCurrency().setMoney(sub.getCurrency().getMoney() - sub.getMoneyUpPrice());
                 sub.setMoneyUpPrice(price);
                 sub.setMoneyUpLevel(sub.getMoneyUpLevel() + 1);
                 sub.setMoneyMultiplier(5 * sub.getMoneyUpLevel());
@@ -64,7 +64,7 @@ public class GameServiceImpl implements GameService {
     public ResponseEntity<?> saveMoney(SubRequest subRequest, long money) {
         Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
         if(sub != null){
-            sub.setMoney(sub.getMoney() + money);
+            sub.getCurrency().setMoney(sub.getCurrency().getMoney() + money);
             subRepository.save(sub);
             return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
         }
@@ -98,8 +98,8 @@ public class GameServiceImpl implements GameService {
         if(sub != null){
             long price = Math.round(sub.getSubAttack().getAttackMoneyUp() * Math.pow(1.09, sub.getSubAttack().getAttackUpLevel()));
             System.out.println(price);
-            if(sub.getSubAttack().getAttackMoneyUp() <= sub.getMoney()){
-                sub.setMoney(sub.getMoney() - sub.getSubAttack().getAttackMoneyUp());
+            if(sub.getSubAttack().getAttackMoneyUp() <= sub.getCurrency().getMoney()){
+                sub.getCurrency().setMoney(sub.getCurrency().getMoney() - sub.getSubAttack().getAttackMoneyUp());
                 sub.getSubAttack().setAttackMoneyUp(price);
                 sub.getSubAttack().setAttackUpLevel(sub.getSubAttack().getAttackUpLevel() + 1);
                 sub.getSubAttack().setAttackMultiplier(5 * sub.getMoneyUpLevel());
@@ -107,16 +107,9 @@ public class GameServiceImpl implements GameService {
                 subRepository.save(sub);
                 return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Ok", HttpStatus.OK), HttpStatus.OK);
             }else {
-
                 return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "You don't have enough money", HttpStatus.OK), HttpStatus.OK);
             }
-
-
         }
-
-
-
-
         return new ResponseEntity<>(new SubResponse<SubDTO>(null, "Sub not found", HttpStatus.OK), HttpStatus.OK);
 
     }

@@ -10,13 +10,13 @@ public class Boss extends SubAbstract{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private int health;
     private int droppedMoney;
 
-    public Boss(int attack, int defence, String iconPath, String modelPath){
+    public Boss(int attack, int defence, String iconPath, String modelPath, int health){
         super(attack, defence);
         setIconPath(iconPath);
         setModelPath(modelPath);
+        setHealth(health);
     }
 
 
@@ -40,13 +40,6 @@ public class Boss extends SubAbstract{
         this.name = name;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
 
     public int getDroppedMoney() {
         return droppedMoney;

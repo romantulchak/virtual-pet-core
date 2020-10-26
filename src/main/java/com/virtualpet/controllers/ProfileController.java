@@ -42,10 +42,10 @@ public class ProfileController {
         return profileService.createSubForUser(subRequest, authentication);
     }
 
-    @DeleteMapping("/deleteSubForUser")
-    @PreAuthorize("hasRole('USER') and @userSecurity.hasUserId(authentication, #subRequest.user.id)")
-    public ResponseEntity<?> deleteSub(@RequestBody SubRequest subRequest, Authentication authentication){
-        return profileService.deleteSubForUser(subRequest, authentication);
+    @DeleteMapping("/deleteSubForUser/{subId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> deleteSub(@PathVariable("subId") long id, Authentication authentication){
+        return profileService.deleteSubForUser(id, authentication);
     }
     @GetMapping("/getSubTypes")
     public List<SubTypeDTO> getSubTypes(){

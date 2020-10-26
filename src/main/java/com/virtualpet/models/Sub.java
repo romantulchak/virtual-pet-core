@@ -18,8 +18,7 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private String name;
 
-    @JsonView(Views.SubView.class)
-    private Long money;
+
     @OneToOne
     @JsonView(Views.SubView.class)
     private Inventory inventory;
@@ -43,13 +42,15 @@ public class Sub extends SubAbstract {
     @Embedded
     private SubAttack subAttack;
 
+    @Embedded
+    private Currency currency;
     public Sub(){
 
     }
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack) {
+    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack, int health, Currency currency) {
         this.setName(name);
         this.setAttack(attack);
-        this.money = 0L;
+        this.currency = currency;
         this.setDefence(defence);
         this.inventory = inventory;
         this.user = user;
@@ -61,6 +62,7 @@ public class Sub extends SubAbstract {
         setIconPath(iconPath);
         this.level = level;
         this.subAttack = subAttack;
+        setHealth(health);
     }
 
     public Long getId() {
@@ -112,14 +114,6 @@ public class Sub extends SubAbstract {
         this.moneyUpLevel = moneyUpLevel;
     }
 
-    public Long getMoney() {
-        return money;
-    }
-
-    public void setMoney(Long money) {
-        this.money = money;
-    }
-
     public Long getMoneyUpPrice() {
         return moneyUpPrice;
     }
@@ -150,5 +144,13 @@ public class Sub extends SubAbstract {
 
     public void setSubAttack(SubAttack subAttack) {
         this.subAttack = subAttack;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

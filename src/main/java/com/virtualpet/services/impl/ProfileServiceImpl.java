@@ -58,7 +58,7 @@ public class ProfileServiceImpl implements ProfileService {
                     Level level = new Level();
                     levelRepository.save(level);
                     inventoryRepository.save(inventory);
-                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack());
+                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency());
                     subRepository.save(sub);
                     return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
                 }else
@@ -71,8 +71,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<?> deleteSubForUser(SubRequest subRequest, Authentication authentication) {
-        Sub sub = subRepository.findById(subRequest.getSubId()).orElse(null);
+    public ResponseEntity<?> deleteSubForUser(long id, Authentication authentication) {
+        Sub sub = subRepository.findById(id).orElse(null);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if(sub != null && user.getId().equals(sub.getUser().getId())){
             subRepository.delete(sub);

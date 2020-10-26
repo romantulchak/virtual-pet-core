@@ -3,6 +3,7 @@ package com.virtualpet.models;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,9 +18,16 @@ public class Inventory {
     @JsonView(Views.InventoryView.class)
     private Sub sub;
 
+    @JsonView(Views.InventoryView.class)
+    private int maxInventorySize;
+
     @ManyToMany(mappedBy = "inventories")
     private List<Item> items;
 
+    public Inventory(){
+        this.maxInventorySize = 30;
+        this.items = new ArrayList<>();
+    }
     public Long getId() {
         return id;
     }
@@ -42,5 +50,13 @@ public class Inventory {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public int getMaxInventorySize() {
+        return maxInventorySize;
+    }
+
+    public void setMaxInventorySize(int maxInventorySize) {
+        this.maxInventorySize = maxInventorySize;
     }
 }

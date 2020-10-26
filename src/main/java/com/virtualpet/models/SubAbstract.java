@@ -10,6 +10,8 @@ public abstract class SubAbstract {
 
     private Integer defence;
 
+    private Integer health;
+
     private String iconPath;
 
     private String modelPath;
@@ -56,5 +58,13 @@ public abstract class SubAbstract {
 
     public void setModelPath(String modelPath) {
         this.modelPath = modelPath;
+    }
+
+    public Integer getHealth() {
+        return health;
+    }
+
+    public void setHealth(Integer health) {
+        this.health = health;
     }
 }

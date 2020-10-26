@@ -13,7 +13,7 @@ public class Level {
 
     private int level;
 
-    @OneToMany(mappedBy = "level")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "level")
     private List<Sub> subs = new ArrayList<>();
 
     public Level(){
