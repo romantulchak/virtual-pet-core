@@ -1,6 +1,8 @@
 package com.virtualpet.models;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.models.Items.Armor;
+import com.virtualpet.models.Items.Sword;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,12 +23,19 @@ public class Inventory {
     @JsonView(Views.InventoryView.class)
     private int maxInventorySize;
 
-    @ManyToMany(mappedBy = "inventories")
-    private List<Item> items;
+    @ManyToMany(mappedBy = "inventory")
+    @JsonView(Views.InventoryView.class)
+    private List<Sword> swords;
+
+    @ManyToMany(mappedBy = "inventory")
+    @JsonView(Views.InventoryView.class)
+    private List<Armor> armors;
 
     public Inventory(){
-        this.maxInventorySize = 30;
-        this.items = new ArrayList<>();
+        this.maxInventorySize = 10;
+        this.swords = new ArrayList<>();
+        this.armors = new ArrayList<>();
+
     }
     public Long getId() {
         return id;
@@ -44,12 +53,20 @@ public class Inventory {
         this.sub = sub;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Sword> getSwords() {
+        return swords;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setSwords(List<Sword> swords) {
+        this.swords = swords;
+    }
+
+    public List<Armor> getArmors() {
+        return armors;
+    }
+
+    public void setArmors(List<Armor> armors) {
+        this.armors = armors;
     }
 
     public int getMaxInventorySize() {
@@ -59,4 +76,6 @@ public class Inventory {
     public void setMaxInventorySize(int maxInventorySize) {
         this.maxInventorySize = maxInventorySize;
     }
+
+
 }
