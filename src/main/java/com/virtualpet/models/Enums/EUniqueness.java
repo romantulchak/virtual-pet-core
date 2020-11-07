@@ -1,7 +1,7 @@
 package com.virtualpet.models.Enums;
 
 public enum EUniqueness {
-    common(0), uncommon(1), rare(2), mythical(3), legendary(4);
+    COMMON(0), UNCOMMON(1), RARE(2), MYTHICAL(3), LEGENDARY(4);
 
     private EUniqueness(int num){
 

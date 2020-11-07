@@ -24,13 +24,15 @@ public class ProfileServiceImpl implements ProfileService {
     private SubTypeRepository subTypeRepository;
     private UserRepository userRepository;
     private LevelRepository levelRepository;
+    private DressedItemRepository dressedItemRepository;
     @Autowired
-    public ProfileServiceImpl(SubRepository subRepository, InventoryRepository inventoryRepository, SubTypeRepository subTypeRepository, UserRepository userRepository, LevelRepository levelRepository){
+    public ProfileServiceImpl(SubRepository subRepository, InventoryRepository inventoryRepository, SubTypeRepository subTypeRepository, UserRepository userRepository, LevelRepository levelRepository, DressedItemRepository dressedItemRepository){
         this.subRepository = subRepository;
         this.inventoryRepository = inventoryRepository;
         this.subTypeRepository = subTypeRepository;
         this.userRepository = userRepository;
         this.levelRepository = levelRepository;
+        this.dressedItemRepository = dressedItemRepository;
     }
 
 
@@ -56,9 +58,11 @@ public class ProfileServiceImpl implements ProfileService {
                     SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(VerifyError::new);
                     Inventory inventory = new Inventory();
                     Level level = new Level();
+                    DressedItem dressedItem = new DressedItem();
+                    dressedItemRepository.save(dressedItem);
                     levelRepository.save(level);
                     inventoryRepository.save(inventory);
-                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency());
+                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency(), dressedItem);
                     subRepository.save(sub);
                     return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
                 }else

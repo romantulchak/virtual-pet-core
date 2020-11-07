@@ -2,6 +2,7 @@ package com.virtualpet.models;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.models.Enums.EItemCategory;
+import com.virtualpet.models.Enums.EItemType;
 import com.virtualpet.models.Enums.EUniqueness;
 
 import javax.persistence.*;
@@ -15,22 +16,28 @@ public abstract class Item {
     private long id;
 
     @Enumerated(EnumType.STRING)
-    @JsonView(Views.InventoryView.class)
+    @JsonView({Views.InventoryView.class, Views.SubView.class})
     private EUniqueness uniqueness;
 
-    @JsonView(Views.InventoryView.class)
+    @JsonView({Views.InventoryView.class})
     private String iconPath;
 
-    @JsonView(Views.InventoryView.class)
+    @JsonView({Views.InventoryView.class, Views.SubView.class})
     private String name;
+    @JsonView(Views.InventoryView.class)
+    @Enumerated(EnumType.STRING)
+    private EItemType eItemType;
+    @Enumerated(EnumType.STRING)
+    @JsonView(Views.InventoryView.class)
+    private EItemCategory eItemCategory;
 
-
-
-    protected Item(int id, EUniqueness uniqueness, String iconPath, String name ){
+    protected Item(int id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType){
         this.id = id;
         this.uniqueness = uniqueness;
         this.iconPath = iconPath;
         this.name = name;
+        this.eItemCategory = eItemCategory;
+        this.eItemType = eItemType;
     }
     protected Item(){
 
@@ -70,6 +77,20 @@ public abstract class Item {
         this.name = name;
     }
 
+    public EItemCategory geteItemCategory() {
+        return eItemCategory;
+    }
 
+    public void seteItemCategory(EItemCategory eItemCategory) {
+        this.eItemCategory = eItemCategory;
+    }
+
+    public EItemType geteItemType() {
+        return eItemType;
+    }
+
+    public void seteItemType(EItemType eItemType) {
+        this.eItemType = eItemType;
+    }
 }
 

@@ -1,5 +1,7 @@
 package com.virtualpet.services.impl;
 
+import com.virtualpet.models.Enums.EItemCategory;
+import com.virtualpet.models.Enums.EItemType;
 import com.virtualpet.models.Items.Armor;
 import com.virtualpet.models.Items.Sword;
 import com.virtualpet.models.Sub;
@@ -24,7 +26,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ResponseEntity<?> createSword(Sword sword) {
         if(sword != null) {
-            System.out.println(sword);
+            sword.seteItemCategory(EItemCategory.SWORD);
+            sword.seteItemType(EItemType.WEAPON);
             swordRepository.save(sword);
             return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
         }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.models.*;
 
 import javax.persistence.OneToOne;
+import java.util.List;
 
 public class SubDTO {
 
@@ -41,6 +42,11 @@ public class SubDTO {
 
     @JsonView(Views.SubView.class)
     private Integer health;
+    @JsonView(Views.SubView.class)
+    private DressedItem dressedItems;
+
+
+
     public SubDTO(Sub sub) {
         this.id = sub.getId();
         this.name = sub.getName();
@@ -54,7 +60,9 @@ public class SubDTO {
         this.moneyMultiplier = sub.getMoneyMultiplier();
         this.subAttack = sub.getSubAttack();
         this.health = sub.getHealth();
+        this.dressedItems = sub.getDressedItems();
     }
+
 
     public Long getId() {
         return id;
@@ -150,5 +158,14 @@ public class SubDTO {
 
     public void setHealth(Integer health) {
         this.health = health;
+    }
+
+
+    public DressedItem getDressedItems() {
+        return dressedItems;
+    }
+
+    public void setDressedItems(DressedItem dressedItems) {
+        this.dressedItems = dressedItems;
     }
 }

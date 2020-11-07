@@ -10,6 +10,7 @@ public class SwordDTO {
     private boolean allowShield;
 
 
+
     public SwordDTO() {
     }
 

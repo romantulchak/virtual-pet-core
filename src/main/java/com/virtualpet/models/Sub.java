@@ -3,7 +3,6 @@ package com.virtualpet.models;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Sub extends SubAbstract {
@@ -44,10 +43,15 @@ public class Sub extends SubAbstract {
 
     @Embedded
     private Currency currency;
+
+    @OneToOne
+    private DressedItem dressedItems;
+
+
     public Sub(){
 
     }
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack, int health, Currency currency) {
+    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack, int health, Currency currency, DressedItem dressedItems) {
         this.setName(name);
         this.setAttack(attack);
         this.currency = currency;
@@ -63,6 +67,7 @@ public class Sub extends SubAbstract {
         this.level = level;
         this.subAttack = subAttack;
         setHealth(health);
+        this.dressedItems = dressedItems;
     }
 
     public Long getId() {
@@ -152,5 +157,13 @@ public class Sub extends SubAbstract {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public DressedItem getDressedItems() {
+        return dressedItems;
+    }
+
+    public void setDressedItems(DressedItem dressedItems) {
+        this.dressedItems = dressedItems;
     }
 }
