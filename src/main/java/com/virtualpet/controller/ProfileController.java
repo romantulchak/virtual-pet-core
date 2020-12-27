@@ -40,7 +40,7 @@ public class ProfileController {
 
     @PostMapping("/createSub")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createSub(@RequestBody SubRequest subRequest, Authentication authentication){
+    public boolean createSub(@RequestBody SubRequest subRequest, Authentication authentication){
         return profileService.createSubForUser(subRequest, authentication);
     }
 
@@ -69,9 +69,8 @@ public class ProfileController {
 
     @PostMapping("/friendRequest")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> friendRequest(@RequestBody User user, Authentication authentication){
-        boolean result = profileService.friendRequest(authentication, user);
-        return result ? new ResponseEntity<>("Request sent", HttpStatus.OK) : new ResponseEntity<>("Something wrong", HttpStatus.BAD_REQUEST);
+    public UserFriend friendRequest(@RequestBody User user, Authentication authentication){
+        return profileService.friendRequest(authentication, user);
     }
     @GetMapping("/getUserByUsername/{username}")
     @PreAuthorize("hasRole('USER')")
@@ -92,6 +91,19 @@ public class ProfileController {
     @JsonView(Views.FriendView.class)
     public Set<UserFriend> getFriendResponse(Authentication authentication){
         return profileService.getFriendsResponse(authentication);
+    }
+
+    @PostMapping("/acceptFriend")
+    @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.FriendView.class)
+    public UserDTO acceptFriend(@RequestBody UserFriend userFriend, Authentication authentication){
+        return profileService.acceptFriend(userFriend, authentication);
+    }
+    @DeleteMapping("/deniedFriendRequest")
+    @PreAuthorize("hasRole('USER')")
+    public boolean deniedFriendRequest(@RequestParam(name = "friendRequestId") long userFriendId, Authentication authentication){
+        profileService.deniedFriendRequest(userFriendId, authentication);
+        return true;
     }
 
 }

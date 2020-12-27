@@ -62,4 +62,35 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(SubTypeNotFoundException.class)
+    public ResponseEntity<Object> handleSubtypeNotFound(SubTypeNotFoundException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(SubWithNameAlreadyExistException.class)
+    public ResponseEntity<Object> handleSubWithNameAlreadyExistException(SubWithNameAlreadyExistException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MaximumNumberOfSubsException.class)
+    public ResponseEntity<Object> handleMaximumNumberOfSubsException(MaximumNumberOfSubsException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UserAuthenticationException.class)
+    public ResponseEntity<Object> handleUserAuthenticationException(UserAuthenticationException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(UserFriendNotFoundException.class)
+    public ResponseEntity<Object> handleUserFriendNotFoundException(UserFriendNotFoundException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
 }

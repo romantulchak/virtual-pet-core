@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "friends", joinColumns = @JoinColumn(name ="user_id"), inverseJoinColumns = @JoinColumn(name =  "friend_id"))
-    private Set<User> users;
+    private Set<User> friends = new LinkedHashSet<>(1);
 
 
     public User() {
@@ -113,13 +114,11 @@ public class User {
         this.maxNumberOfSubs = maxNumberOfSubs;
     }
 
-
-    public Set<User> getUsers() {
-        return users;
+    public Set<User> getFriends() {
+        return friends;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
     }
-
 }

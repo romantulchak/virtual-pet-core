@@ -15,15 +15,17 @@ import java.util.Set;
 public interface ProfileService {
 
     List<SubDTO> getSubsForUser(Authentication authentication);
-    ResponseEntity<?> createSubForUser(SubRequest subRequest, Authentication authentication);
+    boolean createSubForUser(SubRequest subRequest, Authentication authentication);
     ResponseEntity<?> deleteSubForUser(long id, Authentication authentication);
     SubDTO chooseSub(long heroId, long userId, Authentication authentication);
     List<SubTypeDTO> getSubTypes();
     Set<UserDTO> getFriends(Authentication authentication);
-    boolean friendRequest(Authentication authentication, User user);
+    UserFriend friendRequest(Authentication authentication, User user);
 
     UserDTO getUserByUsername(String username, Authentication authentication);
     Set<UserFriend> getFriendsRequest(Authentication authentication);
     Set<UserFriend> getFriendsResponse(Authentication authentication);
-
+    UserDTO acceptFriend(UserFriend userFriend, Authentication authentication);
+    void deniedFriendRequest(long friendRequestId, Authentication authentication);
+    void removeFriend(User user);
 }

@@ -3,7 +3,7 @@ package com.virtualpet.service.impl;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
-import com.virtualpet.exeption.UserNotFoundException;
+import com.virtualpet.exeption.*;
 import com.virtualpet.model.*;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.payload.response.MessageResponse;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,8 +56,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Set<UserDTO> getFriends(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findById(userInSystem.getId()).orElse(null);
-        return user.getUsers().stream().map(x->convertUserToDTO(x)).collect(Collectors.toSet());
+        User user = userRepository.findById(userInSystem.getId()).orElseThrow(() -> new UserNotFoundException(userInSystem.getUsername()));
+        return user.getFriends().stream().map(this::convertUserToDTO).collect(Collectors.toSet());
     }
 
     @Override
@@ -75,43 +76,39 @@ public class ProfileServiceImpl implements ProfileService {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findById(userInSystem.getId()).orElse(null);
         if(user != null){
-            System.out.println(user.getId());
             return userFriendRepository.findAllByUserRequest(user);
-
         }
         return null;
     }
 
     @Override
-    public boolean friendRequest(Authentication authentication, User user) {
+    public UserFriend friendRequest(Authentication authentication, User user) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User userInSystem = userRepository.findById(userDetails.getId()).orElse(null);
         if(userInSystem != null){
             UserFriend userFriend = new UserFriend(userInSystem, user);
             userFriendRepository.save(userFriend);
-            return true;
+            return userFriend;
         }
-        return false;
+        throw new UserAuthenticationException();
     }
 
     @Override
     public UserDTO getUserByUsername(String username, Authentication authentication) {
-        UserDetailsImpl userDetails =(UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findByUsername(username).filter(x->!x.getUsername().equals(userDetails.getUsername())).orElseThrow(()->new UserNotFoundException(username));
-        if (user != null)
-            return convertUserToDTO(user);
-        return null;
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User userInSystem = userRepository.findById(userDetails.getId()).orElseThrow(() -> new UserNotFoundException(userDetails.getUsername()));
+        User user = userRepository.findByUsername(username).filter(x -> !x.getUsername().equals(userDetails.getUsername())).orElseThrow(() -> new UserNotFoundException(username));
+        return new UserDTO(user, userInSystem);
     }
 
     @Override
-    public ResponseEntity<?> createSubForUser(SubRequest subRequest, Authentication authentication) {
+    public boolean createSubForUser(SubRequest subRequest, Authentication authentication) {
         if(subRequest != null){
             if(!subRepository.existsByName(subRequest.getName())){
                 UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
                 User user = userRepository.findById(userInSystem.getId()).orElse(null);
                 if(user != null && !(subRepository.countSubByUser(user) >= user.getMaxNumberOfSubs()) ) {
-
-                    SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(VerifyError::new);
+                    SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(()->new SubTypeNotFoundException(subRequest.getName()));
                     Inventory inventory = new Inventory();
                     Level level = new Level();
                     DressedItem dressedItem = new DressedItem();
@@ -120,14 +117,14 @@ public class ProfileServiceImpl implements ProfileService {
                     inventoryRepository.save(inventory);
                     Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency(), dressedItem);
                     subRepository.save(sub);
-                    return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
+                    return true;
                 }else
-                    return new ResponseEntity<>(new MessageResponse("You already have the maximum number of Sub in your account"), HttpStatus.OK);
+                throw new MaximumNumberOfSubsException();
             }else{
-                return new ResponseEntity<>(new MessageResponse("Hero with the same name already exist"), HttpStatus.BAD_REQUEST);
+                throw new SubWithNameAlreadyExistException(subRequest.getName());
             }
         }
-        return new ResponseEntity<>(new MessageResponse("Bad"), HttpStatus.BAD_GATEWAY);
+        throw new BadRequestException();
     }
 
     @Override
@@ -143,13 +140,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public SubDTO chooseSub(long heroId, long userId, Authentication authentication) {
-        Sub sub = subRepository.findById(heroId).orElse(null);
+    public SubDTO chooseSub(long subId, long userId, Authentication authentication) {
+        Sub sub = subRepository.findById(subId).orElse(null);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if(sub != null && user.getId().equals(sub.getUser().getId())){
             return subToSubDTO(sub);
         }
-        return null;
+        throw new SubNotFoundException(subId);
     }
 
     @Override
@@ -159,10 +156,41 @@ public class ProfileServiceImpl implements ProfileService {
 
     }
 
+    @Override
+    public UserDTO acceptFriend(UserFriend userFriend, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User userInSystem = userRepository.findById(userDetails.getId()).orElseThrow(() ->new UserNotFoundException(userDetails.getUsername()));
+        User user = userRepository.findById(userFriend.getUser().getId()).orElseThrow(()-> new UserNotFoundException(userFriend.getUser().getUsername()));
+        userInSystem.getFriends().add(userFriend.getUser());
+        userInSystem.setFriends(userInSystem.getFriends());
+        user.getFriends().add(userInSystem);
+        user.setFriends(user.getFriends());
+        userRepository.save(userInSystem);
+        userRepository.save(user);
+        userFriendRepository.delete(userFriend);
+        return convertUserToDTO(user);
+    }
+
+    @Override
+    public void deniedFriendRequest(long friendRequestId, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserFriend userFriend = userFriendRepository.findById(friendRequestId).orElseThrow(()->new UserFriendNotFoundException(friendRequestId));
+        if(userDetails.getId() == userFriend.getUserRequest().getId() || userDetails.getId() == userFriend.getUser().getId()){
+            userFriendRepository.delete(userFriend);
+        }else {
+            throw new UserAuthenticationException();
+        }
+    }
+
     private SubTypeDTO convertSubTypeToDTO(SubType subType){
         return new SubTypeDTO(subType);
     }
     private UserDTO convertUserToDTO(User user){
         return new UserDTO(user);
+    }
+
+    @Override
+    public void removeFriend(User user) {
+
     }
 }
