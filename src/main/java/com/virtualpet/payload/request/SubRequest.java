@@ -1,6 +1,6 @@
 package com.virtualpet.payload.request;
 
-import com.virtualpet.models.User;
+import com.virtualpet.model.User;
 
 public class SubRequest {
     private String name;

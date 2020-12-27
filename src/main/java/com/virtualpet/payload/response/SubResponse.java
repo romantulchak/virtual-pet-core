@@ -1,27 +1,23 @@
 package com.virtualpet.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.virtualpet.dtos.SubDTO;
-import com.virtualpet.models.Views;
+import com.virtualpet.model.Views;
 import org.springframework.http.HttpStatus;
 
 public class SubResponse<T> {
 
-    @JsonView(Views.SubView.class)
-    private T subDTO;
+    @JsonView( Views.SubView.class)
+    private T entity;
 
     @JsonView(Views.SubView.class)
     private String messageResponse;
 
-    @JsonView(Views.SubView.class)
-    private HttpStatus httpStatus;
     public SubResponse(){
 
     }
-    public SubResponse(T subDTO, String messageResponse, HttpStatus httpStatus){
-        this.subDTO = subDTO;
+    public SubResponse(T entity, String messageResponse){
+        this.entity = entity;
         this.messageResponse = messageResponse;
-        this.httpStatus = httpStatus;
     }
 
     public String getMessageResponse() {
@@ -32,19 +28,12 @@ public class SubResponse<T> {
         this.messageResponse = messageResponse;
     }
 
-    public T getSubDTO() {
-        return subDTO;
+    public T getEntity() {
+        return entity;
     }
 
-    public void setSubDTO(T subDTO) {
-        this.subDTO = subDTO;
+    public void setEntity(T entity) {
+        this.entity = entity;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
-    }
 }

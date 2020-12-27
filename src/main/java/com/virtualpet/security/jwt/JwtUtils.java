@@ -1,6 +1,6 @@
 package com.virtualpet.security.jwt;
 
-import com.virtualpet.services.impl.UserDetailsImpl;
+import com.virtualpet.service.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

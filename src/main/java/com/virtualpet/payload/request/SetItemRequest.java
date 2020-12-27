@@ -1,7 +1,7 @@
 package com.virtualpet.payload.request;
 
-import com.virtualpet.models.Enums.EItemCategory;
-import com.virtualpet.models.Enums.EItemType;
+import com.virtualpet.model.Enums.EItemCategory;
+import com.virtualpet.model.Enums.EItemType;
 
 public class SetItemRequest {
 
