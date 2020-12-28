@@ -1,5 +1,6 @@
 package com.virtualpet.service;
 
+import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Sub;
 import com.virtualpet.payload.request.SetItemRequest;
@@ -10,11 +11,11 @@ import java.util.List;
 public interface InventoryService {
 
     List<Item> getItems(Sub sub);
-    ResponseEntity<?> setItem(SetItemRequest setItemRequest);
+    SubDTO setItem(SetItemRequest setItemRequest);
     List<Item> getDressedItems(List<Long> itemId);
 
-    ResponseEntity<?> withdrawWeapon(SetItemRequest setItemRequest);
-    ResponseEntity<?> withdrawArmor(SetItemRequest setItemRequest);
+    SubDTO withdrawWeapon(SetItemRequest setItemRequest);
+    SubDTO withdrawArmor(SetItemRequest setItemRequest);
 
 
 }

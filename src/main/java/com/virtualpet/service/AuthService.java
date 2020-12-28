@@ -2,9 +2,10 @@ package com.virtualpet.service;
 
 import com.virtualpet.payload.request.LoginRequest;
 import com.virtualpet.payload.request.SignupRequest;
+import com.virtualpet.payload.response.JwtResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
-    ResponseEntity<?> authenticateUser(LoginRequest loginRequest);
+    JwtResponse authenticateUser(LoginRequest loginRequest);
     void registerUser(SignupRequest signupRequest);
 }

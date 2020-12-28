@@ -102,7 +102,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public boolean createSubForUser(SubRequest subRequest, Authentication authentication) {
+    public void createSubForUser(SubRequest subRequest, Authentication authentication) {
         if(subRequest != null){
             if(!subRepository.existsByName(subRequest.getName())){
                 UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
@@ -117,7 +117,6 @@ public class ProfileServiceImpl implements ProfileService {
                     inventoryRepository.save(inventory);
                     Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency(), dressedItem);
                     subRepository.save(sub);
-                    return true;
                 }else
                 throw new MaximumNumberOfSubsException();
             }else{
@@ -128,15 +127,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ResponseEntity<?> deleteSubForUser(long id, Authentication authentication) {
-        Sub sub = subRepository.findById(id).orElse(null);
+    public void deleteSubForUser(long id, Authentication authentication) {
+        Sub sub = subRepository.findById(id).orElseThrow(() -> new SubNotFoundException(id));
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if(sub != null && user.getId().equals(sub.getUser().getId())){
             subRepository.delete(sub);
-            return new ResponseEntity<>(new MessageResponse("Sub " + sub.getName() + " was removed"), HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(new MessageResponse("Something wrong"), HttpStatus.OK);
         }
+        throw new BadRequestException();
     }
 
     @Override
@@ -190,7 +187,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void removeFriend(User user) {
-
+    public void deleteFriend(long userId, long friendId, Authentication authentication) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if(user.getId() == userDetails.getId()){
+            User friend = userRepository.findById(friendId).orElseThrow(UserNotFoundException::new);
+            user.getFriends().remove(friend);
+            friend.getFriends().remove(user);
+            userRepository.save(user);
+            userRepository.save(friend);
+        }else{
+            throw new UserAuthenticationException();
+        }
     }
 }

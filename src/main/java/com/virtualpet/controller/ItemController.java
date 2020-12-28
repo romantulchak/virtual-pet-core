@@ -21,7 +21,7 @@ public class ItemController {
 
     @PostMapping("/createSword")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createSword(@RequestBody Sword sword){
-        return itemService.createSword(sword);
+    public void createSword(@RequestBody Sword sword){
+        itemService.createSword(sword);
     }
 }

@@ -1,6 +1,7 @@
 package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
@@ -33,17 +34,17 @@ public class InventoryController {
 
     @PutMapping("/setItem")
     @JsonView(Views.SubView.class)
-    public ResponseEntity<?> setItem(@RequestBody SetItemRequest setItemRequest){
+    public SubDTO setItem(@RequestBody SetItemRequest setItemRequest){
        return inventoryService.setItem(setItemRequest);
     }
     @PutMapping("/withdrawArmor")
     @JsonView(Views.SubView.class)
-    public ResponseEntity<?> withdrawArmor(@RequestBody SetItemRequest setItemRequest){
+    public SubDTO withdrawArmor(@RequestBody SetItemRequest setItemRequest){
         return inventoryService.withdrawArmor(setItemRequest);
     }
     @PutMapping("/withdrawWeapon")
     @JsonView(Views.SubView.class)
-    public ResponseEntity<?> withdrawWeapon(@RequestBody SetItemRequest setItemRequest){
+    public SubDTO withdrawWeapon(@RequestBody SetItemRequest setItemRequest){
         return inventoryService.withdrawWeapon(setItemRequest);
     }
 }

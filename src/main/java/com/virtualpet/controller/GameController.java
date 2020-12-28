@@ -27,17 +27,16 @@ public class GameController {
 
     @PutMapping("/upMoneyLevel")
     @JsonView(Views.SubView.class)
-    public ResponseEntity<?> upMoneyLevel(@RequestBody SubRequest subRequest){
-        SubDTO subDTO = gameService.upMoneyLevel(subRequest);
-        return new ResponseEntity<>(new SubResponse<SubDTO>(subDTO, "Ok"), HttpStatus.OK);
+    @PreAuthorize("hasRole('USER')")
+    public SubDTO upMoneyLevel(@RequestBody SubRequest subRequest){
+        return gameService.upMoneyLevel(subRequest);
     }
 
     @PutMapping("/saveMoney/{money}")
     @JsonView(Views.SubView.class)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money){
-        SubDTO sub = gameService.saveMoney(subRequest, money);
-        return new ResponseEntity<>(new SubResponse<SubDTO>(sub, "Ok"), HttpStatus.OK);
+    public SubDTO saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money){
+        return gameService.saveMoney(subRequest, money);
     }
 
     @GetMapping("/getBoss/{subId}")
@@ -47,8 +46,8 @@ public class GameController {
 
     @PutMapping("/upSubAttack")
     @JsonView(Views.SubView.class)
-    public ResponseEntity<?> upSubAttack(@RequestBody SubRequest subRequest){
-        SubDTO subDTO = gameService.upSubAttack(subRequest);
-        return new ResponseEntity<>(new SubResponse<SubDTO>(subDTO, "Ok"), HttpStatus.OK);
+    @PreAuthorize("hasRole('USER')")
+    public SubDTO upSubAttack(@RequestBody SubRequest subRequest){
+        return gameService.upSubAttack(subRequest);
     }
 }

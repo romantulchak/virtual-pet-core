@@ -92,5 +92,9 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
-
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<Object> handleUserItemNotFoundException(ItemNotFoundException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }

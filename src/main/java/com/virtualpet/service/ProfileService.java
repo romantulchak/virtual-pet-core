@@ -15,8 +15,8 @@ import java.util.Set;
 public interface ProfileService {
 
     List<SubDTO> getSubsForUser(Authentication authentication);
-    boolean createSubForUser(SubRequest subRequest, Authentication authentication);
-    ResponseEntity<?> deleteSubForUser(long id, Authentication authentication);
+    void createSubForUser(SubRequest subRequest, Authentication authentication);
+    void deleteSubForUser(long id, Authentication authentication);
     SubDTO chooseSub(long heroId, long userId, Authentication authentication);
     List<SubTypeDTO> getSubTypes();
     Set<UserDTO> getFriends(Authentication authentication);
@@ -27,5 +27,5 @@ public interface ProfileService {
     Set<UserFriend> getFriendsResponse(Authentication authentication);
     UserDTO acceptFriend(UserFriend userFriend, Authentication authentication);
     void deniedFriendRequest(long friendRequestId, Authentication authentication);
-    void removeFriend(User user);
+    void deleteFriend(long userId, long friendId, Authentication authentication);
 }

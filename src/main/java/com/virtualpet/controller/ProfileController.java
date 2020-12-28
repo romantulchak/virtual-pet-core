@@ -40,14 +40,14 @@ public class ProfileController {
 
     @PostMapping("/createSub")
     @PreAuthorize("hasRole('USER')")
-    public boolean createSub(@RequestBody SubRequest subRequest, Authentication authentication){
-        return profileService.createSubForUser(subRequest, authentication);
+    public void createSub(@RequestBody SubRequest subRequest, Authentication authentication){
+        profileService.createSubForUser(subRequest, authentication);
     }
 
     @DeleteMapping("/deleteSubForUser/{subId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> deleteSub(@PathVariable("subId") long id, Authentication authentication){
-        return profileService.deleteSubForUser(id, authentication);
+    public void deleteSub(@PathVariable("subId") long id, Authentication authentication){
+        profileService.deleteSubForUser(id, authentication);
     }
     @GetMapping("/getSubTypes")
     public List<SubTypeDTO> getSubTypes(){
@@ -69,6 +69,7 @@ public class ProfileController {
 
     @PostMapping("/friendRequest")
     @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.FriendView.class)
     public UserFriend friendRequest(@RequestBody User user, Authentication authentication){
         return profileService.friendRequest(authentication, user);
     }
@@ -101,9 +102,13 @@ public class ProfileController {
     }
     @DeleteMapping("/deniedFriendRequest")
     @PreAuthorize("hasRole('USER')")
-    public boolean deniedFriendRequest(@RequestParam(name = "friendRequestId") long userFriendId, Authentication authentication){
+    public void deniedFriendRequest(@RequestParam(name = "friendRequestId") long userFriendId, Authentication authentication){
         profileService.deniedFriendRequest(userFriendId, authentication);
-        return true;
     }
 
+    @DeleteMapping("/deleteFriend")
+    @PreAuthorize("hasRole('USER')")
+    public void deleteFriend(@RequestParam(name = "userId") long userId, @RequestParam(name = "friendId") long friendId, Authentication authentication){
+        profileService.deleteFriend(userId, friendId, authentication);
+    }
 }

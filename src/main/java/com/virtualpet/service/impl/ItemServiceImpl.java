@@ -1,5 +1,6 @@
 package com.virtualpet.service.impl;
 
+import com.virtualpet.exeption.ItemNotFoundException;
 import com.virtualpet.model.Enums.EItemCategory;
 import com.virtualpet.model.Enums.EItemType;
 import com.virtualpet.model.Items.Armor;
@@ -23,19 +24,18 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public ResponseEntity<?> createSword(Sword sword) {
+    public void createSword(Sword sword) {
         if(sword != null) {
             sword.seteItemCategory(EItemCategory.SWORD);
             sword.seteItemType(EItemType.WEAPON);
             swordRepository.save(sword);
-            return new ResponseEntity<>(new MessageResponse("Ok"), HttpStatus.OK);
         }
 
-        return null;
+        throw new ItemNotFoundException();
     }
 
     @Override
-    public ResponseEntity<?> createArmor(Armor armor) {
-        return null;
+    public void createArmor(Armor armor) {
+
     }
 }

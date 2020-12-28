@@ -1,6 +1,8 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.SubDTO;
+import com.virtualpet.exeption.ItemNotFoundException;
+import com.virtualpet.exeption.SubNotFoundException;
 import com.virtualpet.model.Enums.EItemCategory;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Items.Armor;
@@ -31,10 +33,8 @@ public class InventoryServiceImpl implements InventoryService {
 
     }
     @Override
-    public ResponseEntity<?> setItem(SetItemRequest setItemRequest){
-        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElse(null);
-        if (sub != null){
-
+    public SubDTO setItem(SetItemRequest setItemRequest){
+        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElseThrow(()-> new SubNotFoundException(setItemRequest.getSubId()));
             switch (setItemRequest.getItemType()){
                 case ARMOR:
                     Armor armor = sub.getInventory().getArmors().stream().filter(x->x.getId() == setItemRequest.getItemId()).findFirst().orElse(null);
@@ -44,14 +44,9 @@ public class InventoryServiceImpl implements InventoryService {
                     Sword weapon = sub.getInventory().getSwords().stream().filter(x->x.getId() == setItemRequest.getItemId()).findFirst().orElse(null);
                     setWeapon(sub, weapon);
                     break;
-                default:
-                    return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub),"Something wrong"), HttpStatus.BAD_REQUEST);
             }
+            return new SubDTO(sub);
 
-            return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub),"Ok"), HttpStatus.OK);
-
-        }
-        return null;
     }
 
     private void setWeapon(Sub sub, Sword sword){
@@ -108,23 +103,18 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public ResponseEntity<?> withdrawWeapon(SetItemRequest setItemRequest) {
-        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElse(null);
-        if(sub != null){
-            Sword sword = sub.getDressedItems().getSword();
-            sub.getDressedItems().setSword(null);
-            sub.setAttack(sub.getAttack() - sword.getAttack());
-            subRepository.save(sub);
-            return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Item has been removed"), HttpStatus.OK);
-        }
-
-        return null;
+    public SubDTO withdrawWeapon(SetItemRequest setItemRequest) {
+        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElseThrow(()-> new SubNotFoundException(setItemRequest.getSubId()));
+        Sword sword = sub.getDressedItems().getSword();
+        sub.getDressedItems().setSword(null);
+        sub.setAttack(sub.getAttack() - sword.getAttack());
+        subRepository.save(sub);
+        return new SubDTO(sub);
     }
 
     @Override
-    public ResponseEntity<?> withdrawArmor(SetItemRequest setItemRequest) {
-        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElse(null);
-        if(sub != null) {
+    public SubDTO withdrawArmor(SetItemRequest setItemRequest) {
+        Sub sub = subRepository.findById(setItemRequest.getSubId()).orElseThrow(() -> new SubNotFoundException(setItemRequest.getSubId()));
             Armor armor = null;
             switch (setItemRequest.getBodyPosition()) {
                 case SHOULDERS:
@@ -156,12 +146,9 @@ public class InventoryServiceImpl implements InventoryService {
                 sub.setDefence(sub.getDefence() - armor.getArmor());
                 sub.setHealth(sub.getHealth() - armor.getHealth());
                 subRepository.save(sub);
-                return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Item has been removed"), HttpStatus.OK);
+                return new SubDTO(sub);
             }
-            return new ResponseEntity<>(new SubResponse<SubDTO>(new SubDTO(sub), "Item didn't remove"), HttpStatus.BAD_REQUEST);
-
-        }
-        return null;
+            throw new ItemNotFoundException(setItemRequest.getItemId());
     }
 
     @Override
@@ -189,7 +176,7 @@ public class InventoryServiceImpl implements InventoryService {
                 addAll(sub.getInventory().getSwords());
              }};
         }
-        return null;
+        throw new SubNotFoundException();
     }
 
     @Override
