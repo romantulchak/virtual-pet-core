@@ -1,6 +1,7 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.exeption.EmailAlreadyExistException;
+import com.virtualpet.exeption.RolesNotFoundException;
 import com.virtualpet.exeption.UsernameAlreadyExistException;
 import com.virtualpet.model.Enums.ERole;
 import com.virtualpet.model.Role;
@@ -23,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwtRefresh = jwtUtils.generateRefreshJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -59,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles);
+                roles, jwtRefresh);
     }
 
     @Override
@@ -73,31 +76,40 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 passwordEncoder.encode(signupRequest.getPassword()));
-
+        if(roleRepository.findAll().isEmpty()){
+             initRoles();
+        }
         Set<String> strRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(RolesNotFoundException::new);
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(RolesNotFoundException::new);
                         roles.add(adminRole);
-
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(RolesNotFoundException::new);
                         roles.add(userRole);
                 }
             });
         }
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    private void initRoles(){
+        List<Role> roles = new ArrayList<Role>(){{
+            add(new Role(ERole.ROLE_USER));
+            add(new Role(ERole.ROLE_ADMIN));
+        }};
+        roleRepository.saveAll(roles);
     }
 }

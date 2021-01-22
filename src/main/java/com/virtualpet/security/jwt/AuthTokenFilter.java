@@ -1,6 +1,7 @@
 package com.virtualpet.security.jwt;
 
 import com.virtualpet.service.impl.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +30,35 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String username = null;
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             }
-        } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+        } catch (ExpiredJwtException e) {
+            String isRefreshToken = request.getHeader("isRefreshToken");
+            String requestURL = request.getRequestURI();
+            System.out.println(requestURL);
+            if (isRefreshToken != null && isRefreshToken.equals("true")){
+                allowForRefreshToken(e, request, username);
+            }else{
+                request.setAttribute("excetpion", e);
+            }
         }
         filterChain.doFilter(request, response);
+    }
+    private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request, String username) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        request.setAttribute("claims", ex.getClaims());
     }
     private String parseJwt(HttpServletRequest request){
         String headerAuth = request.getHeader("Authorization");

@@ -10,14 +10,15 @@ public class JwtResponse {
     private String email;
 
     private List<String> roles;
+    private String refreshToken;
 
-
-    public JwtResponse(String jwt, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String jwt, Long id, String username, String email, List<String> roles, String refreshToken) {
         this.token = jwt;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.refreshToken = refreshToken;
     }
 
     public void setRoles(List<String> roles) {
@@ -70,5 +71,21 @@ public class JwtResponse {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
