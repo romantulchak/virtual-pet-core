@@ -11,11 +11,12 @@ public class Boss extends SubAbstract{
     private String name;
     private int droppedMoney;
 
-    public Boss(int attack, int defence, String iconPath, String modelPath, int health){
+    public Boss(String name, int attack, int defence, String iconPath, String modelPath, int health){
         super(attack, defence);
         setIconPath(iconPath);
         setModelPath(modelPath);
         setHealth(health);
+        setName(name);
     }
 
 

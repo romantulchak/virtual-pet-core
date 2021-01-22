@@ -1,12 +1,15 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.exeption.EmailAlreadyExistException;
+import com.virtualpet.exeption.RolesNotFoundException;
+import com.virtualpet.exeption.UserNotFoundException;
 import com.virtualpet.exeption.UsernameAlreadyExistException;
 import com.virtualpet.model.Enums.ERole;
 import com.virtualpet.model.Role;
 import com.virtualpet.model.User;
 import com.virtualpet.payload.request.LoginRequest;
 import com.virtualpet.payload.request.SignupRequest;
+import com.virtualpet.payload.response.JwtRefreshResponse;
 import com.virtualpet.payload.response.JwtResponse;
 import com.virtualpet.payload.response.MessageResponse;
 import com.virtualpet.repository.RoleRepository;
@@ -23,6 +26,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,31 +78,51 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 passwordEncoder.encode(signupRequest.getPassword()));
-
+        if(roleRepository.findAll().isEmpty()){
+             initRoles();
+        }
         Set<String> strRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(RolesNotFoundException::new);
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(RolesNotFoundException::new);
                         roles.add(adminRole);
-
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(RolesNotFoundException::new);
                         roles.add(userRole);
                 }
             });
         }
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    @Override
+    public JwtRefreshResponse refreshToken(HttpServletRequest request) {
+        String username = request.getHeader("username");
+        if (username != null) {
+            String token = jwtUtils.generateRefreshJwtToken(username);
+            return new JwtRefreshResponse(username, token);
+        }
+        throw new UserNotFoundException();
+    }
+
+
+    private void initRoles(){
+        List<Role> roles = new ArrayList<Role>(){{
+            add(new Role(ERole.ROLE_USER));
+            add(new Role(ERole.ROLE_ADMIN));
+        }};
+        roleRepository.saveAll(roles);
     }
 }

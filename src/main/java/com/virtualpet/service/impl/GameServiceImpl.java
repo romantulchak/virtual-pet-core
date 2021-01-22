@@ -38,7 +38,9 @@ public class GameServiceImpl implements GameService {
         this.levelRepository = levelRepository;
         this.bossRepository = bossRepository;
         this.bosses.addAll(bossRepository.findAll());
-
+        if(this.bosses.isEmpty()){
+            createBosses();
+        }
     }
 
     @Override
@@ -121,5 +123,17 @@ public class GameServiceImpl implements GameService {
         Random random = new Random();
         int bossesSize = bosses.size();
         return random.nextInt(bossesSize);
+    }
+    private void createBosses(){
+        List<Boss> bosses = new ArrayList<Boss>(6){{
+            add(new Boss("Dragon 1", 23, 53, "", "", 564));
+            add(new Boss("Dragon 2", 432, 532, "", "", 1364));
+            add(new Boss("Dragon 3", 2123, 433, "", "", 2364));
+            add(new Boss("Dragon 4", 223, 213, "", "", 3367));
+            add(new Boss("Dragon 5", 133, 533, "", "", 1534));
+            add(new Boss("Dragon 6", 423, 643, "", "", 5623));
+        }};
+        bossRepository.saveAll(bosses);
+        this.bosses.addAll(bosses);
     }
 }
