@@ -21,6 +21,9 @@ public class SubDTO {
     private Inventory inventory;
 
     @JsonView(Views.SubView.class)
+    private String iconPath;
+
+    @JsonView(Views.SubView.class)
     private User user;
 
     @JsonView(Views.SubView.class)
@@ -58,6 +61,7 @@ public class SubDTO {
         this.subAttack = sub.getSubAttack();
         this.health = sub.getHealth();
         this.dressedItems = sub.getDressedItems();
+        this.iconPath = sub.getIconPath();
     }
 
 
@@ -164,5 +168,13 @@ public class SubDTO {
 
     public void setDressedItems(DressedItem dressedItems) {
         this.dressedItems = dressedItems;
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
     }
 }

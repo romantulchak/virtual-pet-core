@@ -6,11 +6,11 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class SubAbstract {
 
-    private Integer attack;
+    private int attack;
 
-    private Integer defence;
+    private int defence;
 
-    private Integer health;
+    private int health;
 
     private String iconPath;
 
@@ -27,21 +27,28 @@ public abstract class SubAbstract {
     }
 
 
-
-    public Integer getAttack() {
+    public int getAttack() {
         return attack;
     }
 
-    public void setAttack(Integer attack) {
+    public void setAttack(int attack) {
         this.attack = attack;
     }
 
-    public Integer getDefence() {
+    public int getDefence() {
         return defence;
     }
 
-    public void setDefence(Integer defence) {
+    public void setDefence(int defence) {
         this.defence = defence;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public String getIconPath() {
@@ -58,13 +65,5 @@ public abstract class SubAbstract {
 
     public void setModelPath(String modelPath) {
         this.modelPath = modelPath;
-    }
-
-    public Integer getHealth() {
-        return health;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
     }
 }

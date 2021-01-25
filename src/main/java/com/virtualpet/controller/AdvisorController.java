@@ -102,4 +102,14 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(SubTypeIsNull.class)
+    public ResponseEntity<Object> handleSubTypeIsNull(SubTypeIsNull ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(SubTypeWithNameAlreadyExist.class)
+    public ResponseEntity<Object> handleSubTypeWithNameAlreadyExist(SubTypeWithNameAlreadyExist ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

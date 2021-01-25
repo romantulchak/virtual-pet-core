@@ -9,11 +9,11 @@ import java.util.List;
 public class SubType extends SubAbstract{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    public LocalDateTime localDateTime;
+    private LocalDateTime localDateTime;
 
-    public String subName;
+    private String subName;
 
     @OneToMany(mappedBy = "subType")
     private List<Sub> subs;
@@ -22,11 +22,13 @@ public class SubType extends SubAbstract{
         super();
     }
 
-    public SubType(Integer attack , Integer defence, String modelPath, String iconPath) {
+    public SubType(String subTypeName, int attack , int defence, String modelPath, String iconPath, int health) {
         super(attack, defence);
         this.localDateTime = LocalDateTime.now();
         setModelPath(modelPath);
         setIconPath(iconPath);
+        setSubName(subTypeName);
+        setHealth(health);
     }
 
     public Long getId() {

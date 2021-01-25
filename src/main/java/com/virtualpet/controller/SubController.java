@@ -1,11 +1,13 @@
 package com.virtualpet.controller;
 
 import com.virtualpet.dto.SubTypeDTO;
+import com.virtualpet.model.SubType;
 import com.virtualpet.service.impl.SubServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/sub")
@@ -22,14 +24,20 @@ public class SubController {
 
     @PostMapping("/createSubType")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createSubType(@RequestBody SubTypeDTO subTypeDTO){
-        return subService.createSub(subTypeDTO);
+    public void createSubType(@RequestBody SubType subType){
+        subService.createSub(subType);
     }
+    @PostMapping("/uploadSubTypeImage")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void uploadSubTypeImage(@RequestBody MultipartFile file){
+        subService.uploadFile(file);
+    }
+
 
     @DeleteMapping("/deleteSubType/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteSubType(@PathVariable("id") Long id){
-        return subService.deleteSub(id);
+    public void deleteSubType(@PathVariable("id") Long id){
+        subService.deleteSub(id);
     }
 
 

@@ -117,13 +117,15 @@ public class ProfileServiceImpl implements ProfileService {
                     inventoryRepository.save(inventory);
                     Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency(), dressedItem);
                     subRepository.save(sub);
-                }else
-                throw new MaximumNumberOfSubsException();
+                }else {
+                    throw new MaximumNumberOfSubsException();
+                }
             }else{
                 throw new SubWithNameAlreadyExistException(subRequest.getName());
             }
+        }else {
+            throw new BadRequestException();
         }
-        throw new BadRequestException();
     }
 
     @Override
@@ -132,8 +134,9 @@ public class ProfileServiceImpl implements ProfileService {
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if(sub != null && user.getId().equals(sub.getUser().getId())){
             subRepository.delete(sub);
+        }else {
+            throw new BadRequestException();
         }
-        throw new BadRequestException();
     }
 
     @Override
