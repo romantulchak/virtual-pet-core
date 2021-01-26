@@ -12,6 +12,6 @@ public interface SubRepository extends JpaRepository<Sub, Long> {
 
     int countSubByUser(User user);
 
-    @Query(value = "SELECT s FROM Sub s left join s.user as u where u.id = ?1")
+    @Query(value = "SELECT s FROM Sub s left join s.user as u where u.id = ?1 order by s.id")
     List<Sub> getAllSubsForUser(Long id);
 }

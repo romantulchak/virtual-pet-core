@@ -23,7 +23,7 @@ public class SubServiceImpl implements SubService {
     private SubTypeRepository subTypeRepository;
     private String filePath;
 
-    @Value("${upload.sub.type.image}")
+    @Value("${upload.path}")
     private String path;
     @Autowired
     public SubServiceImpl(SubTypeRepository subTypeRepository){
@@ -34,12 +34,12 @@ public class SubServiceImpl implements SubService {
     @Override
     public void createSub(SubType subType) {
         if(subType != null){
-            if(!subTypeRepository.existsBySubName(subType.getSubName())) {
+            if(!subTypeRepository.existsByName(subType.getName())) {
                 subType.setIconPath(filePath);
                 subType.setLocalDateTime(LocalDateTime.now());
                 subTypeRepository.save(subType);
             }else {
-                throw new SubTypeWithNameAlreadyExist(subType.getSubName());
+                throw new SubTypeWithNameAlreadyExist(subType.getName());
             }
         }else{
             throw new SubTypeIsNull();

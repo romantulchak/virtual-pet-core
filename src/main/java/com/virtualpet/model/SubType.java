@@ -13,7 +13,7 @@ public class SubType extends SubAbstract{
 
     private LocalDateTime localDateTime;
 
-    private String subName;
+    private String name;
 
     @OneToMany(mappedBy = "subType")
     private List<Sub> subs;
@@ -22,12 +22,12 @@ public class SubType extends SubAbstract{
         super();
     }
 
-    public SubType(String subTypeName, int attack , int defence, String modelPath, String iconPath, int health) {
+    public SubType(String name, int attack , int defence, String modelPath, String iconPath, int health) {
         super(attack, defence);
         this.localDateTime = LocalDateTime.now();
         setModelPath(modelPath);
         setIconPath(iconPath);
-        setSubName(subTypeName);
+        setName(name);
         setHealth(health);
     }
 
@@ -55,11 +55,12 @@ public class SubType extends SubAbstract{
         this.subs = subs;
     }
 
-    public String getSubName() {
-        return subName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setSubName(String subName) {
-        this.subName = subName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubTypeRepository extends JpaRepository<SubType, Long> {
-    boolean existsBySubName(String subTypeName);
+    boolean existsByName(String name);
 
 }

@@ -28,7 +28,7 @@ public class SubTypeDTO {
 
     public SubTypeDTO(SubType subType) {
         this.id = subType.getId();
-        this.name = subType.getSubName();
+        this.name = subType.getName();
         this.attack = subType.getAttack();
         this.defence = subType.getDefence();
         this.modelPath = subType.getModelPath();
