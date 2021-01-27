@@ -1,9 +1,9 @@
 package com.virtualpet.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.virtualpet.model.Enums.EItemCategory;
-import com.virtualpet.model.Enums.EItemType;
-import com.virtualpet.model.Enums.EUniqueness;
+import com.virtualpet.model.enums.EItemCategory;
+import com.virtualpet.model.enums.EItemType;
+import com.virtualpet.model.enums.EUniqueness;
 
 import javax.persistence.*;
 

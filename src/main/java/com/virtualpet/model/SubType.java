@@ -1,6 +1,8 @@
 package com.virtualpet.model;
 
 
+import com.virtualpet.model.skills.DamageSkill;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +21,7 @@ public class SubType extends SubAbstract{
     private List<Sub> subs;
 
     public SubType(){
-        super();
+
     }
 
     public SubType(String name, int attack , int defence, String modelPath, String iconPath, int health) {
@@ -63,4 +65,5 @@ public class SubType extends SubAbstract{
     public void setName(String name) {
         this.name = name;
     }
+
 }

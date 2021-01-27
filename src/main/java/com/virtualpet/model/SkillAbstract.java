@@ -1,21 +1,37 @@
 package com.virtualpet.model;
 
-import com.virtualpet.model.Enums.ESkillCategory;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.enums.ESkillCategory;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 
+@MappedSuperclass
 public abstract class SkillAbstract {
-
+    @JsonView(Views.SubView.class)
     private String name;
 
     @Enumerated(EnumType.STRING)
     private ESkillCategory skillCategory;
-
-    private short manaCost;
-
+    @JsonView(Views.SubView.class)
+    private int price;
+    @JsonView(Views.SubView.class)
     private String skillDescription;
+    @JsonView(Views.SubView.class)
+    private LocalDateTime cooldown;
 
+    public SkillAbstract(){
+
+    }
+    public SkillAbstract(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown) {
+        this.name = name;
+        this.skillCategory = skillCategory;
+        this.price = price;
+        this.skillDescription = skillDescription;
+        this.cooldown = cooldown;
+    }
 
     public String getSkillDescription() {
         return skillDescription;
@@ -41,11 +57,19 @@ public abstract class SkillAbstract {
         this.skillCategory = skillCategory;
     }
 
-    public short getManaCost() {
-        return manaCost;
+    public int getPrice() {
+        return price;
     }
 
-    public void setManaCost(short manaCost) {
-        this.manaCost = manaCost;
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(LocalDateTime cooldown) {
+        this.cooldown = cooldown;
     }
 }

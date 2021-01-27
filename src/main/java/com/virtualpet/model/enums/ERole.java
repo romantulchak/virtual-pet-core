@@ -1,4 +1,4 @@
-package com.virtualpet.model.Enums;
+package com.virtualpet.model.enums;
 
 public enum ERole {
 

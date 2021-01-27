@@ -2,6 +2,10 @@ package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.*;
+import com.virtualpet.model.skills.DamageSkill;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubDTO {
 
@@ -45,6 +49,8 @@ public class SubDTO {
     @JsonView(Views.SubView.class)
     private DressedItem dressedItems;
 
+    @JsonView(Views.SubView.class)
+    private List<DamageSkill> damageSkills = new ArrayList<>();
 
 
     public SubDTO(Sub sub) {
@@ -62,6 +68,7 @@ public class SubDTO {
         this.health = sub.getHealth();
         this.dressedItems = sub.getDressedItems();
         this.iconPath = sub.getIconPath();
+        this.damageSkills = sub.getDamageSkills();
     }
 
 
@@ -176,5 +183,13 @@ public class SubDTO {
 
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
+    }
+
+    public List<DamageSkill> getDamageSkills() {
+        return damageSkills;
+    }
+
+    public void setDamageSkills(List<DamageSkill> damageSkills) {
+        this.damageSkills = damageSkills;
     }
 }

@@ -1,8 +1,7 @@
 package com.virtualpet.service;
 
-import com.virtualpet.model.Items.Armor;
-import com.virtualpet.model.Items.Sword;
-import org.springframework.http.ResponseEntity;
+import com.virtualpet.model.items.Armor;
+import com.virtualpet.model.items.Sword;
 
 public interface ItemService {
 

@@ -1,6 +1,6 @@
 package com.virtualpet.model;
 
-import com.virtualpet.model.Enums.ERole;
+import com.virtualpet.model.enums.ERole;
 
 import javax.persistence.*;
 

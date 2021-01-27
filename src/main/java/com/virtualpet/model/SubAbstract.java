@@ -1,6 +1,9 @@
 package com.virtualpet.model;
 
+import com.virtualpet.model.skills.DamageSkill;
+
 import javax.persistence.*;
+import java.util.List;
 
 
 @MappedSuperclass
@@ -15,6 +18,7 @@ public abstract class SubAbstract {
     private String iconPath;
 
     private String modelPath;
+
 
 
     public SubAbstract(){}

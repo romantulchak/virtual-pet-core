@@ -1,8 +1,8 @@
 package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.virtualpet.model.Items.Armor;
-import com.virtualpet.model.Items.Sword;
+import com.virtualpet.model.items.Armor;
+import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.Views;
 
 import java.util.List;

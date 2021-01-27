@@ -1,8 +1,10 @@
 package com.virtualpet.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.skills.DamageSkill;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Sub extends SubAbstract {
@@ -48,6 +50,8 @@ public class Sub extends SubAbstract {
     @OneToOne
     private DressedItem dressedItems;
 
+    @ManyToMany(mappedBy = "subs")
+    List<DamageSkill> damageSkills;
 
     public Sub(){
 
@@ -166,5 +170,13 @@ public class Sub extends SubAbstract {
 
     public void setDressedItems(DressedItem dressedItems) {
         this.dressedItems = dressedItems;
+    }
+
+    public List<DamageSkill> getDamageSkills() {
+        return damageSkills;
+    }
+
+    public void setDamageSkills(List<DamageSkill> damageSkills) {
+        this.damageSkills = damageSkills;
     }
 }

@@ -1,6 +1,6 @@
 package com.virtualpet.dto;
 
-import com.virtualpet.model.Items.Sword;
+import com.virtualpet.model.items.Sword;
 
 public class SwordDTO {
 
