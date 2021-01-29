@@ -1,5 +1,5 @@
 package com.virtualpet.model.enums;
 
 public enum ESkillCategory {
-    MAG_DAMAGE, PHYS_DAMAGE, HEAL
+    MAG_DAMAGE, PHYS_DAMAGE, MONEY,
 }

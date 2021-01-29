@@ -14,6 +14,7 @@ public abstract class SkillAbstract {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.SubView.class)
     private ESkillCategory skillCategory;
     @JsonView(Views.SubView.class)
     private int price;
@@ -21,16 +22,19 @@ public abstract class SkillAbstract {
     private String skillDescription;
     @JsonView(Views.SubView.class)
     private LocalDateTime cooldown;
+    @JsonView(Views.SubView.class)
+    private int maxCooldown;
 
     public SkillAbstract(){
 
     }
-    public SkillAbstract(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown) {
+    public SkillAbstract(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown) {
         this.name = name;
         this.skillCategory = skillCategory;
         this.price = price;
         this.skillDescription = skillDescription;
         this.cooldown = cooldown;
+        this.maxCooldown = maxCooldown;
     }
 
     public String getSkillDescription() {
@@ -71,5 +75,13 @@ public abstract class SkillAbstract {
 
     public void setCooldown(LocalDateTime cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public int getMaxCooldown() {
+        return maxCooldown;
+    }
+
+    public void setMaxCooldown(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
     }
 }

@@ -1,39 +1,34 @@
-package com.virtualpet.model.skills;
+package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
-import com.virtualpet.model.enums.ESkillCategory;
+import com.virtualpet.model.skills.DamageSkill;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-public class DamageSkill extends SkillAbstract {
+public class DamageSkillDTO extends SkillAbstract {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.SubView.class)
     private long id;
-
+    @JsonView(Views.SubView.class)
     private int damage;
-
+    @JsonView(Views.SubView.class)
     private double criticalChance;
 
-    @ManyToMany
-    @JoinTable(name = "sub_damage_skill", joinColumns = @JoinColumn(name = "damageSkillId"), inverseJoinColumns = @JoinColumn(name = "subId"))
     private List<Sub> subs;
 
-    public DamageSkill(){
 
+    public DamageSkillDTO(DamageSkill damageSkill) {
+        super(damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown());
+        this.id = damageSkill.getId();
+        this.damage = damageSkill.getDamage();
+        this.criticalChance = damageSkill.getCriticalChance();
+        this.subs = damageSkill.getSubs();
     }
 
-    public DamageSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, long id, int damage, double criticalChance, int maxCooldown) {
-        super(name, skillCategory, price, skillDescription, cooldown, maxCooldown);
-        this.id = id;
-        this.damage = damage;
-        this.criticalChance = criticalChance;
+    public DamageSkillDTO() {
     }
 
     public long getId() {
@@ -68,4 +63,3 @@ public class DamageSkill extends SkillAbstract {
         this.subs = subs;
     }
 }
-
