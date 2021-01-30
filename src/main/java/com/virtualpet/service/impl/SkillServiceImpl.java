@@ -1,5 +1,6 @@
 package com.virtualpet.service.impl;
 
+import com.virtualpet.exeption.SkillAlreadyExistException;
 import com.virtualpet.exeption.SkillNotFoundException;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.enums.ESkillCategory;
@@ -30,8 +31,12 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public void createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
-             damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
-            damageSkillRepository.save(damageSkill);
+             if (!damageSkillRepository.existsByName(damageSkill.getName())) {
+                 damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
+                 damageSkillRepository.save(damageSkill);
+             }else {
+                 throw new SkillAlreadyExistException(damageSkill.getName());
+             }
          }else {
              throw new SkillNotFoundException();
          }
@@ -48,7 +53,36 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public void deleteDamage(long skillId) {
+    public void createDefenceSkill(DefenceSkill defenceSkill) {
+        if (defenceSkill != null) {
+            if (!defenceSkillRepository.existsByName(defenceSkill.getName())) {
+                defenceSkill.setSkillCategory(ESkillCategory.DEFENCE);
+                defenceSkillRepository.save(defenceSkill);
+            } else {
+                throw new SkillAlreadyExistException(defenceSkill.getName());
+            }
+        } else {
+            throw new SkillNotFoundException();
 
+        }
+    }
+
+    @Override
+    public void deleteSkill(long skillId, ESkillCategory skillCategory) {
+        SkillAbstract skillAbstract;
+        switch (skillCategory){
+            case PHYS_DAMAGE:
+                skillAbstract = damageSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
+                damageSkillRepository.delete((DamageSkill) skillAbstract);
+                break;
+            case MAG_DAMAGE:
+                break;
+            case DEFENCE:
+                skillAbstract = defenceSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
+                defenceSkillRepository.delete((DefenceSkill) skillAbstract);
+                break;
+            case MONEY:
+                break;
+        }
     }
 }

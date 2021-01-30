@@ -1,6 +1,7 @@
 package com.virtualpet.controller;
 
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.service.SkillService;
 import com.virtualpet.service.impl.SkillServiceImpl;
@@ -31,5 +32,11 @@ public class SkillController {
     @PreAuthorize("hasRole('USER')")
     public List<SkillAbstract> getSkills(){
         return skillService.getSkills();
+    }
+
+    @DeleteMapping("/{id}/{skillCategory}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteSkill(@PathVariable("id") long id, @PathVariable("skillCategory")ESkillCategory eSkillCategory){
+        skillService.deleteSkill(id, eSkillCategory);
     }
 }

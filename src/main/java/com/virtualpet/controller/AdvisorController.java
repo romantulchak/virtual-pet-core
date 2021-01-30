@@ -112,4 +112,9 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(SkillAlreadyExistException.class)
+    public ResponseEntity<Object> handleSkillAlreadyExistException(SkillAlreadyExistException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }
