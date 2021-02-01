@@ -1,6 +1,7 @@
 package com.virtualpet.model.skills;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
@@ -20,6 +21,8 @@ public class DefenceSkill extends SkillAbstract {
 
     private int timeOfAction;
 
+    @ManyToOne
+    private Shop shop;
 
     public DefenceSkill() {
     }
@@ -62,5 +65,13 @@ public class DefenceSkill extends SkillAbstract {
 
     public void setTimeOfAction(int timeOfAction) {
         this.timeOfAction = timeOfAction;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }

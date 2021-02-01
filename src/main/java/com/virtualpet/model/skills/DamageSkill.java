@@ -1,6 +1,7 @@
 package com.virtualpet.model.skills;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
@@ -20,6 +21,9 @@ public class DamageSkill extends SkillAbstract {
     private int damage;
 
     private double criticalChance;
+
+    @ManyToOne
+    private Shop shop;
 
     @ManyToMany
     @JoinTable(name = "sub_damage_skill", joinColumns = @JoinColumn(name = "damageSkillId"), inverseJoinColumns = @JoinColumn(name = "subId"))
@@ -66,6 +70,14 @@ public class DamageSkill extends SkillAbstract {
 
     public void setSubs(List<Sub> subs) {
         this.subs = subs;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }
 
