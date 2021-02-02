@@ -1,5 +1,7 @@
 package com.virtualpet.service.impl;
 
+import com.virtualpet.dto.DamageSkillDTO;
+import com.virtualpet.dto.DefenceSkillDTO;
 import com.virtualpet.exeption.SkillAlreadyExistException;
 import com.virtualpet.exeption.SkillNotFoundException;
 import com.virtualpet.model.SkillAbstract;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SkillServiceImpl implements SkillService {
@@ -44,7 +47,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillAbstract> getSkills() {
-        List<DamageSkill> damageSkills = damageSkillRepository.findAll();
+        List<DamageSkillDTO> damageSkills = damageSkillRepository.findAll().stream().map(this::convertToDamageSkillDTO).collect(Collectors.toList());
         List<DefenceSkill> defenceSkills = defenceSkillRepository.findAll();
         return new ArrayList<SkillAbstract>(){{
             addAll(damageSkills);
@@ -75,8 +78,6 @@ public class SkillServiceImpl implements SkillService {
                 skillAbstract = damageSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
                 damageSkillRepository.delete((DamageSkill) skillAbstract);
                 break;
-            case MAG_DAMAGE:
-                break;
             case DEFENCE:
                 skillAbstract = defenceSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
                 defenceSkillRepository.delete((DefenceSkill) skillAbstract);
@@ -84,5 +85,12 @@ public class SkillServiceImpl implements SkillService {
             case MONEY:
                 break;
         }
+    }
+
+    private DamageSkillDTO convertToDamageSkillDTO(DamageSkill damageSkill){
+        return new DamageSkillDTO(damageSkill);
+    }
+    private DefenceSkillDTO convertToDefenceSkillDTO(DefenceSkill defenceSkill){
+        return new DefenceSkillDTO(defenceSkill);
     }
 }

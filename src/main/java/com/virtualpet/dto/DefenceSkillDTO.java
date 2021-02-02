@@ -1,14 +1,10 @@
 package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Views;
-import com.virtualpet.model.enums.ESkillCategory;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import com.virtualpet.model.skills.DefenceSkill;
 
 public class DefenceSkillDTO extends SkillAbstract {
     @JsonView(Views.SubView.class)
@@ -20,15 +16,22 @@ public class DefenceSkillDTO extends SkillAbstract {
     @JsonView(Views.SubView.class)
     private int timeOfAction;
 
+    private Shop shop;
+
+    private boolean inShop = false;
+
     public DefenceSkillDTO() {
     }
 
-    public DefenceSkillDTO(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown, long id, int health, double defence, int timeOfAction) {
-        super(name, skillCategory, price, skillDescription, cooldown, maxCooldown);
-        this.id = id;
-        this.health = health;
-        this.defence = defence;
-        this.timeOfAction = timeOfAction;
+    public DefenceSkillDTO(DefenceSkill defenceSkill) {
+        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown());
+        this.id = defenceSkill.getId();
+        this.health = defenceSkill.getHealth();
+        this.defence = defenceSkill.getDefence();
+        this.timeOfAction = defenceSkill.getTimeOfAction();
+        if (defenceSkill.getShop() != null){
+            this.inShop = defenceSkill.getShop().getDefenceSkills().contains(defenceSkill);
+        }
     }
 
     public long getId() {
@@ -62,4 +65,22 @@ public class DefenceSkillDTO extends SkillAbstract {
     public void setTimeOfAction(int timeOfAction) {
         this.timeOfAction = timeOfAction;
     }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public boolean isInShop() {
+        return inShop;
+    }
+
+    public void setInShop(boolean inShop) {
+        this.inShop = inShop;
+    }
+
+
 }

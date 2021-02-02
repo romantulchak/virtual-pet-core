@@ -1,9 +1,13 @@
 package com.virtualpet.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.items.Armor;
+import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,11 +18,22 @@ public class Shop {
     private long id;
 
     @OneToMany
-    private Set<DamageSkill> damageSkills;
+    @JsonView(Views.SubView.class)
+    private Set<DamageSkill> damageSkills = new HashSet<>();
 
 
     @OneToMany
-    private Set<DefenceSkill> defenceSkills;
+    @JsonView(Views.SubView.class)
+    private Set<DefenceSkill> defenceSkills = new HashSet<>();
+
+    @OneToMany
+    @JsonView(Views.SubView.class)
+    private Set<Sword> itemSwords = new HashSet<>();
+
+    @OneToMany
+    @JsonView(Views.SubView.class)
+    private Set<Armor> itemArmors = new HashSet<>();
+
 
 
     public long getId() {
@@ -44,4 +59,22 @@ public class Shop {
     public void setDefenceSkills(Set<DefenceSkill> defenceSkills) {
         this.defenceSkills = defenceSkills;
     }
+
+    public Set<Sword> getItemSwords() {
+        return itemSwords;
+    }
+
+    public void setItemSwords(Set<Sword> itemSwords) {
+        this.itemSwords = itemSwords;
+    }
+
+    public Set<Armor> getItemArmors() {
+        return itemArmors;
+    }
+
+    public void setItemArmors(Set<Armor> itemArmors) {
+        this.itemArmors = itemArmors;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
@@ -19,13 +20,20 @@ public class DamageSkillDTO extends SkillAbstract {
 
     private List<Sub> subs;
 
+    private Shop shop;
+
+    private boolean inShop = false;
+
 
     public DamageSkillDTO(DamageSkill damageSkill) {
-        super(damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown());
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown());
         this.id = damageSkill.getId();
         this.damage = damageSkill.getDamage();
         this.criticalChance = damageSkill.getCriticalChance();
         this.subs = damageSkill.getSubs();
+        if(damageSkill.getShop() != null){
+            this.inShop = damageSkill.getShop().getDamageSkills().contains(damageSkill);
+        }
     }
 
     public DamageSkillDTO() {
@@ -61,5 +69,21 @@ public class DamageSkillDTO extends SkillAbstract {
 
     public void setSubs(List<Sub> subs) {
         this.subs = subs;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public boolean isInShop() {
+        return inShop;
+    }
+
+    public void setInShop(boolean inShop) {
+        this.inShop = inShop;
     }
 }

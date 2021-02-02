@@ -1,34 +1,49 @@
 package com.virtualpet.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.enums.ESkillCategory;
+import com.virtualpet.model.skills.DamageSkill;
+import com.virtualpet.model.skills.DefenceSkill;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @MappedSuperclass
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DamageSkill.class, name = "damageSkill"),
+        @JsonSubTypes.Type(value = DefenceSkill.class, name = "defenceSkill")
+})
 public abstract class SkillAbstract {
-    @JsonView(Views.SubView.class)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonView(Views.SubView.class)
     private ESkillCategory skillCategory;
-    @JsonView(Views.SubView.class)
+
     private int price;
-    @JsonView(Views.SubView.class)
+
     private String skillDescription;
-    @JsonView(Views.SubView.class)
+
     private LocalDateTime cooldown;
-    @JsonView(Views.SubView.class)
+
     private int maxCooldown;
 
     public SkillAbstract(){
 
     }
-    public SkillAbstract(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown) {
+    public SkillAbstract(long id, String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown) {
+        this.id = id;
         this.name = name;
         this.skillCategory = skillCategory;
         this.price = price;
@@ -83,5 +98,26 @@ public abstract class SkillAbstract {
 
     public void setMaxCooldown(int maxCooldown) {
         this.maxCooldown = maxCooldown;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SkillAbstract)) return false;
+        SkillAbstract that = (SkillAbstract) o;
+        return id == that.id && Objects.equals(name, that.name) && skillCategory == that.skillCategory;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, skillCategory);
     }
 }

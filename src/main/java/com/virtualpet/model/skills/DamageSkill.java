@@ -1,5 +1,6 @@
 package com.virtualpet.model.skills;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
@@ -10,13 +11,12 @@ import com.virtualpet.model.enums.ESkillCategory;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
+@JsonTypeName("damageSkill")
 @Entity
 public class DamageSkill extends SkillAbstract {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     private int damage;
 
@@ -34,19 +34,11 @@ public class DamageSkill extends SkillAbstract {
     }
 
     public DamageSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, long id, int damage, double criticalChance, int maxCooldown) {
-        super(name, skillCategory, price, skillDescription, cooldown, maxCooldown);
-        this.id = id;
+        super(id, name, skillCategory, price, skillDescription, cooldown, maxCooldown);
         this.damage = damage;
         this.criticalChance = criticalChance;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getDamage() {
         return damage;
@@ -79,5 +71,6 @@ public class DamageSkill extends SkillAbstract {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
+
 }
 

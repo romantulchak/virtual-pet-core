@@ -1,19 +1,17 @@
 package com.virtualpet.model.skills;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
-import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+@JsonTypeName("defenceSkill")
 @Entity
 public class DefenceSkill extends SkillAbstract {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     private int health;
 
@@ -28,20 +26,12 @@ public class DefenceSkill extends SkillAbstract {
     }
 
     public DefenceSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown, long id, int health, double defence, int timeOfAction) {
-        super(name, skillCategory, price, skillDescription, cooldown, maxCooldown);
-        this.id = id;
+        super(id, name, skillCategory, price, skillDescription, cooldown, maxCooldown);
         this.health = health;
         this.defence = defence;
         this.timeOfAction = timeOfAction;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getHealth() {
         return health;
