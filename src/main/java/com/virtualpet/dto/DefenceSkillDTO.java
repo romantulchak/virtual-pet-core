@@ -7,17 +7,17 @@ import com.virtualpet.model.Views;
 import com.virtualpet.model.skills.DefenceSkill;
 
 public class DefenceSkillDTO extends SkillAbstract {
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private long id;
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private int health;
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private double defence;
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private int timeOfAction;
 
     private Shop shop;
-
+    @JsonView(Views.SkillView.class)
     private boolean inShop = false;
 
     public DefenceSkillDTO() {

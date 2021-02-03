@@ -8,4 +8,5 @@ public interface ShopService {
     Shop getShop();
     void addSkillToShop(SkillAbstract skillAbstract);
     void addItemToShop(Item item);
+    void removeSkillFromShop(SkillAbstract skillAbstract);
 }

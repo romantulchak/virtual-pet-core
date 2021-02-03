@@ -11,17 +11,17 @@ import java.util.List;
 
 public class DamageSkillDTO extends SkillAbstract {
 
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private long id;
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private int damage;
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.SkillView.class)
     private double criticalChance;
 
     private List<Sub> subs;
 
     private Shop shop;
-
+    @JsonView(Views.SkillView.class)
     private boolean inShop = false;
 
 

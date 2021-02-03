@@ -47,8 +47,8 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillAbstract> getSkills() {
-        List<DamageSkillDTO> damageSkills = damageSkillRepository.findAll().stream().map(this::convertToDamageSkillDTO).collect(Collectors.toList());
-        List<DefenceSkill> defenceSkills = defenceSkillRepository.findAll();
+        List<DamageSkillDTO> damageSkills = damageSkillRepository.allOrderByDesc().stream().map(this::convertToDamageSkillDTO).collect(Collectors.toList());
+        List<DefenceSkillDTO> defenceSkills = defenceSkillRepository.allOrderByDesc().stream().map(this::convertToDefenceSkillDTO).collect(Collectors.toList());
         return new ArrayList<SkillAbstract>(){{
             addAll(damageSkills);
             addAll(defenceSkills);
@@ -66,7 +66,6 @@ public class SkillServiceImpl implements SkillService {
             }
         } else {
             throw new SkillNotFoundException();
-
         }
     }
 

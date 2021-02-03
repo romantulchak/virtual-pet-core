@@ -25,18 +25,19 @@ public abstract class SkillAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    @JsonView(Views.SkillView.class)
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.SkillView.class)
     private ESkillCategory skillCategory;
-
+    @JsonView(Views.SkillView.class)
     private int price;
-
+    @JsonView(Views.SkillView.class)
     private String skillDescription;
-
+    @JsonView(Views.SkillView.class)
     private LocalDateTime cooldown;
-
+    @JsonView(Views.SkillView.class)
     private int maxCooldown;
 
     public SkillAbstract(){

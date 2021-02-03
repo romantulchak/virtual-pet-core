@@ -32,11 +32,14 @@ public class ShopServiceImpl implements ShopService {
         this.defenceSkillRepository = defenceSkillRepository;
         this.swordRepository = swordRepository;
         this.armorRepository = armorRepository;
+        if(!this.shopRepository.findFirstByOrderById().isPresent()){
+            createShop();
+        }
     }
 
     @Override
     public Shop getShop() {
-        return shopRepository.findAll().stream().findFirst().orElse(createShop());
+        return shopRepository.findFirstByOrderById().orElse(null);
     }
 
     private Shop createShop(){
@@ -102,6 +105,23 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    @Override
+    public void removeSkillFromShop(SkillAbstract skillAbstract) {
+        if (skillAbstract != null){
+            switch (skillAbstract.getSkillCategory()){
+                case PHYS_DAMAGE:
+                    removeDamageSkillFromShop((DamageSkill) skillAbstract);
+                    break;
+                case DEFENCE:
+                    removeDefenceSkillFromShop((DefenceSkill) skillAbstract);
+                    break;
+                case MONEY:
+                    break;
+            }
+        }else {
+            throw new SkillNotFoundException();
+        }
+    }
 
     private void addSwordToShop(long itemId){
         Sword sword = swordRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
@@ -115,5 +135,23 @@ public class ShopServiceImpl implements ShopService {
         Shop shop = getShop();
         shop.getItemArmors().add(armor);
         shopRepository.save(shop);
+    }
+
+    private void removeDamageSkillFromShop(DamageSkill damageSkill){
+        Shop shop = getShop();
+        if (!shop.getDamageSkills().remove(damageSkill))
+            throw new SkillNotFoundException();
+        shopRepository.save(shop);
+        damageSkill.setShop(null);
+        damageSkillRepository.save(damageSkill);
+    }
+
+    private void removeDefenceSkillFromShop(DefenceSkill defenceSkill){
+        Shop shop = getShop();
+        if (!shop.getDefenceSkills().remove(defenceSkill))
+            throw new SkillNotFoundException();
+        shopRepository.save(shop);
+        defenceSkill.setShop(null);
+        defenceSkillRepository.save(defenceSkill);
     }
 }

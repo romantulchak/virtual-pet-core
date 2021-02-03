@@ -7,4 +7,5 @@ public class Views {
     public interface InventoryView{};
     public interface SubTypeView{};
     public interface FriendView{};
+    public interface SkillView{};
 }

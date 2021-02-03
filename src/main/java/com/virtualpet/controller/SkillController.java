@@ -1,6 +1,8 @@
 package com.virtualpet.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.service.SkillService;
@@ -30,6 +32,7 @@ public class SkillController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.SkillView.class)
     public List<SkillAbstract> getSkills(){
         return skillService.getSkills();
     }
