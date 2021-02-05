@@ -8,4 +8,5 @@ public class Views {
     public interface SubTypeView{};
     public interface FriendView{};
     public interface SkillView{};
+    public interface ShopView{};
 }

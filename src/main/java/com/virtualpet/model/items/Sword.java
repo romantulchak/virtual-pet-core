@@ -16,13 +16,13 @@ public class Sword extends Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private long id;
 
-    @JsonView({Views.InventoryView.class, Views.SubView.class} )
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class} )
     private int attack;
 
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private boolean allowShield;
 
     @ManyToMany

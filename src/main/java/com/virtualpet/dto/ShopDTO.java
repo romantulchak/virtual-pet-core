@@ -1,36 +1,49 @@
-package com.virtualpet.model;
+package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Item;
+import com.virtualpet.model.Shop;
+import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Views;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Shop {
+public class ShopDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToMany
+    @JsonView(Views.ShopView.class)
     private Set<DamageSkill> damageSkills = new HashSet<>();
 
-
-    @OneToMany
+    @JsonView(Views.ShopView.class)
     private Set<DefenceSkill> defenceSkills = new HashSet<>();
 
-    @OneToMany
+    @JsonView(Views.ShopView.class)
     private Set<Sword> itemSwords = new HashSet<>();
 
-    @OneToMany
+    @JsonView(Views.ShopView.class)
     private Set<Armor> itemArmors = new HashSet<>();
 
+    public ShopDTO(){
 
+    }
+
+    public ShopDTO(Shop shop) {
+        this.id = shop.getId();
+        this.damageSkills = shop.getDamageSkills();
+        this.defenceSkills = shop.getDefenceSkills();
+        this.itemSwords = shop.getItemSwords();
+        this.itemArmors = shop.getItemArmors();
+    }
 
     public long getId() {
         return id;
@@ -71,6 +84,4 @@ public class Shop {
     public void setItemArmors(Set<Armor> itemArmors) {
         this.itemArmors = itemArmors;
     }
-
-
 }

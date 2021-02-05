@@ -1,6 +1,8 @@
 package com.virtualpet.service.impl;
 
+import com.virtualpet.dto.ShopDTO;
 import com.virtualpet.exeption.ItemNotFoundException;
+import com.virtualpet.exeption.ShopNotFoundException;
 import com.virtualpet.exeption.SkillAlreadyExistException;
 import com.virtualpet.exeption.SkillNotFoundException;
 import com.virtualpet.model.Item;
@@ -14,8 +16,11 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
+import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -25,6 +30,7 @@ public class ShopServiceImpl implements ShopService {
     private final DefenceSkillRepository defenceSkillRepository;
     private final SwordRepository swordRepository;
     private final ArmorRepository armorRepository;
+
     @Autowired
     public ShopServiceImpl(ShopRepository shopRepository, DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SwordRepository swordRepository, ArmorRepository armorRepository){
         this.shopRepository = shopRepository;
@@ -38,10 +44,16 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop getShop() {
+    public ShopDTO getShop() {
+        Shop shop = shopRepository.findFirstByOrderById().orElse(null);
+        if (shop != null) {
+            return new ShopDTO(shop);
+        }
+        throw new ShopNotFoundException();
+    }
+    private Shop shop(){
         return shopRepository.findFirstByOrderById().orElse(null);
     }
-
     private Shop createShop(){
         Shop shop = new Shop();
         shopRepository.save(shop);
@@ -68,7 +80,7 @@ public class ShopServiceImpl implements ShopService {
 
     private void addDamageSkill(String skillName, ESkillCategory skillCategory){
         DamageSkill damageSkill = damageSkillRepository.findDamageSkillByNameAndSkillCategory(skillName, skillCategory).orElseThrow(SkillNotFoundException::new);
-        Shop shop = getShop();
+        Shop shop = shop();
         if(!shop.getDamageSkills().contains(damageSkill)) {
             shop.getDamageSkills().add(damageSkill);
             damageSkill.setShop(shop);
@@ -80,7 +92,7 @@ public class ShopServiceImpl implements ShopService {
     }
     private void addDefenceSkill(String skillName, ESkillCategory skillCategory){
         DefenceSkill defenceSkill = defenceSkillRepository.findDefenceSkillByNameAndSkillCategory(skillName, skillCategory).orElseThrow(SkillNotFoundException::new);
-        Shop shop = getShop();
+        Shop shop = shop();
         if (!shop.getDefenceSkills().contains(defenceSkill)){
             shop.getDefenceSkills().add(defenceSkill);
             defenceSkill.setShop(shop);
@@ -105,6 +117,8 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+
+
     @Override
     public void removeSkillFromShop(SkillAbstract skillAbstract) {
         if (skillAbstract != null){
@@ -125,20 +139,20 @@ public class ShopServiceImpl implements ShopService {
 
     private void addSwordToShop(long itemId){
         Sword sword = swordRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        Shop shop = getShop();
+        Shop shop = shop();
         shop.getItemSwords().add(sword);
         shopRepository.save(shop);
     }
 
     private void addArmorToShop(long itemId){
         Armor armor = armorRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        Shop shop = getShop();
+        Shop shop = shop();
         shop.getItemArmors().add(armor);
         shopRepository.save(shop);
     }
 
     private void removeDamageSkillFromShop(DamageSkill damageSkill){
-        Shop shop = getShop();
+        Shop shop = shop();
         if (!shop.getDamageSkills().remove(damageSkill))
             throw new SkillNotFoundException();
         shopRepository.save(shop);
@@ -147,7 +161,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     private void removeDefenceSkillFromShop(DefenceSkill defenceSkill){
-        Shop shop = getShop();
+        Shop shop = shop();
         if (!shop.getDefenceSkills().remove(defenceSkill))
             throw new SkillNotFoundException();
         shopRepository.save(shop);

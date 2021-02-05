@@ -1,8 +1,11 @@
 package com.virtualpet.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dto.ShopDTO;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Views;
 import com.virtualpet.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +26,8 @@ public class ShopController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public Shop getShop(){
+    @JsonView(Views.ShopView.class)
+    public ShopDTO getShop(){
         return shopService.getShop();
     }
 

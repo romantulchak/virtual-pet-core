@@ -24,26 +24,29 @@ import java.util.Objects;
 public abstract class SkillAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.ShopView.class)
     private long id;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private String name;
 
     @Enumerated(EnumType.STRING)
     @JsonView(Views.SkillView.class)
     private ESkillCategory skillCategory;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private int price;
     @JsonView(Views.SkillView.class)
     private String skillDescription;
     @JsonView(Views.SkillView.class)
     private LocalDateTime cooldown;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private int maxCooldown;
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    private String skillImage;
 
     public SkillAbstract(){
 
     }
-    public SkillAbstract(long id, String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown) {
+    public SkillAbstract(long id, String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown, String skillImage) {
         this.id = id;
         this.name = name;
         this.skillCategory = skillCategory;
@@ -51,6 +54,7 @@ public abstract class SkillAbstract {
         this.skillDescription = skillDescription;
         this.cooldown = cooldown;
         this.maxCooldown = maxCooldown;
+        this.skillImage = skillImage;
     }
 
     public String getSkillDescription() {
@@ -120,5 +124,13 @@ public abstract class SkillAbstract {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, skillCategory);
+    }
+
+    public String getSkillImage() {
+        return skillImage;
+    }
+
+    public void setSkillImage(String skillImage) {
+        this.skillImage = skillImage;
     }
 }

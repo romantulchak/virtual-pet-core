@@ -12,16 +12,17 @@ public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.ShopView.class)
     private long id;
 
     @Enumerated(EnumType.STRING)
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private EUniqueness uniqueness;
 
-    @JsonView({Views.InventoryView.class})
+    @JsonView({Views.InventoryView.class,Views.ShopView.class})
     private String iconPath;
 
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private String name;
     @JsonView(Views.InventoryView.class)
     @Enumerated(EnumType.STRING)

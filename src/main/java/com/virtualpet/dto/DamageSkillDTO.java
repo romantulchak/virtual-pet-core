@@ -26,7 +26,7 @@ public class DamageSkillDTO extends SkillAbstract {
 
 
     public DamageSkillDTO(DamageSkill damageSkill) {
-        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown());
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
         this.id = damageSkill.getId();
         this.damage = damageSkill.getDamage();
         this.criticalChance = damageSkill.getCriticalChance();

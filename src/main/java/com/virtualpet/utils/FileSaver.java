@@ -12,8 +12,7 @@ import java.util.UUID;
 
 public class FileSaver {
 
-
-    public static String saveFile(MultipartFile file, String fileUploadPath, String directory){
+   public static String saveFile(MultipartFile file, String fileUploadPath, String directory){
         if(file != null){
             File dir = new File(fileUploadPath + directory);
             if (!dir.exists()) {
@@ -24,7 +23,7 @@ public class FileSaver {
                 String filePath = fileUploadPath + "/" + directory + "/" + fileOriginalName;
                 Path copyLocation = Paths.get(filePath);
                 Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-                return "http://localhost:8080/" + "uploads/" + directory + "/" + fileOriginalName;
+                return "http://localhost:8080/" + "files/" + directory + "/" + fileOriginalName;
 
             }catch (IOException ex){
                 ex.printStackTrace();

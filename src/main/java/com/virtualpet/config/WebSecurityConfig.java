@@ -67,6 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/profile/**").permitAll()
                 .antMatchers("/api/game/**").permitAll()
                 .antMatchers("/uploads/subTypeImages/**").permitAll()
+                .antMatchers("/uploads/skillImage/**").permitAll()
+                .antMatchers("/files/**").permitAll()
                 .antMatchers("/subTypeImages/**").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()

@@ -16,13 +16,13 @@ public class Armor extends Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private long id;
 
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private int armor;
 
-    @JsonView({Views.InventoryView.class, Views.SubView.class})
+    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private int health;
 
     @ManyToMany

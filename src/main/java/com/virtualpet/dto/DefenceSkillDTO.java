@@ -24,7 +24,7 @@ public class DefenceSkillDTO extends SkillAbstract {
     }
 
     public DefenceSkillDTO(DefenceSkill defenceSkill) {
-        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown());
+        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getSkillImage());
         this.id = defenceSkill.getId();
         this.health = defenceSkill.getHealth();
         this.defence = defenceSkill.getDefence();

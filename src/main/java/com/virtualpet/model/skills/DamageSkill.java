@@ -18,8 +18,10 @@ import java.util.Objects;
 public class DamageSkill extends SkillAbstract {
 
 
+    @JsonView(Views.ShopView.class)
     private int damage;
 
+    @JsonView(Views.ShopView.class)
     private double criticalChance;
 
     @ManyToOne
@@ -33,8 +35,8 @@ public class DamageSkill extends SkillAbstract {
 
     }
 
-    public DamageSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, long id, int damage, double criticalChance, int maxCooldown) {
-        super(id, name, skillCategory, price, skillDescription, cooldown, maxCooldown);
+    public DamageSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, long id, int damage, double criticalChance, int maxCooldown, String skillImage) {
+        super(id, name, skillCategory, price, skillDescription, cooldown, maxCooldown, skillImage);
         this.damage = damage;
         this.criticalChance = criticalChance;
     }

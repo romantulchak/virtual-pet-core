@@ -23,6 +23,7 @@ public class Sub extends SubAbstract {
     @OneToOne
     @JsonView(Views.SubView.class)
     private Inventory inventory;
+
     @ManyToOne
     @JsonView(Views.SubView.class)
     private User user;
@@ -58,9 +59,9 @@ public class Sub extends SubAbstract {
     }
     public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack, int health, Currency currency, DressedItem dressedItems) {
         this.setName(name);
-        this.setAttack(attack);
+        this.setAttack(0);
         this.currency = currency;
-        this.setDefence(defence);
+        this.setDefence(0);
         this.inventory = inventory;
         this.user = user;
         this.moneyUpLevel = 1;
@@ -71,7 +72,7 @@ public class Sub extends SubAbstract {
         setIconPath(iconPath);
         this.level = level;
         this.subAttack = subAttack;
-        setHealth(health);
+        setHealth(0);
         this.dressedItems = dressedItems;
     }
 

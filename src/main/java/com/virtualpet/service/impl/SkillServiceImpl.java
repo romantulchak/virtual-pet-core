@@ -11,8 +11,11 @@ import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.DamageSkillRepository;
 import com.virtualpet.repository.DefenceSkillRepository;
 import com.virtualpet.service.SkillService;
+import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,10 @@ import java.util.stream.Collectors;
 public class SkillServiceImpl implements SkillService {
     private final DamageSkillRepository damageSkillRepository;
     private final DefenceSkillRepository defenceSkillRepository;
+
+    @Value("${upload.path}")
+    private String path;
+    private String skillImage;
     @Autowired
     public SkillServiceImpl(DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository){
         this.damageSkillRepository = damageSkillRepository;
@@ -32,11 +39,13 @@ public class SkillServiceImpl implements SkillService {
 
 
     @Override
-    public void createDamageSkill(DamageSkill damageSkill) {
+    public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
              if (!damageSkillRepository.existsByName(damageSkill.getName())) {
                  damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
+                 damageSkill.setSkillImage(skillImage);
                  damageSkillRepository.save(damageSkill);
+                 return new DamageSkillDTO(damageSkill);
              }else {
                  throw new SkillAlreadyExistException(damageSkill.getName());
              }
@@ -54,7 +63,14 @@ public class SkillServiceImpl implements SkillService {
             addAll(defenceSkills);
         }};
     }
-
+    @Override
+    public void uploadImageSkill(MultipartFile file) {
+        if (file != null){
+            skillImage = FileSaver.saveFile(file, path, "skillImage");
+        }else {
+            throw new RuntimeException("File not found");
+        }
+    }
     @Override
     public void createDefenceSkill(DefenceSkill defenceSkill) {
         if (defenceSkill != null) {

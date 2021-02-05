@@ -50,14 +50,14 @@ public class SubDTO {
     private DressedItem dressedItems;
 
     @JsonView(Views.SubView.class)
-    private List<DamageSkill> damageSkills = new ArrayList<>();
+    private List<DamageSkill> damageSkills;
 
 
     public SubDTO(Sub sub) {
         this.id = sub.getId();
         this.name = sub.getName();
-        this.attack = sub.getAttack();
-        this.defence = sub.getDefence();
+        this.attack = sub.getAttack() + sub.getSubType().getAttack();
+        this.defence = sub.getDefence() + sub.getSubType().getDefence();
         this.currency = sub.getCurrency();
         this.inventory = sub.getInventory();
         this.user = sub.getUser();
@@ -65,7 +65,7 @@ public class SubDTO {
         this.moneyUpPrice = sub.getMoneyUpPrice();
         this.moneyMultiplier = sub.getMoneyMultiplier();
         this.subAttack = sub.getSubAttack();
-        this.health = sub.getHealth();
+        this.health = sub.getHealth() + sub.getSubType().getHealth();
         this.dressedItems = sub.getDressedItems();
         this.iconPath = sub.getIconPath();
         this.damageSkills = sub.getDamageSkills();

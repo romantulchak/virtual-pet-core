@@ -1,6 +1,7 @@
 package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dto.DamageSkillDTO;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
@@ -10,6 +11,7 @@ import com.virtualpet.service.impl.SkillServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class SkillController {
 
     @PostMapping("/createDamageSkill")
     @PreAuthorize("hasRole('ADMIN')")
-    public void createDamageSkill(@RequestBody DamageSkill damageSkill){
-        skillService.createDamageSkill(damageSkill);
+    public DamageSkillDTO createDamageSkill(@RequestBody DamageSkill damageSkill){
+        return skillService.createDamageSkill(damageSkill);
     }
 
     @GetMapping
@@ -41,5 +43,10 @@ public class SkillController {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteSkill(@PathVariable("id") long id, @PathVariable("skillCategory")ESkillCategory eSkillCategory){
         skillService.deleteSkill(id, eSkillCategory);
+    }
+    @PostMapping("/uploadSkillImage")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void uploadSkillImage(@RequestBody MultipartFile file){
+        skillService.uploadImageSkill(file);
     }
 }
