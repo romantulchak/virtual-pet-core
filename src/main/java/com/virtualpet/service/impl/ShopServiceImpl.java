@@ -54,6 +54,7 @@ public class ShopServiceImpl implements ShopService {
     private Shop shop(){
         return shopRepository.findFirstByOrderById().orElse(null);
     }
+
     private Shop createShop(){
         Shop shop = new Shop();
         shopRepository.save(shop);

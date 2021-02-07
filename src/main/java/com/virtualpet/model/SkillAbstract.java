@@ -30,7 +30,7 @@ public abstract class SkillAbstract {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private ESkillCategory skillCategory;
     @JsonView({Views.SkillView.class, Views.ShopView.class})
     private int price;

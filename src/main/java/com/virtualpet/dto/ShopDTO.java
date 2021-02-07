@@ -14,7 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ShopDTO {
@@ -22,16 +24,16 @@ public class ShopDTO {
     private long id;
 
     @JsonView(Views.ShopView.class)
-    private Set<DamageSkill> damageSkills = new HashSet<>();
+    private List<DamageSkill> damageSkills = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private Set<DefenceSkill> defenceSkills = new HashSet<>();
+    private List<DefenceSkill> defenceSkills = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private Set<Sword> itemSwords = new HashSet<>();
+    private List<Sword> itemSwords = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private Set<Armor> itemArmors = new HashSet<>();
+    private List<Armor> itemArmors = new ArrayList<>();
 
     public ShopDTO(){
 
@@ -53,35 +55,35 @@ public class ShopDTO {
         this.id = id;
     }
 
-    public Set<DamageSkill> getDamageSkills() {
+    public List<DamageSkill> getDamageSkills() {
         return damageSkills;
     }
 
-    public void setDamageSkills(Set<DamageSkill> damageSkills) {
+    public void setDamageSkills(List<DamageSkill> damageSkills) {
         this.damageSkills = damageSkills;
     }
 
-    public Set<DefenceSkill> getDefenceSkills() {
+    public List<DefenceSkill> getDefenceSkills() {
         return defenceSkills;
     }
 
-    public void setDefenceSkills(Set<DefenceSkill> defenceSkills) {
+    public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
         this.defenceSkills = defenceSkills;
     }
 
-    public Set<Sword> getItemSwords() {
+    public List<Sword> getItemSwords() {
         return itemSwords;
     }
 
-    public void setItemSwords(Set<Sword> itemSwords) {
+    public void setItemSwords(List<Sword> itemSwords) {
         this.itemSwords = itemSwords;
     }
 
-    public Set<Armor> getItemArmors() {
+    public List<Armor> getItemArmors() {
         return itemArmors;
     }
 
-    public void setItemArmors(Set<Armor> itemArmors) {
+    public void setItemArmors(List<Armor> itemArmors) {
         this.itemArmors = itemArmors;
     }
 }

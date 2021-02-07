@@ -5,9 +5,13 @@ import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,17 +22,17 @@ public class Shop {
     private long id;
 
     @OneToMany
-    private Set<DamageSkill> damageSkills = new HashSet<>();
+    private List<DamageSkill> damageSkills = new ArrayList<>();
 
 
     @OneToMany
-    private Set<DefenceSkill> defenceSkills = new HashSet<>();
+    private List<DefenceSkill> defenceSkills = new ArrayList<>();
 
     @OneToMany
-    private Set<Sword> itemSwords = new HashSet<>();
+    private List<Sword> itemSwords = new ArrayList<>();
 
     @OneToMany
-    private Set<Armor> itemArmors = new HashSet<>();
+    private List<Armor> itemArmors = new ArrayList<>();
 
 
 
@@ -40,35 +44,35 @@ public class Shop {
         this.id = id;
     }
 
-    public Set<DamageSkill> getDamageSkills() {
+    public List<DamageSkill> getDamageSkills() {
         return damageSkills;
     }
 
-    public void setDamageSkills(Set<DamageSkill> damageSkills) {
+    public void setDamageSkills(List<DamageSkill> damageSkills) {
         this.damageSkills = damageSkills;
     }
 
-    public Set<DefenceSkill> getDefenceSkills() {
+    public List<DefenceSkill> getDefenceSkills() {
         return defenceSkills;
     }
 
-    public void setDefenceSkills(Set<DefenceSkill> defenceSkills) {
+    public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
         this.defenceSkills = defenceSkills;
     }
 
-    public Set<Sword> getItemSwords() {
+    public List<Sword> getItemSwords() {
         return itemSwords;
     }
 
-    public void setItemSwords(Set<Sword> itemSwords) {
+    public void setItemSwords(List<Sword> itemSwords) {
         this.itemSwords = itemSwords;
     }
 
-    public Set<Armor> getItemArmors() {
+    public List<Armor> getItemArmors() {
         return itemArmors;
     }
 
-    public void setItemArmors(Set<Armor> itemArmors) {
+    public void setItemArmors(List<Armor> itemArmors) {
         this.itemArmors = itemArmors;
     }
 

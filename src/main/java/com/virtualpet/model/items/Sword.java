@@ -1,6 +1,7 @@
 package com.virtualpet.model.items;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.EUniqueness;
@@ -28,6 +29,8 @@ public class Sword extends Item {
     @ManyToMany
     private List<Inventory> inventory;
 
+    @ManyToOne
+    private Shop shop;
 
     public Sword(int id, EUniqueness uniqueness, String iconPath, String name, int attack, boolean allowShield, EItemCategory eItemCategory, EItemType eItemType) {
         super(id, uniqueness, iconPath, name, eItemCategory, eItemType);
@@ -81,5 +84,13 @@ public class Sword extends Item {
                 ", allowShield=" + allowShield +
                 ", inventory=" + inventory +
                 '}';
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }

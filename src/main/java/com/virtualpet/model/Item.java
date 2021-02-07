@@ -24,12 +24,14 @@ public abstract class Item {
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private String name;
-    @JsonView(Views.InventoryView.class)
+    @JsonView({Views.InventoryView.class, Views.ShopView.class})
     @Enumerated(EnumType.STRING)
     private EItemType eItemType;
     @Enumerated(EnumType.STRING)
-    @JsonView(Views.InventoryView.class)
+    @JsonView({Views.InventoryView.class, Views.ShopView.class})
     private EItemCategory eItemCategory;
+    @JsonView({Views.InventoryView.class, Views.ShopView.class})
+    private int price;
 
     protected Item(int id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType){
         this.id = id;
@@ -91,6 +93,14 @@ public abstract class Item {
 
     public void seteItemType(EItemType eItemType) {
         this.eItemType = eItemType;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
 
