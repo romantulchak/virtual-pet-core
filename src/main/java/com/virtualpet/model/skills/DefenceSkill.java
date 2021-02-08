@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @JsonTypeName("defenceSkill")
 @Entity
@@ -26,6 +27,11 @@ public class DefenceSkill extends SkillAbstract {
 
     @ManyToOne
     private Shop shop;
+
+    @ManyToMany
+    @JoinTable(name = "sub_defence_skill", joinColumns = @JoinColumn(name = "defenceSkillId"), inverseJoinColumns = @JoinColumn(name = "subId"))
+    private List<Sub> subs;
+
 
     public DefenceSkill() {
     }
@@ -68,5 +74,13 @@ public class DefenceSkill extends SkillAbstract {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public List<Sub> getSubs() {
+        return subs;
+    }
+
+    public void setSubs(List<Sub> subs) {
+        this.subs = subs;
     }
 }

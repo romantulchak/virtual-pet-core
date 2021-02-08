@@ -12,10 +12,8 @@ import java.util.List;
 public class DamageSkillDTO extends SkillAbstract {
 
     @JsonView(Views.SkillView.class)
-    private long id;
-    @JsonView(Views.SkillView.class)
     private int damage;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private double criticalChance;
 
     private List<Sub> subs;
@@ -25,9 +23,11 @@ public class DamageSkillDTO extends SkillAbstract {
     private boolean inShop = false;
 
 
+    @JsonView(Views.ShopView.class)
+    private boolean isBought;
+
     public DamageSkillDTO(DamageSkill damageSkill) {
-        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getDamage(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
-        this.id = damageSkill.getId();
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
         this.damage = damageSkill.getDamage();
         this.criticalChance = damageSkill.getCriticalChance();
         this.subs = damageSkill.getSubs();
@@ -36,16 +36,19 @@ public class DamageSkillDTO extends SkillAbstract {
         }
     }
 
+    public DamageSkillDTO(DamageSkill damageSkill, Sub sub){
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
+        this.damage = damageSkill.getDamage();
+        this.criticalChance = damageSkill.getCriticalChance();
+        this.subs = damageSkill.getSubs();
+        this.isBought = sub.getDamageSkills().contains(damageSkill);
+    }
+
+
+
     public DamageSkillDTO() {
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getDamage() {
         return damage;
@@ -85,5 +88,13 @@ public class DamageSkillDTO extends SkillAbstract {
 
     public void setInShop(boolean inShop) {
         this.inShop = inShop;
+    }
+
+    public boolean isBought() {
+        return isBought;
+    }
+
+    public void setBought(boolean bought) {
+        isBought = bought;
     }
 }

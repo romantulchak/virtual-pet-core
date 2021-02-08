@@ -1,10 +1,7 @@
 package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.virtualpet.model.Item;
-import com.virtualpet.model.Shop;
-import com.virtualpet.model.SkillAbstract;
-import com.virtualpet.model.Views;
+import com.virtualpet.model.*;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
@@ -24,27 +21,27 @@ public class ShopDTO {
     private long id;
 
     @JsonView(Views.ShopView.class)
-    private List<DamageSkill> damageSkills = new ArrayList<>();
+    private List<DamageSkillDTO> damageSkills = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private List<DefenceSkill> defenceSkills = new ArrayList<>();
+    private List<DefenceSkillDTO> defenceSkills = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private List<Sword> itemSwords = new ArrayList<>();
+    private List<SwordDTO> itemSwords = new ArrayList<>();
 
     @JsonView(Views.ShopView.class)
-    private List<Armor> itemArmors = new ArrayList<>();
+    private List<ArmorDTO> itemArmors = new ArrayList<>();
 
     public ShopDTO(){
 
     }
 
-    public ShopDTO(Shop shop) {
+    public ShopDTO(Shop shop, List<DamageSkillDTO> damageSkills, List<DefenceSkillDTO> defenceSkills, List<SwordDTO> swords, List<ArmorDTO> armors) {
         this.id = shop.getId();
-        this.damageSkills = shop.getDamageSkills();
-        this.defenceSkills = shop.getDefenceSkills();
-        this.itemSwords = shop.getItemSwords();
-        this.itemArmors = shop.getItemArmors();
+        this.damageSkills = damageSkills;
+        this.defenceSkills = defenceSkills;
+        this.itemSwords = swords;
+        this.itemArmors = armors;
     }
 
     public long getId() {
@@ -55,35 +52,35 @@ public class ShopDTO {
         this.id = id;
     }
 
-    public List<DamageSkill> getDamageSkills() {
+    public List<DamageSkillDTO> getDamageSkills() {
         return damageSkills;
     }
 
-    public void setDamageSkills(List<DamageSkill> damageSkills) {
+    public void setDamageSkills(List<DamageSkillDTO> damageSkills) {
         this.damageSkills = damageSkills;
     }
 
-    public List<DefenceSkill> getDefenceSkills() {
+    public List<DefenceSkillDTO> getDefenceSkills() {
         return defenceSkills;
     }
 
-    public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
+    public void setDefenceSkills(List<DefenceSkillDTO> defenceSkills) {
         this.defenceSkills = defenceSkills;
     }
 
-    public List<Sword> getItemSwords() {
+    public List<SwordDTO> getItemSwords() {
         return itemSwords;
     }
 
-    public void setItemSwords(List<Sword> itemSwords) {
+    public void setItemSwords(List<SwordDTO> itemSwords) {
         this.itemSwords = itemSwords;
     }
 
-    public List<Armor> getItemArmors() {
+    public List<ArmorDTO> getItemArmors() {
         return itemArmors;
     }
 
-    public void setItemArmors(List<Armor> itemArmors) {
+    public void setItemArmors(List<ArmorDTO> itemArmors) {
         this.itemArmors = itemArmors;
     }
 }

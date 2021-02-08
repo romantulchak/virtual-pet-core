@@ -1,13 +1,8 @@
 package com.virtualpet.service.impl;
 
-import com.virtualpet.dto.ShopDTO;
-import com.virtualpet.exeption.ItemNotFoundException;
-import com.virtualpet.exeption.ShopNotFoundException;
-import com.virtualpet.exeption.SkillAlreadyExistException;
-import com.virtualpet.exeption.SkillNotFoundException;
-import com.virtualpet.model.Item;
-import com.virtualpet.model.Shop;
-import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.dto.*;
+import com.virtualpet.exeption.*;
+import com.virtualpet.model.*;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.items.Armor;
@@ -21,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -30,24 +30,27 @@ public class ShopServiceImpl implements ShopService {
     private final DefenceSkillRepository defenceSkillRepository;
     private final SwordRepository swordRepository;
     private final ArmorRepository armorRepository;
-
+    private final SubRepository subRepository;
+    private final InventoryRepository inventoryRepository;
     @Autowired
-    public ShopServiceImpl(ShopRepository shopRepository, DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SwordRepository swordRepository, ArmorRepository armorRepository){
+    public ShopServiceImpl(ShopRepository shopRepository, DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SwordRepository swordRepository, ArmorRepository armorRepository, SubRepository subRepository, InventoryRepository inventoryRepository){
         this.shopRepository = shopRepository;
         this.damageSkillRepository = damageSkillRepository;
         this.defenceSkillRepository = defenceSkillRepository;
         this.swordRepository = swordRepository;
         this.armorRepository = armorRepository;
+        this.subRepository = subRepository;
+        this.inventoryRepository = inventoryRepository;
         if(!this.shopRepository.findFirstByOrderById().isPresent()){
             createShop();
         }
     }
 
     @Override
-    public ShopDTO getShop() {
+    public ShopDTO getShop(Sub sub) {
         Shop shop = shopRepository.findFirstByOrderById().orElse(null);
         if (shop != null) {
-            return new ShopDTO(shop);
+            return convertShopToDTO(shop, sub);
         }
         throw new ShopNotFoundException();
     }
@@ -168,5 +171,52 @@ public class ShopServiceImpl implements ShopService {
         shopRepository.save(shop);
         defenceSkill.setShop(null);
         defenceSkillRepository.save(defenceSkill);
+    }
+
+    @Override
+    public void buyItem(Item item, long subId) {
+        if (item != null ){
+            Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
+            if(checkEnoughMoney(sub, item)){
+                if (!sub.getInventory().getArmors().contains(item) || !sub.getInventory().getSwords().contains(item)){
+                    Inventory inventory = inventoryRepository.findById(sub.getInventory().getId()).orElseThrow(()->new InventoryNotFoundException(sub.getName()));
+                    addItemToInventory(item, inventory);
+                    sub.getCurrency().setMoney(sub.getCurrency().getMoney() - item.getPrice());
+                    subRepository.save(sub);
+                }else {
+                    throw new ItemAlreadyBoughtException(item.getName());
+                }
+            }else {
+                throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), item.getPrice());
+            }
+
+        }else {
+            throw new ItemNotFoundException();
+        }
+
+    }
+
+    private void addItemToInventory(Item item, Inventory inventory) {
+        switch (item.geteItemType()){
+            case ARMOR:
+                inventory.getArmors().add((Armor) item);
+                break;
+            case WEAPON:
+                inventory.getSwords().add((Sword) item);
+                break;
+        }
+        inventoryRepository.save(inventory);
+    }
+
+    private ShopDTO convertShopToDTO(Shop shop, Sub sub){
+        List<DamageSkillDTO> damageSkillDTOS = shop.getDamageSkills().stream().map(x-> new DamageSkillDTO(x, sub)).collect(Collectors.toList());
+        List<DefenceSkillDTO> defenceSkillDTOS = shop.getDefenceSkills().stream().map(x->new DefenceSkillDTO(x,sub)).collect(Collectors.toList());
+        List<SwordDTO> swordDTOS = shop.getItemSwords().stream().map(x->new SwordDTO(x, sub)).collect(Collectors.toList());
+        List<ArmorDTO> armorDTOS = shop.getItemArmors().stream().map(x->new ArmorDTO(x, sub)).collect(Collectors.toList());
+        return new ShopDTO(shop, damageSkillDTOS, defenceSkillDTOS, swordDTOS, armorDTOS);
+    }
+
+    private boolean checkEnoughMoney(Sub sub, Item item){
+        return sub.getCurrency().getMoney() >= item.getPrice();
     }
 }

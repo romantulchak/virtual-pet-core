@@ -1,5 +1,6 @@
 package com.virtualpet.model.items;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.enums.EItemCategory;
@@ -12,6 +13,7 @@ import com.virtualpet.model.Views;
 import javax.persistence.*;
 import java.util.List;
 
+@JsonTypeName("swordItem")
 @Entity
 public class Sword extends Item {
 
@@ -26,14 +28,14 @@ public class Sword extends Item {
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private boolean allowShield;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "swords")
     private List<Inventory> inventory;
 
     @ManyToOne
     private Shop shop;
 
-    public Sword(int id, EUniqueness uniqueness, String iconPath, String name, int attack, boolean allowShield, EItemCategory eItemCategory, EItemType eItemType) {
-        super(id, uniqueness, iconPath, name, eItemCategory, eItemType);
+    public Sword(int id, EUniqueness uniqueness, String iconPath, String name, int attack, boolean allowShield, EItemCategory eItemCategory, EItemType eItemType, int price) {
+        super(id, uniqueness, iconPath, name, eItemCategory, eItemType, price);
         this.attack = attack;
         this.allowShield = allowShield;
     }

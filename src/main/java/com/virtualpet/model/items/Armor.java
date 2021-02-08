@@ -1,5 +1,6 @@
 package com.virtualpet.model.items;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.enums.EItemCategory;
@@ -11,7 +12,7 @@ import com.virtualpet.model.Views;
 
 import javax.persistence.*;
 import java.util.List;
-
+@JsonTypeName("armorItem")
 @Entity
 public class Armor extends Item {
 
@@ -26,7 +27,7 @@ public class Armor extends Item {
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private int health;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "armors")
     private List<Inventory> inventory;
 
     @ManyToOne
@@ -37,8 +38,8 @@ public class Armor extends Item {
 
     }
 
-    public Armor(int id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, int armor, int health, EItemType eItemType) {
-        super(id, uniqueness, iconPath, name, eItemCategory,eItemType);
+    public Armor(int id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, int armor, int health, EItemType eItemType, int price) {
+        super(id, uniqueness, iconPath, name, eItemCategory,eItemType, price);
         this.armor = armor;
         this.health = health;
     }

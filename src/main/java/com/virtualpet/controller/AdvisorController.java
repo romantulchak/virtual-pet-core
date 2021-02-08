@@ -125,6 +125,21 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ShopNotFoundException.class)
     public ResponseEntity<Object> handleShopNotFoundException(ShopNotFoundException ex, WebRequest webRequest){
         Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(InventoryNotFoundException.class)
+    public ResponseEntity<Object> handleInventoryNotFoundException(InventoryNotFoundException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(ItemAlreadyBoughtException.class)
+    public ResponseEntity<Object> handleItemAlreadyBoughtException(ItemAlreadyBoughtException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(NotEnoughMoneyException.class)
+    public ResponseEntity<Object> handleNotEnoughMoneyException(NotEnoughMoneyException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }

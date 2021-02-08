@@ -23,13 +23,20 @@ public class Inventory {
     @JsonView(Views.InventoryView.class)
     private int maxInventorySize;
 
-    @ManyToMany(mappedBy = "inventory")
+    @ManyToMany
+    @JoinTable(name = "inventory_swords",
+            joinColumns = @JoinColumn(name = "inventory_id"),
+            inverseJoinColumns = @JoinColumn(name = "sword_id"))
     @JsonView(Views.InventoryView.class)
     private List<Sword> swords;
 
-    @ManyToMany(mappedBy = "inventory")
+    @ManyToMany
+    @JoinTable(name = "inventory_armors",
+              joinColumns = @JoinColumn(name = "inventory_id"),
+            inverseJoinColumns = @JoinColumn(name = "armor_id"))
     @JsonView(Views.InventoryView.class)
     private List<Armor> armors;
+
 
     public Inventory(){
         this.maxInventorySize = 10;

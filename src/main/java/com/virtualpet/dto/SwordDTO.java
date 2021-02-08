@@ -1,32 +1,37 @@
 package com.virtualpet.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Item;
+import com.virtualpet.model.Sub;
+import com.virtualpet.model.Views;
 import com.virtualpet.model.items.Sword;
+@JsonTypeName("swordItem")
+public class SwordDTO extends Item {
 
-public class SwordDTO {
 
-    private long id;
+    @JsonView({Views.ShopView.class})
     private int attack;
-    private String name;
+
+    @JsonView({Views.ShopView.class})
     private boolean allowShield;
 
-
+    @JsonView({Views.ShopView.class})
+    private boolean isBought;
 
     public SwordDTO() {
     }
 
     public SwordDTO(Sword sword) {
-        this.id = sword.getId();
+        super(sword.getId(),sword.getUniqueness(), sword.getIconPath(), sword.getName(), sword.geteItemCategory(), sword.geteItemType(), sword.getPrice());
         this.allowShield = sword.isAllowShield();
         this.attack = sword.getAttack();
-        this.name = sword.getName();
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public SwordDTO(Sword sword, Sub sub) {
+        super(sword.getId(),sword.getUniqueness(), sword.getIconPath(), sword.getName(), sword.geteItemCategory(), sword.geteItemType(), sword.getPrice());
+        this.allowShield = sword.isAllowShield();
+        this.attack = sword.getAttack();
+        this.isBought = sub.getInventory().getSwords().contains(sword);
     }
 
     public int getAttack() {
@@ -37,20 +42,20 @@ public class SwordDTO {
         this.attack = attack;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isAllowShield() {
         return allowShield;
     }
 
     public void setAllowShield(boolean allowShield) {
         this.allowShield = allowShield;
+    }
+
+    public boolean isBought() {
+        return isBought;
+    }
+
+    public void setBought(boolean bought) {
+        isBought = bought;
     }
 }
 

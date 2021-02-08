@@ -2,10 +2,7 @@ package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dto.ShopDTO;
-import com.virtualpet.model.Item;
-import com.virtualpet.model.Shop;
-import com.virtualpet.model.SkillAbstract;
-import com.virtualpet.model.Views;
+import com.virtualpet.model.*;
 import com.virtualpet.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,8 +24,8 @@ public class ShopController {
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.ShopView.class)
-    public ShopDTO getShop(){
-        return shopService.getShop();
+    public ShopDTO getShop(@RequestParam("subId")Sub sub){
+        return shopService.getShop(sub);
     }
 
     @PutMapping("/addSkillToShop")
@@ -47,6 +44,12 @@ public class ShopController {
     @PreAuthorize("hasRole('ADMIN')")
     public void removeSkillFromShop(@RequestBody SkillAbstract skillAbstract){
         shopService.removeSkillFromShop(skillAbstract);
+    }
+
+    @PostMapping("/buyItem/{subId}")
+    @PreAuthorize("hasRole('USER')")
+    public void buyItem(@RequestBody Item item, @PathVariable("subId") long subId){
+        shopService.buyItem(item, subId);
     }
 }
 

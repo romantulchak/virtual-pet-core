@@ -1,13 +1,28 @@
 package com.virtualpet.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.EUniqueness;
+import com.virtualpet.model.items.Armor;
+import com.virtualpet.model.items.Sword;
+import com.virtualpet.model.skills.DamageSkill;
+import com.virtualpet.model.skills.DefenceSkill;
 
 import javax.persistence.*;
 
 @MappedSuperclass
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Sword.class, name = "swordItem"),
+        @JsonSubTypes.Type(value = Armor.class, name = "armorItem")
+})
 public abstract class Item {
 
     @Id
@@ -33,13 +48,14 @@ public abstract class Item {
     @JsonView({Views.InventoryView.class, Views.ShopView.class})
     private int price;
 
-    protected Item(int id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType){
+    protected Item(long id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType, int price){
         this.id = id;
         this.uniqueness = uniqueness;
         this.iconPath = iconPath;
         this.name = name;
         this.eItemCategory = eItemCategory;
         this.eItemType = eItemType;
+        this.price = price;
     }
     protected Item(){
 

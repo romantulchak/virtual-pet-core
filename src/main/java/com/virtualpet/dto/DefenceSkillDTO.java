@@ -3,35 +3,44 @@ package com.virtualpet.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.skills.DefenceSkill;
 
 public class DefenceSkillDTO extends SkillAbstract {
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private long id;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private int health;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private double defence;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class})
     private int timeOfAction;
 
     private Shop shop;
     @JsonView(Views.SkillView.class)
     private boolean inShop = false;
 
+    private boolean isBought;
+
     public DefenceSkillDTO() {
     }
 
     public DefenceSkillDTO(DefenceSkill defenceSkill) {
         super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getSkillImage());
-        this.id = defenceSkill.getId();
         this.health = defenceSkill.getHealth();
         this.defence = defenceSkill.getDefence();
         this.timeOfAction = defenceSkill.getTimeOfAction();
         if (defenceSkill.getShop() != null){
             this.inShop = defenceSkill.getShop().getDefenceSkills().contains(defenceSkill);
         }
+    }
+    public DefenceSkillDTO(DefenceSkill defenceSkill, Sub sub) {
+        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getSkillImage());
+        this.health = defenceSkill.getHealth();
+        this.defence = defenceSkill.getDefence();
+        this.timeOfAction = defenceSkill.getTimeOfAction();
+        this.isBought = sub.getDefenceSkills().contains(defenceSkill);
     }
 
     public long getId() {
@@ -82,5 +91,11 @@ public class DefenceSkillDTO extends SkillAbstract {
         this.inShop = inShop;
     }
 
+    public boolean isBought() {
+        return isBought;
+    }
 
+    public void setBought(boolean bought) {
+        isBought = bought;
+    }
 }
