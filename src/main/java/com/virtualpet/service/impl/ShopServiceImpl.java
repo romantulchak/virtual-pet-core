@@ -13,6 +13,7 @@ import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
 import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -177,8 +178,8 @@ public class ShopServiceImpl implements ShopService {
     public void buyItem(Item item, long subId) {
         if (item != null ){
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
-            if(checkEnoughMoney(sub, item)){
-                if (!sub.getInventory().getArmors().contains(item) || !sub.getInventory().getSwords().contains(item)){
+            if(checkEnoughMoney(sub, item.getPrice())){
+                if (!sub.getInventory().getArmors().contains(item) && !sub.getInventory().getSwords().contains(item)){
                     Inventory inventory = inventoryRepository.findById(sub.getInventory().getId()).orElseThrow(()->new InventoryNotFoundException(sub.getName()));
                     addItemToInventory(item, inventory);
                     sub.getCurrency().setMoney(sub.getCurrency().getMoney() - item.getPrice());
@@ -186,14 +187,36 @@ public class ShopServiceImpl implements ShopService {
                 }else {
                     throw new ItemAlreadyBoughtException(item.getName());
                 }
-            }else {
-                throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), item.getPrice());
             }
-
         }else {
             throw new ItemNotFoundException();
         }
+    }
 
+    @Override
+    public void buySkill(SkillAbstract skill, long subId) {
+        if (skill != null){
+            Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
+            if (checkEnoughMoney(sub,skill.getPrice())){
+                if(!sub.getDefenceSkills().contains(skill) && !sub.getDamageSkills().contains(skill)){
+                    addSkillToSub(sub, skill);
+                    sub.getCurrency().setMoney(sub.getCurrency().getMoney() - skill.getPrice());
+                    subRepository.save(sub);
+                }else {
+                    throw new SkillAlreadyBoughtException(sub.getName(), skill.getName());
+                }
+            }
+        }else {
+            throw new SkillNotFoundException();
+        }
+    }
+
+    private void addSkillToSub(Sub sub, SkillAbstract skill) {
+        if (skill instanceof DamageSkill){
+            sub.getDamageSkills().add((DamageSkill) skill);
+        }else if (skill instanceof DefenceSkill){
+            sub.getDefenceSkills().add((DefenceSkill) skill);
+        }
     }
 
     private void addItemToInventory(Item item, Inventory inventory) {
@@ -216,7 +239,10 @@ public class ShopServiceImpl implements ShopService {
         return new ShopDTO(shop, damageSkillDTOS, defenceSkillDTOS, swordDTOS, armorDTOS);
     }
 
-    private boolean checkEnoughMoney(Sub sub, Item item){
-        return sub.getCurrency().getMoney() >= item.getPrice();
+    private boolean checkEnoughMoney(Sub sub, int itemPrice){
+        if (sub.getCurrency().getMoney() >= itemPrice){
+            return true;
+        }
+        throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), itemPrice);
     }
 }

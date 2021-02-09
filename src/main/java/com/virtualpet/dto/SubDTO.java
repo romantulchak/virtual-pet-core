@@ -6,6 +6,7 @@ import com.virtualpet.model.skills.DamageSkill;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SubDTO {
 
@@ -50,7 +51,9 @@ public class SubDTO {
     private DressedItem dressedItems;
 
     @JsonView(Views.SubView.class)
-    private List<DamageSkill> damageSkills;
+    private List<DamageSkillDTO> damageSkills;
+    @JsonView(Views.SubView.class)
+    private List<DefenceSkillDTO> defenceSkills;
 
 
     public SubDTO(Sub sub) {
@@ -68,7 +71,8 @@ public class SubDTO {
         this.health = sub.getHealth() + sub.getSubType().getHealth();
         this.dressedItems = sub.getDressedItems();
         this.iconPath = sub.getIconPath();
-        this.damageSkills = sub.getDamageSkills();
+        this.damageSkills = sub.getDamageSkills().stream().map(DamageSkillDTO::new).collect(Collectors.toList());
+        this.defenceSkills = sub.getDefenceSkills().stream().map(DefenceSkillDTO::new).collect(Collectors.toList());
     }
 
 
@@ -185,11 +189,19 @@ public class SubDTO {
         this.iconPath = iconPath;
     }
 
-    public List<DamageSkill> getDamageSkills() {
+    public List<DamageSkillDTO> getDamageSkills() {
         return damageSkills;
     }
 
-    public void setDamageSkills(List<DamageSkill> damageSkills) {
+    public void setDamageSkills(List<DamageSkillDTO> damageSkills) {
         this.damageSkills = damageSkills;
+    }
+
+    public List<DefenceSkillDTO> getDefenceSkills() {
+        return defenceSkills;
+    }
+
+    public void setDefenceSkills(List<DefenceSkillDTO> defenceSkills) {
+        this.defenceSkills = defenceSkills;
     }
 }

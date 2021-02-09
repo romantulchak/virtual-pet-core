@@ -1,20 +1,21 @@
 package com.virtualpet.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.skills.DefenceSkill;
-
+@JsonTypeName("defenceSkill")
 public class DefenceSkillDTO extends SkillAbstract {
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private long id;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int health;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private double defence;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int timeOfAction;
 
     private Shop shop;

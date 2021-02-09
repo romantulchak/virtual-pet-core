@@ -13,4 +13,5 @@ public interface ShopService {
     void addItemToShop(Item item);
     void removeSkillFromShop(SkillAbstract skillAbstract);
     void buyItem(Item item, long subId);
+    void buySkill(SkillAbstract skillAbstract, long subId);
 }

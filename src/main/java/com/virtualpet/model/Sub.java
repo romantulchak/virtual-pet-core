@@ -29,16 +29,16 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private User user;
     @JsonView(Views.SubView.class)
-    private Integer moneyUpLevel;
+    private int moneyUpLevel;
     @JsonView(Views.SubView.class)
-    private Long moneyUpPrice;
+    private long moneyUpPrice;
 
     @ManyToOne
     @JsonView(Views.FriendView.class)
     private SubType subType;
 
     @JsonView(Views.SubView.class)
-    private Integer moneyMultiplier;
+    private int moneyMultiplier;
 
     @ManyToOne
     private Level level;
@@ -52,10 +52,12 @@ public class Sub extends SubAbstract {
     @OneToOne
     private DressedItem dressedItems;
 
-    @ManyToMany(mappedBy = "subs")
+    @ManyToMany
+    @JoinTable(name = "sub_damage_skill", joinColumns = @JoinColumn(name = "subId"), inverseJoinColumns = @JoinColumn(name = "damageSkillId"))
     List<DamageSkill> damageSkills;
 
-    @ManyToMany(mappedBy = "subs")
+    @ManyToMany
+    @JoinTable(name = "sub_defence_skill", joinColumns = @JoinColumn(name = "subId"), inverseJoinColumns = @JoinColumn(name = "defenceSkillId"))
     List<DefenceSkill> defenceSkills;
 
     public Sub(){

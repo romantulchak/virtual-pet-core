@@ -24,23 +24,23 @@ import java.util.Objects;
 public abstract class SkillAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.ShopView.class)
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private long id;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private ESkillCategory skillCategory;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int price;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.SubView.class})
     private String skillDescription;
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.SubView.class})
     private LocalDateTime cooldown;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int maxCooldown;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private String skillImage;
 
     public SkillAbstract(){

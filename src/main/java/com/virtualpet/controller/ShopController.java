@@ -51,5 +51,11 @@ public class ShopController {
     public void buyItem(@RequestBody Item item, @PathVariable("subId") long subId){
         shopService.buyItem(item, subId);
     }
+
+    @PostMapping("/buySkill/{subId}")
+    @PreAuthorize("hasRole('USER')")
+    public void buySkill(@RequestBody SkillAbstract skillAbstract, @PathVariable("subId") long subId){
+        shopService.buySkill(skillAbstract, subId);
+    }
 }
 

@@ -28,8 +28,7 @@ public class DefenceSkill extends SkillAbstract {
     @ManyToOne
     private Shop shop;
 
-    @ManyToMany
-    @JoinTable(name = "sub_defence_skill", joinColumns = @JoinColumn(name = "defenceSkillId"), inverseJoinColumns = @JoinColumn(name = "subId"))
+    @ManyToMany(mappedBy = "defenceSkills")
     private List<Sub> subs;
 
 

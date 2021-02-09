@@ -1,5 +1,6 @@
 package com.virtualpet.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.SkillAbstract;
@@ -9,11 +10,12 @@ import com.virtualpet.model.skills.DamageSkill;
 
 import java.util.List;
 
+@JsonTypeName("damageSkill")
 public class DamageSkillDTO extends SkillAbstract {
 
-    @JsonView(Views.SkillView.class)
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int damage;
-    @JsonView({Views.SkillView.class, Views.ShopView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private double criticalChance;
 
     private List<Sub> subs;
