@@ -11,16 +11,21 @@ import com.virtualpet.model.items.Armor;
 public class ArmorDTO extends Item {
 
 
-    @JsonView({Views.ShopView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private int armor;
 
-    @JsonView({Views.ShopView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private int health;
     @JsonView({Views.ShopView.class})
     private boolean isBought;
 
     public ArmorDTO(){
 
+    }
+    public ArmorDTO(Armor armor){
+        super(armor.getId(), armor.getUniqueness(), armor.getIconPath(), armor.getName(), armor.geteItemCategory(), armor.geteItemType(), armor.getPrice());
+        this.armor = armor.getArmor();
+        this.health = armor.getHealth();
     }
 
     public ArmorDTO(Armor armor, Sub sub) {

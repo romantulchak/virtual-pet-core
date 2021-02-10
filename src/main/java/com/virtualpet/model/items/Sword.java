@@ -12,15 +12,11 @@ import com.virtualpet.model.Views;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @JsonTypeName("swordItem")
 @Entity
 public class Sword extends Item {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
-    private long id;
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class} )
     private int attack;
@@ -60,16 +56,6 @@ public class Sword extends Item {
         this.allowShield = allowShield;
     }
 
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public List<Inventory> getInventory() {
         return inventory;
     }
@@ -81,7 +67,6 @@ public class Sword extends Item {
     @Override
     public String toString() {
         return "Sword{" +
-                "id=" + id +
                 ", attack=" + attack +
                 ", allowShield=" + allowShield +
                 ", inventory=" + inventory +

@@ -12,6 +12,8 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 
 import javax.persistence.*;
+import javax.swing.text.View;
+import java.util.Objects;
 
 @MappedSuperclass
 @JsonTypeInfo(
@@ -27,25 +29,27 @@ public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.ShopView.class)
+    @JsonView({Views.ShopView.class, Views.InventoryView.class, Views.SubView.class})
     private long id;
 
     @Enumerated(EnumType.STRING)
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private EUniqueness uniqueness;
 
-    @JsonView({Views.InventoryView.class,Views.ShopView.class})
+    @JsonView({Views.InventoryView.class,Views.ShopView.class, Views.SubView.class})
     private String iconPath;
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private String name;
-    @JsonView({Views.InventoryView.class, Views.ShopView.class})
+
+    @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     @Enumerated(EnumType.STRING)
     private EItemType eItemType;
+
     @Enumerated(EnumType.STRING)
-    @JsonView({Views.InventoryView.class, Views.ShopView.class})
+    @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     private EItemCategory eItemCategory;
-    @JsonView({Views.InventoryView.class, Views.ShopView.class})
+    @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     private int price;
 
     protected Item(long id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType, int price){
@@ -117,6 +121,19 @@ public abstract class Item {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return id == item.id && price == item.price && uniqueness == item.uniqueness && Objects.equals(iconPath, item.iconPath) && Objects.equals(name, item.name) && eItemType == item.eItemType && eItemCategory == item.eItemCategory;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uniqueness, iconPath, name, eItemType, eItemCategory, price);
     }
 }
 

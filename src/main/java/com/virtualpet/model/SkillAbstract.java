@@ -8,6 +8,7 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 
 import javax.persistence.*;
+import javax.swing.text.View;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -30,17 +31,17 @@ public abstract class SkillAbstract {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private ESkillCategory skillCategory;
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private int price;
-    @JsonView({Views.SkillView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.SubView.class,Views.InventoryView.class})
     private String skillDescription;
-    @JsonView({Views.SkillView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.SubView.class, Views.InventoryView.class})
     private LocalDateTime cooldown;
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private int maxCooldown;
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
+    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private String skillImage;
 
     public SkillAbstract(){

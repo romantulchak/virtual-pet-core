@@ -245,4 +245,7 @@ public class ShopServiceImpl implements ShopService {
         }
         throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), itemPrice);
     }
+
+
+
 }

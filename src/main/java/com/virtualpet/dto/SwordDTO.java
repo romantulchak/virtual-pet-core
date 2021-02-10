@@ -10,13 +10,13 @@ import com.virtualpet.model.items.Sword;
 public class SwordDTO extends Item {
 
 
-    @JsonView({Views.ShopView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private int attack;
 
-    @JsonView({Views.ShopView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private boolean allowShield;
 
-    @JsonView({Views.ShopView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class})
     private boolean isBought;
 
     public SwordDTO() {

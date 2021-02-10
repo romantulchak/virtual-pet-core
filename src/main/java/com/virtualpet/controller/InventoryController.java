@@ -47,4 +47,9 @@ public class InventoryController {
     public SubDTO withdrawWeapon(@RequestBody SetItemRequest setItemRequest){
         return inventoryService.withdrawWeapon(setItemRequest);
     }
+    @PostMapping("/sellItem/{subId}")
+    @JsonView(Views.SubView.class)
+    public SubDTO sellItem(@RequestBody Item item, @PathVariable("subId") long subId){
+       return inventoryService.sellItem(item, subId);
+    }
 }

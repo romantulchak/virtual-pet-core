@@ -11,8 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface DefenceSkillRepository extends JpaRepository<DefenceSkill, Long> {
+
     boolean existsByName(String skillDefenceName);
+
     Optional<DefenceSkill> findDefenceSkillByNameAndSkillCategory(String skillName, ESkillCategory skillCategory);
+
     @Query("SELECT d FROM DefenceSkill d ORDER BY d.id DESC ")
     List<DefenceSkill> allOrderByDesc();
 }

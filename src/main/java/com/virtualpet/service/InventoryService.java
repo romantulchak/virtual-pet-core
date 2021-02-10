@@ -17,5 +17,6 @@ public interface InventoryService {
     SubDTO withdrawWeapon(SetItemRequest setItemRequest);
     SubDTO withdrawArmor(SetItemRequest setItemRequest);
 
+    SubDTO sellItem(Item item, long subId);
 
 }

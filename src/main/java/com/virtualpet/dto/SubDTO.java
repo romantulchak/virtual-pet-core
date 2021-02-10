@@ -48,7 +48,7 @@ public class SubDTO {
     @JsonView(Views.SubView.class)
     private Integer health;
     @JsonView(Views.SubView.class)
-    private DressedItem dressedItems;
+    private DressedItemDTO dressedItems;
 
     @JsonView(Views.SubView.class)
     private List<DamageSkillDTO> damageSkills;
@@ -69,7 +69,7 @@ public class SubDTO {
         this.moneyMultiplier = sub.getMoneyMultiplier();
         this.subAttack = sub.getSubAttack();
         this.health = sub.getHealth() + sub.getSubType().getHealth();
-        this.dressedItems = sub.getDressedItems();
+        this.dressedItems = new DressedItemDTO(sub.getDressedItems());
         this.iconPath = sub.getIconPath();
         this.damageSkills = sub.getDamageSkills().stream().map(DamageSkillDTO::new).collect(Collectors.toList());
         this.defenceSkills = sub.getDefenceSkills().stream().map(DefenceSkillDTO::new).collect(Collectors.toList());
@@ -173,11 +173,11 @@ public class SubDTO {
     }
 
 
-    public DressedItem getDressedItems() {
+    public DressedItemDTO getDressedItems() {
         return dressedItems;
     }
 
-    public void setDressedItems(DressedItem dressedItems) {
+    public void setDressedItems(DressedItemDTO dressedItems) {
         this.dressedItems = dressedItems;
     }
 
