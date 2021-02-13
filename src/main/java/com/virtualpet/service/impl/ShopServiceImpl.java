@@ -194,7 +194,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void buySkill(SkillAbstract skill, long subId) {
+    public SubDTO buySkill(SkillAbstract skill, long subId) {
         if (skill != null){
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
             if (checkEnoughMoney(sub,skill.getPrice())){
@@ -202,13 +202,13 @@ public class ShopServiceImpl implements ShopService {
                     addSkillToSub(sub, skill);
                     sub.getCurrency().setMoney(sub.getCurrency().getMoney() - skill.getPrice());
                     subRepository.save(sub);
+                    return new SubDTO(sub);
                 }else {
                     throw new SkillAlreadyBoughtException(sub.getName(), skill.getName());
                 }
             }
-        }else {
-            throw new SkillNotFoundException();
         }
+        throw new SkillNotFoundException();
     }
 
     private void addSkillToSub(Sub sub, SkillAbstract skill) {

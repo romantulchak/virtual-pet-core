@@ -2,6 +2,7 @@ package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dto.ShopDTO;
+import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.*;
 import com.virtualpet.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,9 @@ public class ShopController {
 
     @PostMapping("/buySkill/{subId}")
     @PreAuthorize("hasRole('USER')")
-    public void buySkill(@RequestBody SkillAbstract skillAbstract, @PathVariable("subId") long subId){
-        shopService.buySkill(skillAbstract, subId);
+    @JsonView(Views.SubView.class)
+    public SubDTO buySkill(@RequestBody SkillAbstract skillAbstract, @PathVariable("subId") long subId){
+       return shopService.buySkill(skillAbstract, subId);
     }
 }
 

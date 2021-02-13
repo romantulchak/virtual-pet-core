@@ -5,11 +5,13 @@ import com.virtualpet.dto.DefenceSkillDTO;
 import com.virtualpet.exeption.SkillAlreadyExistException;
 import com.virtualpet.exeption.SkillNotFoundException;
 import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.Sub;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.DamageSkillRepository;
 import com.virtualpet.repository.DefenceSkillRepository;
+import com.virtualpet.repository.SubRepository;
 import com.virtualpet.service.SkillService;
 import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,15 @@ import java.util.stream.Collectors;
 public class SkillServiceImpl implements SkillService {
     private final DamageSkillRepository damageSkillRepository;
     private final DefenceSkillRepository defenceSkillRepository;
-
+    private final SubRepository subRepository;
     @Value("${upload.path}")
     private String path;
     private String skillImage;
     @Autowired
-    public SkillServiceImpl(DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository){
+    public SkillServiceImpl(DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SubRepository subRepository){
         this.damageSkillRepository = damageSkillRepository;
         this.defenceSkillRepository = defenceSkillRepository;
+        this.subRepository = subRepository;
     }
 
 
@@ -87,21 +90,27 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public void deleteSkill(long skillId, ESkillCategory skillCategory) {
-        SkillAbstract skillAbstract;
         switch (skillCategory){
             case PHYS_DAMAGE:
-                skillAbstract = damageSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
-                damageSkillRepository.delete((DamageSkill) skillAbstract);
+                DamageSkill damageSkill = damageSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
+                returnSkillPrice(damageSkill.getPrice(), damageSkill.getSubs());
+                damageSkillRepository.delete(damageSkill);
                 break;
             case DEFENCE:
-                skillAbstract = defenceSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
-                defenceSkillRepository.delete((DefenceSkill) skillAbstract);
+                DefenceSkill defenceSkill = defenceSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
+                returnSkillPrice(defenceSkill.getPrice(), defenceSkill.getSubs());
+                defenceSkillRepository.delete(defenceSkill);
                 break;
             case MONEY:
                 break;
         }
     }
-
+    private void returnSkillPrice(long skillPrice, List<Sub> subs){
+        subs.forEach(sub -> {
+            sub.getCurrency().setMoney(sub.getCurrency().getMoney() + skillPrice);
+            subRepository.save(sub);
+        });
+    }
     private DamageSkillDTO convertToDamageSkillDTO(DamageSkill damageSkill){
         return new DamageSkillDTO(damageSkill);
     }

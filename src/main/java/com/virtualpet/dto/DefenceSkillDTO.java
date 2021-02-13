@@ -10,8 +10,6 @@ import com.virtualpet.model.skills.DefenceSkill;
 @JsonTypeName("defenceSkill")
 public class DefenceSkillDTO extends SkillAbstract {
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
-    private long id;
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private int health;
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private double defence;
@@ -43,15 +41,6 @@ public class DefenceSkillDTO extends SkillAbstract {
         this.timeOfAction = defenceSkill.getTimeOfAction();
         this.isBought = sub.getDefenceSkills().contains(defenceSkill);
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public int getHealth() {
         return health;
     }

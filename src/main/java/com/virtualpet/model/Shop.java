@@ -21,17 +21,17 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<DamageSkill> damageSkills = new ArrayList<>();
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<DefenceSkill> defenceSkills = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Sword> itemSwords = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Armor> itemArmors = new ArrayList<>();
 
 
@@ -75,6 +75,7 @@ public class Shop {
     public void setItemArmors(List<Armor> itemArmors) {
         this.itemArmors = itemArmors;
     }
+
 
 
 }

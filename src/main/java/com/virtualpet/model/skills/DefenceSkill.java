@@ -10,6 +10,7 @@ import com.virtualpet.model.enums.ESkillCategory;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonTypeName("defenceSkill")
@@ -29,7 +30,7 @@ public class DefenceSkill extends SkillAbstract {
     private Shop shop;
 
     @ManyToMany(mappedBy = "defenceSkills")
-    private List<Sub> subs;
+    private List<Sub> subs = new ArrayList<>();
 
 
     public DefenceSkill() {
@@ -82,4 +83,5 @@ public class DefenceSkill extends SkillAbstract {
     public void setSubs(List<Sub> subs) {
         this.subs = subs;
     }
+
 }

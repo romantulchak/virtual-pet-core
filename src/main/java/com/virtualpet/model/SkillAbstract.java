@@ -25,7 +25,7 @@ import java.util.Objects;
 public abstract class SkillAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.ShopView.class, Views.SubView.class})
+    @JsonView({Views.ShopView.class, Views.SubView.class, Views.SkillView.class})
     private long id;
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     private String name;

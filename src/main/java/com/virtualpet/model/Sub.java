@@ -194,4 +194,10 @@ public class Sub extends SubAbstract {
     public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
         this.defenceSkills = defenceSkills;
     }
+
+    @PreRemove
+    public void PreRemove(){
+        this.setDefenceSkills(null);
+        this.setDamageSkills(null);
+    }
 }
