@@ -7,6 +7,8 @@ import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @JsonTypeName("defenceSkill")
 @Entity
+@Getter
+@Setter
 public class DefenceSkill extends SkillAbstract {
 
     @JsonView(Views.ShopView.class)
@@ -41,47 +45,6 @@ public class DefenceSkill extends SkillAbstract {
         this.health = health;
         this.defence = defence;
         this.timeOfAction = timeOfAction;
-    }
-
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public double getDefence() {
-        return defence;
-    }
-
-    public void setDefence(double defence) {
-        this.defence = defence;
-    }
-
-    public int getTimeOfAction() {
-        return timeOfAction;
-    }
-
-    public void setTimeOfAction(int timeOfAction) {
-        this.timeOfAction = timeOfAction;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
-
-    public List<Sub> getSubs() {
-        return subs;
-    }
-
-    public void setSubs(List<Sub> subs) {
-        this.subs = subs;
     }
 
 }

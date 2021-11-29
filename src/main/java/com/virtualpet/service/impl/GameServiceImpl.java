@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class GameServiceImpl implements GameService {
     private BossRepository bossRepository;
     private List<Boss> bosses = new ArrayList<>();
     private Boss currentBoss;
+
     @Autowired
     public GameServiceImpl(SubRepository subRepository, LevelRepository levelRepository, BossRepository bossRepository){
         this.subRepository = subRepository;
@@ -124,14 +126,15 @@ public class GameServiceImpl implements GameService {
         int bossesSize = bosses.size();
         return random.nextInt(bossesSize);
     }
+
     private void createBosses(){
-        List<Boss> bosses = new ArrayList<Boss>(6){{
-            add(new Boss("Dragon 1", 23, 53, "", "", 564));
-            add(new Boss("Dragon 2", 432, 532, "", "", 1364));
-            add(new Boss("Dragon 3", 2123, 433, "", "", 2364));
-            add(new Boss("Dragon 4", 223, 213, "", "", 3367));
-            add(new Boss("Dragon 5", 133, 533, "", "", 1534));
-            add(new Boss("Dragon 6", 423, 643, "", "", 5623));
+        List<Boss> bosses = new ArrayList<>(6) {{
+            add(new Boss("Dragon 1", 23, 53, "a", "a", 564));
+            add(new Boss("Dragon 2", 432, 532, "a", "a", 1364));
+            add(new Boss("Dragon 3", 2123, 433, "a", "a", 2364));
+            add(new Boss("Dragon 4", 223, 213, "a", "a", 3367));
+            add(new Boss("Dragon 5", 133, 533, "a", "a", 1534));
+            add(new Boss("Dragon 6", 423, 643, "a", "a", 5623));
         }};
         bossRepository.saveAll(bosses);
         this.bosses.addAll(bosses);

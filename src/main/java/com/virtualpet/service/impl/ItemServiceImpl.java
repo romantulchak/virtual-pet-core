@@ -23,8 +23,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void createSword(Sword sword) {
         if(sword != null) {
-            sword.seteItemCategory(EItemCategory.SWORD);
-            sword.seteItemType(EItemType.WEAPON);
+            sword.setItemCategory(EItemCategory.SWORD);
+            sword.setItemType(EItemType.WEAPON);
             swordRepository.save(sword);
         }
 

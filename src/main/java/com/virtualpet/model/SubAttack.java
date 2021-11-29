@@ -1,10 +1,14 @@
 package com.virtualpet.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Getter
+@Setter
 public class SubAttack {
 
     @JsonView(Views.SubView.class)
@@ -20,30 +24,5 @@ public class SubAttack {
         this.attackUpLevel = 1;
         this.attackMultiplier = 5;
         this.attackMoneyUp = 150L;
-    }
-
-
-    public int getAttackUpLevel() {
-        return attackUpLevel;
-    }
-
-    public void setAttackUpLevel(int attackUpLevel) {
-        this.attackUpLevel = attackUpLevel;
-    }
-
-    public int getAttackMultiplier() {
-        return attackMultiplier;
-    }
-
-    public void setAttackMultiplier(int attackMultiplier) {
-        this.attackMultiplier = attackMultiplier;
-    }
-
-    public long getAttackMoneyUp() {
-        return attackMoneyUp;
-    }
-
-    public void setAttackMoneyUp(long attackMoneyUp) {
-        this.attackMoneyUp = attackMoneyUp;
     }
 }

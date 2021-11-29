@@ -1,16 +1,13 @@
 package com.virtualpet.service.impl;
 
-import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.exeption.SubTypeIsNull;
 import com.virtualpet.exeption.SubTypeWithNameAlreadyExist;
 import com.virtualpet.model.SubType;
-import com.virtualpet.payload.response.MessageResponse;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
 import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +33,8 @@ public class SubServiceImpl implements SubService {
         if(subType != null){
             if(!subTypeRepository.existsByName(subType.getName())) {
                 subType.setIconPath(filePath);
-                subType.setLocalDateTime(LocalDateTime.now());
+                subType.setModelPath(filePath);
+                subType.setCreatedAt(LocalDateTime.now());
                 subTypeRepository.save(subType);
             }else {
                 throw new SubTypeWithNameAlreadyExist(subType.getName());

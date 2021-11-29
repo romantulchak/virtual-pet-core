@@ -3,10 +3,15 @@ package com.virtualpet.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "dressed_items")
 public class DressedItem {
 
     @Id
@@ -38,69 +43,5 @@ public class DressedItem {
     private Armor shield;
 
     public DressedItem(){
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Sword getSword() {
-        return sword;
-    }
-
-    public void setSword(Sword sword) {
-        this.sword = sword;
-    }
-
-    public Armor getLegs() {
-        return legs;
-    }
-
-    public void setLegs(Armor legs) {
-        this.legs = legs;
-    }
-
-    public Armor getShoulders() {
-        return shoulders;
-    }
-
-    public void setShoulders(Armor shoulders) {
-        this.shoulders = shoulders;
-    }
-
-    public Armor getBody() {
-        return body;
-    }
-
-    public void setBody(Armor body) {
-        this.body = body;
-    }
-
-    public Armor getHands() {
-        return hands;
-    }
-
-    public void setHands(Armor hands) {
-        this.hands = hands;
-    }
-
-    public Armor getHead() {
-        return head;
-    }
-
-    public void setHead(Armor head) {
-        this.head = head;
-    }
-
-    public Armor getShield() {
-        return shield;
-    }
-
-    public void setShield(Armor shield) {
-        this.shield = shield;
     }
 }

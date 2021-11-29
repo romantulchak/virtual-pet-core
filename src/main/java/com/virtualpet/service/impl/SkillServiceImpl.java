@@ -46,7 +46,7 @@ public class SkillServiceImpl implements SkillService {
          if(damageSkill != null){
              if (!damageSkillRepository.existsByName(damageSkill.getName())) {
                  damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
-                 damageSkill.setSkillImage(skillImage);
+                 damageSkill.setIcon(skillImage);
                  damageSkillRepository.save(damageSkill);
                  return new DamageSkillDTO(damageSkill);
              }else {

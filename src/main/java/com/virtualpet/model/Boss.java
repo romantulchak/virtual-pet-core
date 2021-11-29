@@ -1,17 +1,31 @@
 package com.virtualpet.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
-public class Boss extends SubAbstract{
+@Table(name = "boss", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name")
+})
+@Getter
+@Setter
+public class Boss extends SubAbstract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @NotBlank
+    @Size(max = 34)
     private String name;
+
     private int droppedMoney;
 
-    public Boss(String name, int attack, int defence, String iconPath, String modelPath, int health){
+    public Boss(String name, int attack, int defence, String iconPath, String modelPath, int health) {
         super(attack, defence);
         setIconPath(iconPath);
         setModelPath(modelPath);
@@ -19,33 +33,7 @@ public class Boss extends SubAbstract{
         setName(name);
     }
 
-
     public Boss() {
 
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public int getDroppedMoney() {
-        return droppedMoney;
-    }
-
-    public void setDroppedMoney(int droppedMoney) {
-        this.droppedMoney = droppedMoney;
     }
 }

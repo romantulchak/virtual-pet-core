@@ -11,19 +11,16 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.3.3.RELEASE'
-
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.21.Final'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.3.RELEASE'
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.16'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.3.RELEASE'
-    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.3.RELEASE'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
-    compile group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.3.3.RELEASE'
-
-
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.6.0'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.1.Final'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.6.0'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.16'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.0'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.3.3.RELEASE'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.1.0'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.12'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }

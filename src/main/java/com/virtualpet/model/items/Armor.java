@@ -9,13 +9,17 @@ import com.virtualpet.model.enums.EUniqueness;
 import com.virtualpet.model.Inventory;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Views;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @JsonTypeName("armorItem")
 @Entity
+@Table(name = "armor")
+@Getter
+@Setter
 public class Armor extends Item {
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
@@ -39,39 +43,6 @@ public class Armor extends Item {
         super(id, uniqueness, iconPath, name, eItemCategory,eItemType, price);
         this.armor = armor;
         this.health = health;
-    }
-
-    public int getArmor() {
-        return armor;
-    }
-
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-
-    public List<Inventory> getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(List<Inventory> inventory) {
-        this.inventory = inventory;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
 }

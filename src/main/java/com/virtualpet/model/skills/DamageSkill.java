@@ -7,17 +7,19 @@ import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @JsonTypeName("damageSkill")
 @Entity
+@Table(name = "damage_skill")
+@Getter
+@Setter
 public class DamageSkill extends SkillAbstract {
-
 
     @JsonView(Views.ShopView.class)
     private int damage;
@@ -40,39 +42,5 @@ public class DamageSkill extends SkillAbstract {
         this.damage = damage;
         this.criticalChance = criticalChance;
     }
-
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public double getCriticalChance() {
-        return criticalChance;
-    }
-
-    public void setCriticalChance(double criticalChance) {
-        this.criticalChance = criticalChance;
-    }
-
-    public List<Sub> getSubs() {
-        return subs;
-    }
-
-    public void setSubs(List<Sub> subs) {
-        this.subs = subs;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
-
 }
 

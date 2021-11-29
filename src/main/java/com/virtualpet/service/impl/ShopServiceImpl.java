@@ -11,15 +11,10 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
-import com.virtualpet.utils.FileSaver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -42,7 +37,7 @@ public class ShopServiceImpl implements ShopService {
         this.armorRepository = armorRepository;
         this.subRepository = subRepository;
         this.inventoryRepository = inventoryRepository;
-        if(!this.shopRepository.findFirstByOrderById().isPresent()){
+        if(this.shopRepository.findFirstByOrderById().isEmpty()){
             createShop();
         }
     }
@@ -112,7 +107,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void addItemToShop(Item item) {
         if (item != null){
-            if(item.geteItemCategory() == EItemCategory.SWORD){
+            if(item.getItemCategory() == EItemCategory.SWORD){
                 addSwordToShop(item.getId());
             }else {
                 addArmorToShop(item.getId());
@@ -220,7 +215,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     private void addItemToInventory(Item item, Inventory inventory) {
-        switch (item.geteItemType()){
+        switch (item.getItemType()){
             case ARMOR:
                 inventory.getArmors().add((Armor) item);
                 break;

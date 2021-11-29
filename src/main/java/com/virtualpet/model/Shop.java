@@ -5,6 +5,8 @@ import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 public class Shop {
 
     @Id
@@ -24,7 +28,6 @@ public class Shop {
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<DamageSkill> damageSkills = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<DefenceSkill> defenceSkills = new ArrayList<>();
 
@@ -33,49 +36,5 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Armor> itemArmors = new ArrayList<>();
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<DamageSkill> getDamageSkills() {
-        return damageSkills;
-    }
-
-    public void setDamageSkills(List<DamageSkill> damageSkills) {
-        this.damageSkills = damageSkills;
-    }
-
-    public List<DefenceSkill> getDefenceSkills() {
-        return defenceSkills;
-    }
-
-    public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
-        this.defenceSkills = defenceSkills;
-    }
-
-    public List<Sword> getItemSwords() {
-        return itemSwords;
-    }
-
-    public void setItemSwords(List<Sword> itemSwords) {
-        this.itemSwords = itemSwords;
-    }
-
-    public List<Armor> getItemArmors() {
-        return itemArmors;
-    }
-
-    public void setItemArmors(List<Armor> itemArmors) {
-        this.itemArmors = itemArmors;
-    }
-
-
 
 }

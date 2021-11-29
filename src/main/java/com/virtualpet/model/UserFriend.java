@@ -1,11 +1,15 @@
 package com.virtualpet.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "friends_request")
+@Table(name = "user_friend")
+@Getter
+@Setter
 public class UserFriend {
 
     @Id
@@ -31,29 +35,4 @@ public class UserFriend {
         this.user = user;
         this.userRequest = userRequest;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public User getUserRequest() {
-        return userRequest;
-    }
-
-    public void setUserRequest(User userRequest) {
-        this.userRequest = userRequest;
-    }
-
 }

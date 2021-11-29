@@ -28,11 +28,11 @@ public class AuthController {
     public void registerUser(@RequestBody SignupRequest signupRequest){
         authService.registerUser(signupRequest);
     }
+
     @PostMapping("/signin")
     public JwtResponse authenticateUser(@RequestBody LoginRequest loginRequest){
         return authService.authenticateUser(loginRequest);
     }
-
 
     @GetMapping("/refreshToken")
     public JwtRefreshResponse authenticateUser(HttpServletRequest request){

@@ -37,7 +37,7 @@ public class InventoryServiceImpl implements InventoryService {
             switch (setItemRequest.getItemType()){
                 case ARMOR:
                     Armor armor = sub.getInventory().getArmors().stream().filter(x->x.getId() == setItemRequest.getItemId()).findFirst().orElseThrow(ItemNotFoundException::new);
-                    setArmor(sub, armor, armor.geteItemCategory());
+                    setArmor(sub, armor, armor.getItemCategory());
                     break;
                 case WEAPON:
                     Sword weapon = sub.getInventory().getSwords().stream().filter(x->x.getId() == setItemRequest.getItemId()).findFirst().orElseThrow(ItemNotFoundException::new);
@@ -195,14 +195,14 @@ public class InventoryServiceImpl implements InventoryService {
         if(item != null) {
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
             Inventory inventory = inventoryRepository.findById(subId).orElseThrow(() -> new InventoryNotFoundException(sub.getName()));
-            switch (item.geteItemType()){
+            switch (item.getItemType()){
                 case WEAPON:
                     checkDressedWeapon(sub);
                     getMoneyForSell(item, sub);
                     inventory.getSwords().remove(item);
                     break;
                 case ARMOR:
-                    getArmor(item.geteItemCategory(), sub);
+                    getArmor(item.getItemCategory(), sub);
                     getMoneyForSell(item, sub);
                     inventory.getArmors().remove(item);
                     break;

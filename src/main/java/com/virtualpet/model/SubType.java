@@ -1,20 +1,30 @@
 package com.virtualpet.model;
 
 
-import com.virtualpet.model.skills.DamageSkill;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "sub_type", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name")
+})
+@Getter
+@Setter
 public class SubType extends SubAbstract{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime createdAt;
 
+    @NotBlank
+    @Size(max = 34)
     private String name;
 
     @OneToMany(mappedBy = "subType")
@@ -26,44 +36,10 @@ public class SubType extends SubAbstract{
 
     public SubType(String name, int attack , int defence, String modelPath, String iconPath, int health) {
         super(attack, defence);
-        this.localDateTime = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
         setModelPath(modelPath);
         setIconPath(iconPath);
         setName(name);
         setHealth(health);
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
-    }
-
-    public List<Sub> getSubs() {
-        return subs;
-    }
-
-    public void setSubs(List<Sub> subs) {
-        this.subs = subs;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

@@ -26,7 +26,7 @@ public class DefenceSkillDTO extends SkillAbstract {
     }
 
     public DefenceSkillDTO(DefenceSkill defenceSkill) {
-        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getSkillImage());
+        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getIcon());
         this.health = defenceSkill.getHealth();
         this.defence = defenceSkill.getDefence();
         this.timeOfAction = defenceSkill.getTimeOfAction();
@@ -35,7 +35,7 @@ public class DefenceSkillDTO extends SkillAbstract {
         }
     }
     public DefenceSkillDTO(DefenceSkill defenceSkill, Sub sub) {
-        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getSkillImage());
+        super(defenceSkill.getId(), defenceSkill.getName(), defenceSkill.getSkillCategory(), defenceSkill.getPrice(), defenceSkill.getSkillDescription(), defenceSkill.getCooldown(), defenceSkill.getMaxCooldown(), defenceSkill.getIcon());
         this.health = defenceSkill.getHealth();
         this.defence = defenceSkill.getDefence();
         this.timeOfAction = defenceSkill.getTimeOfAction();

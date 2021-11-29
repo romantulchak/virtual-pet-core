@@ -1,10 +1,14 @@
 package com.virtualpet.model;
 
 import com.virtualpet.model.enums.ERole;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class Role {
 
     @Id
@@ -18,23 +22,8 @@ public class Role {
     public Role(ERole name){
         this.name = name;
     }
+
     public Role(){
 
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ERole getName() {
-        return name;
-    }
-
-    public void setName(ERole name) {
-        this.name = name;
     }
 }

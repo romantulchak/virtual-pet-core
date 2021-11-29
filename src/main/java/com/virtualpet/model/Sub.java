@@ -3,23 +3,33 @@ package com.virtualpet.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
+@Table(name = "sub", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name")
+})
+@Getter
+@Setter
 public class Sub extends SubAbstract {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Views.SubView.class)
-    private Long id;
+    private long id;
 
 
     @JsonView({Views.SubView.class, Views.FriendView.class})
+    @NotBlank
+    @Size(max = 40)
     private String name;
-
 
     @OneToOne
     @JsonView(Views.SubView.class)
@@ -28,8 +38,10 @@ public class Sub extends SubAbstract {
     @ManyToOne
     @JsonView(Views.SubView.class)
     private User user;
+
     @JsonView(Views.SubView.class)
     private int moneyUpLevel;
+
     @JsonView(Views.SubView.class)
     private long moneyUpPrice;
 
@@ -63,11 +75,11 @@ public class Sub extends SubAbstract {
     public Sub(){
 
     }
-    public Sub(String name, Integer attack, Inventory inventory, Integer defence, User user, SubType subType, String modelPath, String iconPath, Level level, SubAttack subAttack, int health, Currency currency, DressedItem dressedItems) {
-        this.setName(name);
-        this.setAttack(0);
-        this.currency = currency;
-        this.setDefence(0);
+    public Sub(String name, Inventory inventory, User user, SubType subType, String modelPath, String iconPath, Level level, DressedItem dressedItems) {
+        this.name = name;
+        setAttack(0);
+        this.currency = new Currency();
+        setDefence(0);
         this.inventory = inventory;
         this.user = user;
         this.moneyUpLevel = 1;
@@ -77,127 +89,14 @@ public class Sub extends SubAbstract {
         setModelPath(modelPath);
         setIconPath(iconPath);
         this.level = level;
-        this.subAttack = subAttack;
+        this.subAttack = new SubAttack();
         setHealth(0);
         this.dressedItems = dressedItems;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public SubType getSubType() {
-        return subType;
-    }
-
-    public void setSubType(SubType subType) {
-        this.subType = subType;
-    }
-
-    public Integer getMoneyUpLevel() {
-        return moneyUpLevel;
-    }
-
-    public void setMoneyUpLevel(Integer moneyUpLevel) {
-        this.moneyUpLevel = moneyUpLevel;
-    }
-
-    public Long getMoneyUpPrice() {
-        return moneyUpPrice;
-    }
-
-    public void setMoneyUpPrice(Long moneyUpPrice) {
-        this.moneyUpPrice = moneyUpPrice;
-    }
-
-    public Integer getMoneyMultiplier() {
-        return moneyMultiplier;
-    }
-
-    public void setMoneyMultiplier(Integer moneyMultiplier) {
-        this.moneyMultiplier = moneyMultiplier;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public SubAttack getSubAttack() {
-        return subAttack;
-    }
-
-    public void setSubAttack(SubAttack subAttack) {
-        this.subAttack = subAttack;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    public DressedItem getDressedItems() {
-        return dressedItems;
-    }
-
-    public void setDressedItems(DressedItem dressedItems) {
-        this.dressedItems = dressedItems;
-    }
-
-    public List<DamageSkill> getDamageSkills() {
-        return damageSkills;
-    }
-
-    public void setDamageSkills(List<DamageSkill> damageSkills) {
-        this.damageSkills = damageSkills;
-    }
-
-    public List<DefenceSkill> getDefenceSkills() {
-        return defenceSkills;
-    }
-
-    public void setDefenceSkills(List<DefenceSkill> defenceSkills) {
-        this.defenceSkills = defenceSkills;
-    }
-
     @PreRemove
     public void PreRemove(){
-        this.setDefenceSkills(null);
-        this.setDamageSkills(null);
+        setDefenceSkills(null);
+        setDamageSkills(null);
     }
 }

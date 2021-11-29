@@ -8,11 +8,12 @@ import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.EUniqueness;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
-import com.virtualpet.model.skills.DamageSkill;
-import com.virtualpet.model.skills.DefenceSkill;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.swing.text.View;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -25,6 +26,8 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = Sword.class, name = "swordItem"),
         @JsonSubTypes.Type(value = Armor.class, name = "armorItem")
 })
+@Getter
+@Setter
 public abstract class Item {
 
     @Id
@@ -40,86 +43,32 @@ public abstract class Item {
     private String iconPath;
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
+    @NotBlank
+    @Size(max = 60)
     private String name;
 
     @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     @Enumerated(EnumType.STRING)
-    private EItemType eItemType;
+    private EItemType itemType;
 
     @Enumerated(EnumType.STRING)
     @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
-    private EItemCategory eItemCategory;
+    private EItemCategory itemCategory;
+
     @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     private int price;
 
-    protected Item(long id, EUniqueness uniqueness, String iconPath, String name, EItemCategory eItemCategory, EItemType eItemType, int price){
-        this.id = id;
-        this.uniqueness = uniqueness;
-        this.iconPath = iconPath;
-        this.name = name;
-        this.eItemCategory = eItemCategory;
-        this.eItemType = eItemType;
-        this.price = price;
-    }
     protected Item(){
 
     }
 
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
+    protected Item(long id, EUniqueness uniqueness, String iconPath, String name, EItemCategory itemCategory, EItemType itemType, int price){
         this.id = id;
-    }
-
-    public EUniqueness getUniqueness() {
-        return uniqueness;
-    }
-
-    public void setUniqueness(EUniqueness uniqueness) {
         this.uniqueness = uniqueness;
-    }
-
-    public String getIconPath() {
-        return iconPath;
-    }
-
-    public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public EItemCategory geteItemCategory() {
-        return eItemCategory;
-    }
-
-    public void seteItemCategory(EItemCategory eItemCategory) {
-        this.eItemCategory = eItemCategory;
-    }
-
-    public EItemType geteItemType() {
-        return eItemType;
-    }
-
-    public void seteItemType(EItemType eItemType) {
-        this.eItemType = eItemType;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
+        this.itemCategory = itemCategory;
+        this.itemType = itemType;
         this.price = price;
     }
 
@@ -128,12 +77,12 @@ public abstract class Item {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
         Item item = (Item) o;
-        return id == item.id && price == item.price && uniqueness == item.uniqueness && Objects.equals(iconPath, item.iconPath) && Objects.equals(name, item.name) && eItemType == item.eItemType && eItemCategory == item.eItemCategory;
+        return id == item.id && price == item.price && uniqueness == item.uniqueness && Objects.equals(iconPath, item.iconPath) && Objects.equals(name, item.name) && itemType == item.itemType && itemCategory == item.itemCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uniqueness, iconPath, name, eItemType, eItemCategory, price);
+        return Objects.hash(id, uniqueness, iconPath, name, itemType, itemCategory, price);
     }
 }
 

@@ -29,7 +29,7 @@ public class DamageSkillDTO extends SkillAbstract {
     private boolean isBought;
 
     public DamageSkillDTO(DamageSkill damageSkill) {
-        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getIcon());
         this.damage = damageSkill.getDamage();
         this.criticalChance = damageSkill.getCriticalChance();
         this.subs = damageSkill.getSubs();
@@ -39,7 +39,7 @@ public class DamageSkillDTO extends SkillAbstract {
     }
 
     public DamageSkillDTO(DamageSkill damageSkill, Sub sub){
-        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getSkillImage());
+        super(damageSkill.getId(),damageSkill.getName(), damageSkill.getSkillCategory(), damageSkill.getPrice(), damageSkill.getSkillDescription(), damageSkill.getCooldown(), damageSkill.getMaxCooldown(), damageSkill.getIcon());
         this.damage = damageSkill.getDamage();
         this.criticalChance = damageSkill.getCriticalChance();
         this.subs = damageSkill.getSubs();

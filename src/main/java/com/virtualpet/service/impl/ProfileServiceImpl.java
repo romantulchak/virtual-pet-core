@@ -115,7 +115,7 @@ public class ProfileServiceImpl implements ProfileService {
                     dressedItemRepository.save(dressedItem);
                     levelRepository.save(level);
                     inventoryRepository.save(inventory);
-                    Sub sub = new Sub(subRequest.getName(), subType.getAttack(), inventory, subType.getDefence(), user, subType, subType.getModelPath(), subType.getIconPath(), level, new SubAttack(), subType.getHealth(), new Currency(), dressedItem);
+                    Sub sub = new Sub(subRequest.getName(), inventory, user, subType, subType.getModelPath(), subType.getIconPath(), level, dressedItem);
                     subRepository.save(sub);
                 }else {
                     throw new MaximumNumberOfSubsException();
