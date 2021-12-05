@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface InventoryService {
 
-    List<Item> getItems(Sub sub);
+    List<Item> getItems(long id);
     SubDTO setItem(SetItemRequest setItemRequest);
     List<Item> getDressedItems(List<Long> itemId);
 

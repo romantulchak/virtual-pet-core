@@ -1,6 +1,7 @@
 package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dto.MoneyCurrencyDTO;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.View;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +51,7 @@ public class ProfileController {
     public void deleteSub(@PathVariable("subId") long id, Authentication authentication){
         profileService.deleteSubForUser(id, authentication);
     }
+
     @GetMapping("/getSubTypes")
     public List<SubTypeDTO> getSubTypes(){
         return profileService.getSubTypes();
@@ -110,5 +113,12 @@ public class ProfileController {
     @PreAuthorize("hasRole('USER')")
     public void deleteFriend(@RequestParam(name = "userId") long userId, @RequestParam(name = "friendId") long friendId, Authentication authentication){
         profileService.deleteFriend(userId, friendId, authentication);
+    }
+
+    @GetMapping("/sub-money-currency")
+    @PreAuthorize("isAuthenticated()")
+    @JsonView(Views.MoneyCurrencyView.class)
+    public MoneyCurrencyDTO getSubMoneyCurrency(@RequestParam("name") String name, @RequestParam("id") long id){
+        return profileService.getSubMoneyCurrency(id, name);
     }
 }

@@ -9,5 +9,5 @@ import lombok.Setter;
 public class SubRequest {
     private String name;
     private User user;
-    private Long subId;
+    private long subId;
 }

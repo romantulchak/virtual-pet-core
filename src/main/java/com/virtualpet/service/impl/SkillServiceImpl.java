@@ -38,9 +38,6 @@ public class SkillServiceImpl implements SkillService {
         this.subRepository = subRepository;
     }
 
-
-
-
     @Override
     public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
@@ -61,7 +58,7 @@ public class SkillServiceImpl implements SkillService {
     public List<SkillAbstract> getSkills() {
         List<DamageSkillDTO> damageSkills = damageSkillRepository.allOrderByDesc().stream().map(this::convertToDamageSkillDTO).collect(Collectors.toList());
         List<DefenceSkillDTO> defenceSkills = defenceSkillRepository.allOrderByDesc().stream().map(this::convertToDefenceSkillDTO).collect(Collectors.toList());
-        return new ArrayList<SkillAbstract>(){{
+        return new ArrayList<>() {{
             addAll(damageSkills);
             addAll(defenceSkills);
         }};

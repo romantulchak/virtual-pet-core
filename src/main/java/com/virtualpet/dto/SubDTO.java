@@ -2,25 +2,26 @@ package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.*;
-import com.virtualpet.model.skills.DamageSkill;
+import com.virtualpet.model.sub.Currency;
+import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
 public class SubDTO {
 
     @JsonView(Views.SubView.class)
-    private Long id;
+    private long id;
 
     @JsonView(Views.SubView.class)
     private String name;
 
     @JsonView(Views.SubView.class)
-    private Integer attack;
+    private int attack;
 
     @JsonView(Views.SubView.class)
-    private Integer defence;
+    private int defence;
 
     @JsonView(Views.SubView.class)
     private Inventory inventory;
@@ -32,41 +33,36 @@ public class SubDTO {
     private User user;
 
     @JsonView(Views.SubView.class)
-    private Integer moneyUpLevel;
-    @JsonView(Views.SubView.class)
-    private Long moneyUpPrice;
-
-    @JsonView(Views.SubView.class)
-    private Integer moneyMultiplier;
+    private Currency currency;
 
     @JsonView(Views.SubView.class)
     private SubAttack subAttack;
 
     @JsonView(Views.SubView.class)
-    private Currency currency;
+    private int health;
 
-    @JsonView(Views.SubView.class)
-    private Integer health;
     @JsonView(Views.SubView.class)
     private DressedItemDTO dressedItems;
 
-    @JsonView(Views.SubView.class)
     private List<DamageSkillDTO> damageSkills;
-    @JsonView(Views.SubView.class)
+
     private List<DefenceSkillDTO> defenceSkills;
 
+    public SubDTO(){
+
+    }
 
     public SubDTO(Sub sub) {
         this.id = sub.getId();
         this.name = sub.getName();
         this.attack = sub.getAttack() + sub.getSubType().getAttack();
         this.defence = sub.getDefence() + sub.getSubType().getDefence();
-        this.currency = sub.getCurrency();
+//        this.currency = sub.getCurrency();
         this.inventory = sub.getInventory();
         this.user = sub.getUser();
-        this.moneyUpLevel = sub.getMoneyUpLevel();
-        this.moneyUpPrice = sub.getMoneyUpPrice();
-        this.moneyMultiplier = sub.getMoneyMultiplier();
+//        this.moneyUpLevel = sub.getMoney().getMoneyUpLevel();
+//        this.moneyUpPrice = sub.getMoney().getMoneyUpPrice();
+//        this.moneyMultiplier = sub.getMoney().getMoneyMultiplier();
         this.subAttack = sub.getSubAttack();
         this.health = sub.getHealth() + sub.getSubType().getHealth();
         this.dressedItems = new DressedItemDTO(sub.getDressedItems());
@@ -75,133 +71,4 @@ public class SubDTO {
         this.defenceSkills = sub.getDefenceSkills().stream().map(DefenceSkillDTO::new).collect(Collectors.toList());
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAttack() {
-        return attack;
-    }
-
-    public void setAttack(Integer attack) {
-        this.attack = attack;
-    }
-
-    public Integer getDefence() {
-        return defence;
-    }
-
-    public void setDefence(Integer defence) {
-        this.defence = defence;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Long getMoneyUpPrice() {
-        return moneyUpPrice;
-    }
-
-    public void setMoneyUpPrice(Long moneyUpPrice) {
-        this.moneyUpPrice = moneyUpPrice;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    public Integer getMoneyUpLevel() {
-        return moneyUpLevel;
-    }
-
-    public void setMoneyUpLevel(Integer moneyUpLevel) {
-        this.moneyUpLevel = moneyUpLevel;
-    }
-
-    public Integer getMoneyMultiplier() {
-        return moneyMultiplier;
-    }
-
-    public void setMoneyMultiplier(Integer moneyMultiplier) {
-        this.moneyMultiplier = moneyMultiplier;
-    }
-
-    public SubAttack getSubAttack() {
-        return subAttack;
-    }
-
-    public void setSubAttack(SubAttack subAttack) {
-        this.subAttack = subAttack;
-    }
-
-    public Integer getHealth() {
-        return health;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
-
-
-    public DressedItemDTO getDressedItems() {
-        return dressedItems;
-    }
-
-    public void setDressedItems(DressedItemDTO dressedItems) {
-        this.dressedItems = dressedItems;
-    }
-
-    public String getIconPath() {
-        return iconPath;
-    }
-
-    public void setIconPath(String iconPath) {
-        this.iconPath = iconPath;
-    }
-
-    public List<DamageSkillDTO> getDamageSkills() {
-        return damageSkills;
-    }
-
-    public void setDamageSkills(List<DamageSkillDTO> damageSkills) {
-        this.damageSkills = damageSkills;
-    }
-
-    public List<DefenceSkillDTO> getDefenceSkills() {
-        return defenceSkills;
-    }
-
-    public void setDefenceSkills(List<DefenceSkillDTO> defenceSkills) {
-        this.defenceSkills = defenceSkills;
-    }
 }

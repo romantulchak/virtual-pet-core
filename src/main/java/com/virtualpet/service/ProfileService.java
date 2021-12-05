@@ -1,5 +1,6 @@
 package com.virtualpet.service;
 
+import com.virtualpet.dto.MoneyCurrencyDTO;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
@@ -15,17 +16,30 @@ import java.util.Set;
 public interface ProfileService {
 
     List<SubDTO> getSubsForUser(Authentication authentication);
+
     void createSubForUser(SubRequest subRequest, Authentication authentication);
+
     void deleteSubForUser(long id, Authentication authentication);
+
     SubDTO chooseSub(long heroId, long userId, Authentication authentication);
+
     List<SubTypeDTO> getSubTypes();
+
     Set<UserDTO> getFriends(Authentication authentication);
+
     UserFriend friendRequest(Authentication authentication, User user);
 
     UserDTO getUserByUsername(String username, Authentication authentication);
+
     Set<UserFriend> getFriendsRequest(Authentication authentication);
+
     Set<UserFriend> getFriendsResponse(Authentication authentication);
+
     UserDTO acceptFriend(UserFriend userFriend, Authentication authentication);
+
     void deniedFriendRequest(long friendRequestId, Authentication authentication);
+
     void deleteFriend(long userId, long friendId, Authentication authentication);
+
+    MoneyCurrencyDTO getSubMoneyCurrency(long id, String name);
 }

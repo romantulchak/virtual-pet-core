@@ -16,10 +16,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "item_type")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "type",
         visible = true)
 @JsonSubTypes({
@@ -57,6 +58,11 @@ public abstract class Item {
 
     @JsonView({Views.InventoryView.class, Views.ShopView.class, Views.SubView.class})
     private int price;
+
+    @ManyToOne
+    private Inventory inventory;
+
+    private boolean hasDressed;
 
     protected Item(){
 

@@ -32,7 +32,7 @@ public class ArmorDTO extends Item {
         super(armor.getId(), armor.getUniqueness(), armor.getIconPath(), armor.getName(), armor.getItemCategory(), armor.getItemType(), armor.getPrice());
         this.armor = armor.getArmor();
         this.health = armor.getHealth();
-        this.isBought = sub.getInventory().getArmors().contains(armor);
+        this.isBought = sub.getInventory().getItems().contains(armor);
     }
 
     public int getArmor() {

@@ -2,21 +2,23 @@ package com.virtualpet.model.items;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Item;
 import com.virtualpet.model.Shop;
+import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.EUniqueness;
-import com.virtualpet.model.Inventory;
-import com.virtualpet.model.Item;
-import com.virtualpet.model.Views;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@JsonTypeName("swordItem")
 @Entity
+@DiscriminatorValue(value = "Sword")
+@JsonTypeName("swordItem")
 @Table(name = "sword")
 @Getter
 @Setter
@@ -27,9 +29,6 @@ public class Sword extends Item {
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private boolean isShieldAllowed;
-
-    @ManyToMany(mappedBy = "swords")
-    private List<Inventory> inventory;
 
     @ManyToOne
     private Shop shop;

@@ -1,7 +1,6 @@
 package com.virtualpet.model;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 
 @MappedSuperclass
 @Getter
-@Setter
 public abstract class SubAbstract {
 
     private int attack;
@@ -31,4 +29,28 @@ public abstract class SubAbstract {
         this.defence = defence;
     }
 
+    public SubAbstract setAttack(int attack) {
+        this.attack = attack;
+        return this;
+    }
+
+    public SubAbstract setDefence(int defence) {
+        this.defence = defence;
+        return this;
+    }
+
+    public SubAbstract setHealth(int health) {
+        this.health = health;
+        return this;
+    }
+
+    public SubAbstract setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+        return this;
+    }
+
+    public SubAbstract setModelPath(String modelPath) {
+        this.modelPath = modelPath;
+        return this;
+    }
 }

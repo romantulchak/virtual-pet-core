@@ -6,17 +6,16 @@ import com.virtualpet.model.Shop;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.EUniqueness;
-import com.virtualpet.model.Inventory;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Views;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
-@JsonTypeName("armorItem")
 @Entity
+@JsonTypeName("armorItem")
+@DiscriminatorValue(value = "Armor")
 @Table(name = "armor")
 @Getter
 @Setter
@@ -27,9 +26,6 @@ public class Armor extends Item {
 
     @JsonView({Views.InventoryView.class, Views.SubView.class, Views.ShopView.class})
     private int health;
-
-    @ManyToMany(mappedBy = "armors")
-    private List<Inventory> inventory;
 
     @ManyToOne
     private Shop shop;

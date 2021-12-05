@@ -26,7 +26,7 @@ public class ShopController {
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.ShopView.class)
     public ShopDTO getShop(@RequestParam("subId")Sub sub){
-        return shopService.getShop(sub);
+        return shopService.getShopForSub(sub);
     }
 
     @PutMapping("/addSkillToShop")

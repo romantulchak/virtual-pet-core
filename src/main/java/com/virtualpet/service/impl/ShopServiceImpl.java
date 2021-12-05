@@ -4,6 +4,7 @@ import com.virtualpet.dto.*;
 import com.virtualpet.exeption.*;
 import com.virtualpet.model.*;
 import com.virtualpet.model.enums.EItemCategory;
+import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
@@ -11,6 +12,7 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class ShopServiceImpl implements ShopService {
 
     private final ShopRepository shopRepository;
@@ -28,36 +31,18 @@ public class ShopServiceImpl implements ShopService {
     private final ArmorRepository armorRepository;
     private final SubRepository subRepository;
     private final InventoryRepository inventoryRepository;
-    @Autowired
-    public ShopServiceImpl(ShopRepository shopRepository, DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SwordRepository swordRepository, ArmorRepository armorRepository, SubRepository subRepository, InventoryRepository inventoryRepository){
-        this.shopRepository = shopRepository;
-        this.damageSkillRepository = damageSkillRepository;
-        this.defenceSkillRepository = defenceSkillRepository;
-        this.swordRepository = swordRepository;
-        this.armorRepository = armorRepository;
-        this.subRepository = subRepository;
-        this.inventoryRepository = inventoryRepository;
-        if(this.shopRepository.findFirstByOrderById().isEmpty()){
-            createShop();
-        }
-    }
 
     @Override
-    public ShopDTO getShop(Sub sub) {
+    public ShopDTO getShopForSub(Sub sub) {
         Shop shop = shopRepository.findFirstByOrderById().orElse(null);
         if (shop != null) {
             return convertShopToDTO(shop, sub);
         }
         throw new ShopNotFoundException();
     }
-    private Shop shop(){
-        return shopRepository.findFirstByOrderById().orElse(null);
-    }
 
-    private Shop createShop(){
-        Shop shop = new Shop();
-        shopRepository.save(shop);
-        return shop;
+    private Shop shop() {
+        return shopRepository.findFirstByOrderById().orElse(null);
     }
 
     @Override
@@ -73,32 +58,33 @@ public class ShopServiceImpl implements ShopService {
                 case MONEY:
                     break;
             }
-        }else {
+        } else {
             throw new SkillNotFoundException();
         }
     }
 
-    private void addDamageSkill(String skillName, ESkillCategory skillCategory){
+    private void addDamageSkill(String skillName, ESkillCategory skillCategory) {
         DamageSkill damageSkill = damageSkillRepository.findDamageSkillByNameAndSkillCategory(skillName, skillCategory).orElseThrow(SkillNotFoundException::new);
         Shop shop = shop();
-        if(!shop.getDamageSkills().contains(damageSkill)) {
+        if (!shop.getDamageSkills().contains(damageSkill)) {
             shop.getDamageSkills().add(damageSkill);
             damageSkill.setShop(shop);
             shopRepository.save(shop);
             damageSkillRepository.save(damageSkill);
-        }else {
+        } else {
             throw new SkillAlreadyExistException(damageSkill.getName());
         }
     }
-    private void addDefenceSkill(String skillName, ESkillCategory skillCategory){
+
+    private void addDefenceSkill(String skillName, ESkillCategory skillCategory) {
         DefenceSkill defenceSkill = defenceSkillRepository.findDefenceSkillByNameAndSkillCategory(skillName, skillCategory).orElseThrow(SkillNotFoundException::new);
         Shop shop = shop();
-        if (!shop.getDefenceSkills().contains(defenceSkill)){
+        if (!shop.getDefenceSkills().contains(defenceSkill)) {
             shop.getDefenceSkills().add(defenceSkill);
             defenceSkill.setShop(shop);
             shopRepository.save(shop);
             defenceSkillRepository.save(defenceSkill);
-        }else {
+        } else {
             throw new SkillAlreadyExistException(defenceSkill.getName());
         }
 
@@ -106,23 +92,22 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void addItemToShop(Item item) {
-        if (item != null){
-            if(item.getItemCategory() == EItemCategory.SWORD){
+        if (item != null) {
+            if (item.getItemCategory() == EItemCategory.SWORD) {
                 addSwordToShop(item.getId());
-            }else {
+            } else {
                 addArmorToShop(item.getId());
             }
-        }else {
+        } else {
             throw new ItemNotFoundException();
         }
     }
 
 
-
     @Override
     public void removeSkillFromShop(SkillAbstract skillAbstract) {
-        if (skillAbstract != null){
-            switch (skillAbstract.getSkillCategory()){
+        if (skillAbstract != null) {
+            switch (skillAbstract.getSkillCategory()) {
                 case PHYS_DAMAGE:
                     removeDamageSkillFromShop((DamageSkill) skillAbstract);
                     break;
@@ -132,26 +117,26 @@ public class ShopServiceImpl implements ShopService {
                 case MONEY:
                     break;
             }
-        }else {
+        } else {
             throw new SkillNotFoundException();
         }
     }
 
-    private void addSwordToShop(long itemId){
+    private void addSwordToShop(long itemId) {
         Sword sword = swordRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         Shop shop = shop();
         shop.getItemSwords().add(sword);
         shopRepository.save(shop);
     }
 
-    private void addArmorToShop(long itemId){
+    private void addArmorToShop(long itemId) {
         Armor armor = armorRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         Shop shop = shop();
         shop.getItemArmors().add(armor);
         shopRepository.save(shop);
     }
 
-    private void removeDamageSkillFromShop(DamageSkill damageSkill){
+    private void removeDamageSkillFromShop(DamageSkill damageSkill) {
         Shop shop = shop();
         if (!shop.getDamageSkills().remove(damageSkill))
             throw new SkillNotFoundException();
@@ -160,7 +145,7 @@ public class ShopServiceImpl implements ShopService {
         damageSkillRepository.save(damageSkill);
     }
 
-    private void removeDefenceSkillFromShop(DefenceSkill defenceSkill){
+    private void removeDefenceSkillFromShop(DefenceSkill defenceSkill) {
         Shop shop = shop();
         if (!shop.getDefenceSkills().remove(defenceSkill))
             throw new SkillNotFoundException();
@@ -171,34 +156,34 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void buyItem(Item item, long subId) {
-        if (item != null ){
+        if (item != null) {
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
-            if(checkEnoughMoney(sub, item.getPrice())){
-                if (!sub.getInventory().getArmors().contains(item) && !sub.getInventory().getSwords().contains(item)){
-                    Inventory inventory = inventoryRepository.findById(sub.getInventory().getId()).orElseThrow(()->new InventoryNotFoundException(sub.getName()));
+            if (checkEnoughMoney(sub, item.getPrice())) {
+                if (!sub.getInventory().getItems().contains(item) && !sub.getInventory().getItems().contains(item)) {
+                    Inventory inventory = inventoryRepository.findById(sub.getInventory().getId()).orElseThrow(() -> new InventoryNotFoundException(sub.getName()));
                     addItemToInventory(item, inventory);
                     sub.getCurrency().setMoney(sub.getCurrency().getMoney() - item.getPrice());
                     subRepository.save(sub);
-                }else {
+                } else {
                     throw new ItemAlreadyBoughtException(item.getName());
                 }
             }
-        }else {
+        } else {
             throw new ItemNotFoundException();
         }
     }
 
     @Override
     public SubDTO buySkill(SkillAbstract skill, long subId) {
-        if (skill != null){
+        if (skill != null) {
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
-            if (checkEnoughMoney(sub,skill.getPrice())){
-                if(!sub.getDefenceSkills().contains(skill) && !sub.getDamageSkills().contains(skill)){
+            if (checkEnoughMoney(sub, skill.getPrice())) {
+                if (!sub.getDefenceSkills().contains(skill) && !sub.getDamageSkills().contains(skill)) {
                     addSkillToSub(sub, skill);
                     sub.getCurrency().setMoney(sub.getCurrency().getMoney() - skill.getPrice());
                     subRepository.save(sub);
                     return new SubDTO(sub);
-                }else {
+                } else {
                     throw new SkillAlreadyBoughtException(sub.getName(), skill.getName());
                 }
             }
@@ -207,40 +192,32 @@ public class ShopServiceImpl implements ShopService {
     }
 
     private void addSkillToSub(Sub sub, SkillAbstract skill) {
-        if (skill instanceof DamageSkill){
+        if (skill instanceof DamageSkill) {
             sub.getDamageSkills().add((DamageSkill) skill);
-        }else if (skill instanceof DefenceSkill){
+        } else if (skill instanceof DefenceSkill) {
             sub.getDefenceSkills().add((DefenceSkill) skill);
         }
     }
 
     private void addItemToInventory(Item item, Inventory inventory) {
-        switch (item.getItemType()){
-            case ARMOR:
-                inventory.getArmors().add((Armor) item);
-                break;
-            case WEAPON:
-                inventory.getSwords().add((Sword) item);
-                break;
-        }
+        inventory.getItems().add(item);
         inventoryRepository.save(inventory);
     }
 
-    private ShopDTO convertShopToDTO(Shop shop, Sub sub){
-        List<DamageSkillDTO> damageSkillDTOS = shop.getDamageSkills().stream().map(x-> new DamageSkillDTO(x, sub)).collect(Collectors.toList());
-        List<DefenceSkillDTO> defenceSkillDTOS = shop.getDefenceSkills().stream().map(x->new DefenceSkillDTO(x,sub)).collect(Collectors.toList());
-        List<SwordDTO> swordDTOS = shop.getItemSwords().stream().map(x->new SwordDTO(x, sub)).collect(Collectors.toList());
-        List<ArmorDTO> armorDTOS = shop.getItemArmors().stream().map(x->new ArmorDTO(x, sub)).collect(Collectors.toList());
+    private ShopDTO convertShopToDTO(Shop shop, Sub sub) {
+        List<DamageSkillDTO> damageSkillDTOS = shop.getDamageSkills().stream().map(x -> new DamageSkillDTO(x, sub)).collect(Collectors.toList());
+        List<DefenceSkillDTO> defenceSkillDTOS = shop.getDefenceSkills().stream().map(x -> new DefenceSkillDTO(x, sub)).collect(Collectors.toList());
+        List<SwordDTO> swordDTOS = shop.getItemSwords().stream().map(x -> new SwordDTO(x, sub)).collect(Collectors.toList());
+        List<ArmorDTO> armorDTOS = shop.getItemArmors().stream().map(x -> new ArmorDTO(x, sub)).collect(Collectors.toList());
         return new ShopDTO(shop, damageSkillDTOS, defenceSkillDTOS, swordDTOS, armorDTOS);
     }
 
-    private boolean checkEnoughMoney(Sub sub, int itemPrice){
-        if (sub.getCurrency().getMoney() >= itemPrice){
+    private boolean checkEnoughMoney(Sub sub, int itemPrice) {
+        if (sub.getCurrency().getMoney() >= itemPrice) {
             return true;
         }
         throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), itemPrice);
     }
-
 
 
 }

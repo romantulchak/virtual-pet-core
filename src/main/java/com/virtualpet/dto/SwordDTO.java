@@ -31,7 +31,7 @@ public class SwordDTO extends Item {
         super(sword.getId(),sword.getUniqueness(), sword.getIconPath(), sword.getName(), sword.getItemCategory(), sword.getItemType(), sword.getPrice());
         this.allowShield = sword.isShieldAllowed();
         this.attack = sword.getAttack();
-        this.isBought = sub.getInventory().getSwords().contains(sword);
+        this.isBought = sub.getInventory().getItems().contains(sword);
     }
 
     public int getAttack() {

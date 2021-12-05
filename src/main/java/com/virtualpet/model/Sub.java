@@ -3,8 +3,11 @@ package com.virtualpet.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
+import com.virtualpet.model.sub.Currency;
+import com.virtualpet.model.sub.Money;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +20,7 @@ import java.util.List;
 })
 @Getter
 @Setter
+@Accessors(chain = true)
 public class Sub extends SubAbstract {
 
 
@@ -31,7 +35,7 @@ public class Sub extends SubAbstract {
     @Size(max = 40)
     private String name;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JsonView(Views.SubView.class)
     private Inventory inventory;
 
@@ -39,18 +43,13 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private User user;
 
-    @JsonView(Views.SubView.class)
-    private int moneyUpLevel;
-
-    @JsonView(Views.SubView.class)
-    private long moneyUpPrice;
 
     @ManyToOne
     @JsonView(Views.FriendView.class)
     private SubType subType;
 
-    @JsonView(Views.SubView.class)
-    private int moneyMultiplier;
+    @Embedded
+    private Money money;
 
     @ManyToOne
     private Level level;
@@ -72,31 +71,39 @@ public class Sub extends SubAbstract {
     @JoinTable(name = "sub_defence_skill", joinColumns = @JoinColumn(name = "subId"), inverseJoinColumns = @JoinColumn(name = "defenceSkillId"))
     List<DefenceSkill> defenceSkills;
 
-    public Sub(){
-
-    }
-    public Sub(String name, Inventory inventory, User user, SubType subType, String modelPath, String iconPath, Level level, DressedItem dressedItems) {
-        this.name = name;
-        setAttack(0);
+    public Sub() {
         this.currency = new Currency();
-        setDefence(0);
-        this.inventory = inventory;
-        this.user = user;
-        this.moneyUpLevel = 1;
-        this.subType = subType;
-        this.moneyUpPrice = 50L;
-        this.moneyMultiplier = 5;
-        setModelPath(modelPath);
-        setIconPath(iconPath);
-        this.level = level;
         this.subAttack = new SubAttack();
-        setHealth(0);
-        this.dressedItems = dressedItems;
+        this.money = new Money();
     }
 
-    @PreRemove
-    public void PreRemove(){
-        setDefenceSkills(null);
-        setDamageSkills(null);
+    @Override
+    public Sub setAttack(int attack) {
+        super.setAttack(attack);
+        return this;
+    }
+
+    @Override
+    public Sub setDefence(int defence) {
+        super.setDefence(defence);
+        return this;
+    }
+
+    @Override
+    public Sub setHealth(int health) {
+        super.setHealth(health);
+        return this;
+    }
+
+    @Override
+    public Sub setIconPath(String iconPath) {
+        super.setIconPath(iconPath);
+        return this;
+    }
+
+    @Override
+    public Sub setModelPath(String modelPath) {
+        super.setModelPath(modelPath);
+        return this;
     }
 }

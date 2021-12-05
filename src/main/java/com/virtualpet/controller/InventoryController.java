@@ -3,12 +3,11 @@ package com.virtualpet.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Item;
-import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
 import com.virtualpet.payload.request.SetItemRequest;
 import com.virtualpet.service.impl.InventoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,10 +24,11 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping("/getItems/{subId}")
+    @GetMapping("/getItems/{id}")
+    @PreAuthorize("isAuthenticated() && @subAccess.hasAccess(#id, authentication)")
     @JsonView(Views.InventoryView.class)
-    public List<Item> getItems(@PathVariable("subId") Sub sub){
-        return inventoryService.getItems(sub);
+    public List<Item> getItems(@PathVariable("id") long id){
+        return inventoryService.getItems(id);
     }
 
 

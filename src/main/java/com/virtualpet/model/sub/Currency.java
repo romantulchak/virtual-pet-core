@@ -1,6 +1,7 @@
-package com.virtualpet.model;
+package com.virtualpet.model.sub;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Views;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,19 +12,19 @@ import javax.persistence.Embeddable;
 @Setter
 public class Currency {
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.MoneyCurrencyView.class})
     private long money;
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.SubView.class})
     private long diamond;
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.SubView.class})
     private long emerald;
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.SubView.class})
     private int maxDiamond;
 
-    public Currency(){
+    public Currency() {
         this.money = 0;
         this.diamond = 0;
         this.emerald = 0;
