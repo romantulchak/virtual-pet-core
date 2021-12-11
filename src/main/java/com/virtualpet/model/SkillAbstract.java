@@ -15,7 +15,9 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "item_type")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type",

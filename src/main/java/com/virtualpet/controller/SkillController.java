@@ -9,6 +9,7 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.service.SkillService;
 import com.virtualpet.service.impl.SkillServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +36,8 @@ public class SkillController {
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.SkillView.class)
-    public List<SkillAbstract> getSkills(){
-        return skillService.getSkills();
+    public List<SkillAbstract> getSkills(@RequestParam("page") String page){
+        return skillService.getSkills(page);
     }
 
     @DeleteMapping("/{id}/{skillCategory}")

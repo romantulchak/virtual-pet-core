@@ -147,4 +147,9 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(CannotParsePageException.class)
+    public ResponseEntity<Object> handleCannotParsePageException(CannotParsePageException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

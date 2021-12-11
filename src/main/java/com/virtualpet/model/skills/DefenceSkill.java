@@ -17,6 +17,7 @@ import java.util.List;
 
 @JsonTypeName("defenceSkill")
 @Entity
+@DiscriminatorValue(value = "DefenceSkill")
 @Getter
 @Setter
 public class DefenceSkill extends SkillAbstract {

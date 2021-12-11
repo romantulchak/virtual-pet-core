@@ -16,6 +16,7 @@ import java.util.List;
 
 @JsonTypeName("damageSkill")
 @Entity
+@DiscriminatorValue(value = "DamageSkill")
 @Table(name = "damage_skill")
 @Getter
 @Setter

@@ -11,11 +11,18 @@ import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.DamageSkillRepository;
 import com.virtualpet.repository.DefenceSkillRepository;
+import com.virtualpet.repository.SkillRepository;
 import com.virtualpet.repository.SubRepository;
 import com.virtualpet.service.SkillService;
+import com.virtualpet.utils.AppHelper;
 import com.virtualpet.utils.FileSaver;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,19 +31,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SkillServiceImpl implements SkillService {
     private final DamageSkillRepository damageSkillRepository;
     private final DefenceSkillRepository defenceSkillRepository;
+    private final SkillRepository skillRepository;
     private final SubRepository subRepository;
+    private final ModelMapper modelMapper;
+
     @Value("${upload.path}")
     private String path;
     private String skillImage;
-    @Autowired
-    public SkillServiceImpl(DamageSkillRepository damageSkillRepository, DefenceSkillRepository defenceSkillRepository, SubRepository subRepository){
-        this.damageSkillRepository = damageSkillRepository;
-        this.defenceSkillRepository = defenceSkillRepository;
-        this.subRepository = subRepository;
-    }
 
     @Override
     public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
@@ -55,13 +60,13 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<SkillAbstract> getSkills() {
-        List<DamageSkillDTO> damageSkills = damageSkillRepository.allOrderByDesc().stream().map(this::convertToDamageSkillDTO).collect(Collectors.toList());
-        List<DefenceSkillDTO> defenceSkills = defenceSkillRepository.allOrderByDesc().stream().map(this::convertToDefenceSkillDTO).collect(Collectors.toList());
-        return new ArrayList<>() {{
-            addAll(damageSkills);
-            addAll(defenceSkills);
-        }};
+    public List<SkillAbstract> getSkills(String page) {
+        Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
+        return skillRepository.findAll(pageable)
+                .getContent()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
     @Override
     public void uploadImageSkill(MultipartFile file) {
@@ -108,10 +113,29 @@ public class SkillServiceImpl implements SkillService {
             subRepository.save(sub);
         });
     }
-    private DamageSkillDTO convertToDamageSkillDTO(DamageSkill damageSkill){
-        return new DamageSkillDTO(damageSkill);
+
+    private SkillAbstract convertToDTO(SkillAbstract skillAbstract){
+        SkillAbstract sk;
+        if (skillAbstract instanceof DamageSkill){
+            sk = modelMapper.map(skillAbstract, DamageSkillDTO.class);
+        }else{
+            sk = modelMapper.map(skillAbstract, DefenceSkill.class);
+        }
+        System.out.println(sk);
+        return sk;
     }
-    private DefenceSkillDTO convertToDefenceSkillDTO(DefenceSkill defenceSkill){
-        return new DefenceSkillDTO(defenceSkill);
+
+    private DamageSkillDTO convertToDefenceSkillDTO(DefenceSkill damageSkill){
+        DamageSkillDTO map = modelMapper.map(damageSkill, DamageSkillDTO.class);
+        System.out.println(map);
+        return map;
     }
+
+
+//    private DamageSkillDTO convertToDamageSkillDTO(DamageSkill damageSkill){
+//        return new DamageSkillDTO(damageSkill);
+//    }
+//    private DefenceSkillDTO convertToDefenceSkillDTO(DefenceSkill defenceSkill){
+//        return new DefenceSkillDTO(defenceSkill);
+//    }
 }
