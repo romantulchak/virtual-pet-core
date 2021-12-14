@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.skill;
 
 public class SkillNotFoundException extends RuntimeException{
     public SkillNotFoundException(){

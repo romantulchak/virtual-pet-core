@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.user;
 
 public class UserNotFoundException extends RuntimeException{
 

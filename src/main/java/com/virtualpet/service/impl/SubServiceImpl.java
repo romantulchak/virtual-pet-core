@@ -1,7 +1,7 @@
 package com.virtualpet.service.impl;
 
-import com.virtualpet.exeption.SubTypeIsNull;
-import com.virtualpet.exeption.SubTypeWithNameAlreadyExist;
+import com.virtualpet.exeption.sub.SubTypeIsNullException;
+import com.virtualpet.exeption.sub.SubTypeWithNameAlreadyExist;
 import com.virtualpet.model.SubType;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
@@ -40,7 +40,7 @@ public class SubServiceImpl implements SubService {
                 throw new SubTypeWithNameAlreadyExist(subType.getName());
             }
         }else{
-            throw new SubTypeIsNull();
+            throw new SubTypeIsNullException();
         }
 
     }
@@ -51,7 +51,7 @@ public class SubServiceImpl implements SubService {
         if(subType != null){
             subTypeRepository.delete(subType);
         }else {
-            throw new SubTypeIsNull();
+            throw new SubTypeIsNullException();
         }
     }
 

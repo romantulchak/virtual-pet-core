@@ -9,7 +9,7 @@ public interface GameService {
 
     MoneyCurrencyDTO upMoneyLevel(SubRequest subRequest);
 
-    SubDTO saveMoney(SubRequest subRequest, long money);
+    void saveMoney(SubRequest subRequest, long money);
 
     BossLevelDTO getBoss(long subId);
 

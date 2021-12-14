@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.skill;
 
 public class SkillAlreadyExistException extends RuntimeException{
     public SkillAlreadyExistException(String skillName){

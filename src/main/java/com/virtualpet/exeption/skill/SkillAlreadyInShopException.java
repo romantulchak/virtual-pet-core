@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.skill;
 
 public class SkillAlreadyInShopException extends RuntimeException{
     public SkillAlreadyInShopException(String skillName){

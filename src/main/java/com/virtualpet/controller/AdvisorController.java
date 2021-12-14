@@ -1,10 +1,15 @@
 package com.virtualpet.controller;
 
 import com.virtualpet.exeption.*;
-import org.springframework.http.HttpHeaders;
+import com.virtualpet.exeption.item.ItemAlreadyBoughtException;
+import com.virtualpet.exeption.item.ItemNotFoundException;
+import com.virtualpet.exeption.skill.SkillAlreadyBoughtException;
+import com.virtualpet.exeption.skill.SkillAlreadyExistException;
+import com.virtualpet.exeption.skill.SkillAlreadyInShopException;
+import com.virtualpet.exeption.sub.*;
+import com.virtualpet.exeption.user.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -102,8 +107,8 @@ public class AdvisorController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(SubTypeIsNull.class)
-    public ResponseEntity<Object> handleSubTypeIsNull(SubTypeIsNull ex, WebRequest webRequest){
+    @ExceptionHandler(SubTypeIsNullException.class)
+    public ResponseEntity<Object> handleSubTypeIsNull(SubTypeIsNullException ex, WebRequest webRequest){
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }

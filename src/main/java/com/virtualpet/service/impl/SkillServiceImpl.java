@@ -1,9 +1,8 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.DamageSkillDTO;
-import com.virtualpet.dto.DefenceSkillDTO;
-import com.virtualpet.exeption.SkillAlreadyExistException;
-import com.virtualpet.exeption.SkillNotFoundException;
+import com.virtualpet.exeption.skill.SkillAlreadyExistException;
+import com.virtualpet.exeption.skill.SkillNotFoundException;
 import com.virtualpet.model.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.enums.ESkillCategory;
@@ -18,15 +17,12 @@ import com.virtualpet.utils.AppHelper;
 import com.virtualpet.utils.FileSaver;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -115,14 +111,13 @@ public class SkillServiceImpl implements SkillService {
     }
 
     private SkillAbstract convertToDTO(SkillAbstract skillAbstract){
-        SkillAbstract sk;
+        SkillAbstract skill;
         if (skillAbstract instanceof DamageSkill){
-            sk = modelMapper.map(skillAbstract, DamageSkillDTO.class);
+            skill = modelMapper.map(skillAbstract, DamageSkillDTO.class);
         }else{
-            sk = modelMapper.map(skillAbstract, DefenceSkill.class);
+            skill = modelMapper.map(skillAbstract, DefenceSkill.class);
         }
-        System.out.println(sk);
-        return sk;
+        return skill;
     }
 
     private DamageSkillDTO convertToDefenceSkillDTO(DefenceSkill damageSkill){

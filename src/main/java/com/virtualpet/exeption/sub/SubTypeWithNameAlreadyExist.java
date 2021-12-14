@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.sub;
 
 public class SubTypeWithNameAlreadyExist extends RuntimeException{
     public SubTypeWithNameAlreadyExist(String name){

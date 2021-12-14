@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class GameController {
 
     private GameServiceImpl gameService;
+
     @Autowired
-    public GameController(GameServiceImpl gameService){
+    public GameController(GameServiceImpl gameService) {
         this.gameService = gameService;
     }
 
@@ -26,26 +27,26 @@ public class GameController {
     @PutMapping("/upMoneyLevel")
     @JsonView(Views.MoneyCurrencyView.class)
     @PreAuthorize("hasRole('USER')")
-    public MoneyCurrencyDTO upMoneyLevel(@RequestBody SubRequest subRequest){
+    public MoneyCurrencyDTO upMoneyLevel(@RequestBody SubRequest subRequest) {
         return gameService.upMoneyLevel(subRequest);
     }
 
     @PutMapping("/saveMoney/{money}")
     @JsonView(Views.SubView.class)
     @PreAuthorize("hasRole('USER')")
-    public SubDTO saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money){
-        return gameService.saveMoney(subRequest, money);
+    public void saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money) {
+        gameService.saveMoney(subRequest, money);
     }
 
     @GetMapping("/getBoss/{subId}")
-    public BossLevelDTO getBoss(@PathVariable("subId") long subId){
+    public BossLevelDTO getBoss(@PathVariable("subId") long subId) {
         return gameService.getBoss(subId);
     }
 
     @PutMapping("/upSubAttack")
     @JsonView(Views.SubView.class)
     @PreAuthorize("hasRole('USER')")
-    public SubDTO upSubAttack(@RequestBody SubRequest subRequest){
+    public SubDTO upSubAttack(@RequestBody SubRequest subRequest) {
         return gameService.upSubAttack(subRequest);
     }
 }

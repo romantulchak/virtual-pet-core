@@ -2,8 +2,8 @@ package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.exeption.InventoryNotFoundException;
-import com.virtualpet.exeption.ItemNotFoundException;
-import com.virtualpet.exeption.SubNotFoundException;
+import com.virtualpet.exeption.item.ItemNotFoundException;
+import com.virtualpet.exeption.sub.SubNotFoundException;
 import com.virtualpet.model.Inventory;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.Item;

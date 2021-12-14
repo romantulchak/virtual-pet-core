@@ -2,9 +2,14 @@ package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.*;
 import com.virtualpet.exeption.*;
+import com.virtualpet.exeption.item.ItemAlreadyBoughtException;
+import com.virtualpet.exeption.item.ItemNotFoundException;
+import com.virtualpet.exeption.skill.SkillAlreadyBoughtException;
+import com.virtualpet.exeption.skill.SkillAlreadyExistException;
+import com.virtualpet.exeption.skill.SkillNotFoundException;
+import com.virtualpet.exeption.sub.SubNotFoundException;
 import com.virtualpet.model.*;
 import com.virtualpet.model.enums.EItemCategory;
-import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
@@ -13,7 +18,6 @@ import com.virtualpet.model.skills.DefenceSkill;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

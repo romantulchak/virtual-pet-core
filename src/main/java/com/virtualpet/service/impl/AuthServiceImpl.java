@@ -1,9 +1,9 @@
 package com.virtualpet.service.impl;
 
-import com.virtualpet.exeption.EmailAlreadyExistException;
+import com.virtualpet.exeption.user.EmailAlreadyExistException;
 import com.virtualpet.exeption.RolesNotFoundException;
-import com.virtualpet.exeption.UserNotFoundException;
-import com.virtualpet.exeption.UsernameAlreadyExistException;
+import com.virtualpet.exeption.user.UserNotFoundException;
+import com.virtualpet.exeption.user.UsernameAlreadyExistException;
 import com.virtualpet.model.enums.ERole;
 import com.virtualpet.model.Role;
 import com.virtualpet.model.User;
@@ -15,6 +15,7 @@ import com.virtualpet.repository.RoleRepository;
 import com.virtualpet.repository.UserRepository;
 import com.virtualpet.security.jwt.JwtUtils;
 import com.virtualpet.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,23 +33,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
 
-    private AuthenticationManager authenticationManager;
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
-    }
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
     @Override
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -56,7 +49,6 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         return new JwtResponse(jwt,
                 userDetails.getId(),
@@ -67,40 +59,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registerUser(SignupRequest signupRequest) {
-        if (userRepository.existsByUsername(signupRequest.getUsername()))
-           throw new UsernameAlreadyExistException(signupRequest.getUsername());
-
-        if (userRepository.existsByEmail(signupRequest.getEmail()))
+        boolean isExistsByUsername = userRepository.existsByUsername(signupRequest.getUsername());
+        if (isExistsByUsername)
+            throw new UsernameAlreadyExistException(signupRequest.getUsername());
+        boolean isExistsByEmail = userRepository.existsByEmail(signupRequest.getEmail());
+        if (isExistsByEmail)
             throw new EmailAlreadyExistException(signupRequest.getEmail());
-
-        User user = new User(signupRequest.getUsername(),
-                signupRequest.getEmail(),
-                passwordEncoder.encode(signupRequest.getPassword()));
-        if(roleRepository.findAll().isEmpty()){
-             initRoles();
-        }
-        Set<String> strRoles = signupRequest.getRole();
+        String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
+        User user = new User(signupRequest.getUsername(), signupRequest.getEmail(), encodedPassword);
         Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(RolesNotFoundException::new);
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(RolesNotFoundException::new);
-                        roles.add(adminRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(RolesNotFoundException::new);
-                        roles.add(userRole);
-                }
-            });
-        }
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(RolesNotFoundException::new);
+        roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
     }
@@ -113,14 +83,5 @@ public class AuthServiceImpl implements AuthService {
             return new JwtRefreshResponse(username, token);
         }
         throw new UserNotFoundException();
-    }
-
-
-    private void initRoles(){
-        List<Role> roles = new ArrayList<Role>(){{
-            add(new Role(ERole.ROLE_USER));
-            add(new Role(ERole.ROLE_ADMIN));
-        }};
-        roleRepository.saveAll(roles);
     }
 }

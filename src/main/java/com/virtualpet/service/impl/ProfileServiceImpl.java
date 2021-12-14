@@ -5,9 +5,15 @@ import com.virtualpet.dto.SubDTO;
 import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
 import com.virtualpet.exeption.*;
+import com.virtualpet.exeption.sub.SubNotFoundException;
+import com.virtualpet.exeption.sub.SubTypeNotFoundException;
+import com.virtualpet.exeption.sub.SubWithNameAlreadyExistException;
+import com.virtualpet.exeption.user.UserAuthenticationException;
+import com.virtualpet.exeption.user.UserFriendNotFoundException;
+import com.virtualpet.exeption.user.UserNotFoundException;
 import com.virtualpet.model.*;
 import com.virtualpet.payload.request.SubRequest;
-import com.virtualpet.projection.SubMoneyProjection;
+import com.virtualpet.projection.SubMoneyCurrencyProjection;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -98,9 +104,9 @@ public class ProfileServiceImpl implements ProfileService {
         if (subRequest != null) {
             if (!subRepository.existsByName(subRequest.getName())) {
                 UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
-                User user = userRepository.findById(userInSystem.getId()).orElse(null);
-                if (user != null && subRepository.countSubByUser(user) <= user.getMaxNumberOfSubs()) {
-                    SubType subType = subTypeRepository.findById(subRequest.getSubId()).orElseThrow(() -> new SubTypeNotFoundException(subRequest.getName()));
+                User user = userRepository.findById(userInSystem.getId()).orElseThrow(UserNotFoundException::new);
+                if (subRepository.countSubByUser(user) <= user.getMaxNumberOfSubs()) {
+                    SubType subType = subTypeRepository.findById(subRequest.getId()).orElseThrow(() -> new SubTypeNotFoundException(subRequest.getName()));
                     Inventory inventory = new Inventory();
                     Level level = new Level();
                     DressedItem dressedItem = new DressedItem();
@@ -211,7 +217,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public MoneyCurrencyDTO getSubMoneyCurrency(long id, String name) {
-        SubMoneyProjection projection = subRepository.findByIdAndName(id, name).orElseThrow(SubNotFoundException::new);
+        SubMoneyCurrencyProjection projection = subRepository.findByIdAndName(id, name).orElseThrow(SubNotFoundException::new);
         return new MoneyCurrencyDTO(projection.getMoney(), projection.getCurrency());
     }
 }

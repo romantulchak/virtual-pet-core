@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.item;
 
 public class ItemAlreadyBoughtException extends RuntimeException{
     public ItemAlreadyBoughtException(String itemName){

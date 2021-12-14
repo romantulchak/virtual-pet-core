@@ -1,4 +1,4 @@
-package com.virtualpet.exeption;
+package com.virtualpet.exeption.item;
 
 import com.virtualpet.model.Item;
 

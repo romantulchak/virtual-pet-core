@@ -3,6 +3,7 @@ package com.virtualpet.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.*;
 import com.virtualpet.model.sub.Currency;
+import com.virtualpet.model.sub.Money;
 import lombok.Data;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public class SubDTO {
 
     @JsonView(Views.SubView.class)
     private Currency currency;
+
+    @JsonView(Views.SubView.class)
+    private Money money;
 
     @JsonView(Views.SubView.class)
     private SubAttack subAttack;

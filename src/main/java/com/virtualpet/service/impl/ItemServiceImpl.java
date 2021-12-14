@@ -1,6 +1,6 @@
 package com.virtualpet.service.impl;
 
-import com.virtualpet.exeption.ItemNotFoundException;
+import com.virtualpet.exeption.item.ItemNotFoundException;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.items.Armor;
