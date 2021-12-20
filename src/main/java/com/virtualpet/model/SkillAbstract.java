@@ -60,19 +60,11 @@ public abstract class SkillAbstract {
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private String icon;
 
-    public SkillAbstract(){
+    @ManyToOne
+    private Sub sub;
 
-    }
-    public SkillAbstract(long id, String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, int maxCooldown, String icon) {
-        this.id = id;
-        this.name = name;
-        this.skillCategory = skillCategory;
-        this.price = price;
-        this.skillDescription = skillDescription;
-        this.cooldown = cooldown;
-        this.maxCooldown = maxCooldown;
-        this.icon = icon;
-    }
+    @ManyToOne
+    private Shop shop;
 
     @Override
     public boolean equals(Object o) {

@@ -41,7 +41,7 @@ public class ProfileController {
     }
 
     @PostMapping("/createSub")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public void createSub(@RequestBody SubRequest subRequest, Authentication authentication){
         profileService.createSubForUser(subRequest, authentication);
     }

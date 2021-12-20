@@ -26,10 +26,7 @@ public class Shop {
     private long id;
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-    private List<DamageSkill> damageSkills = new ArrayList<>();
-
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-    private List<DefenceSkill> defenceSkills = new ArrayList<>();
+    private List<SkillAbstract> skills = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Sword> itemSwords = new ArrayList<>();

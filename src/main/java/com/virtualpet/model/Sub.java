@@ -63,13 +63,8 @@ public class Sub extends SubAbstract {
     @OneToOne
     private DressedItem dressedItems;
 
-    @ManyToMany
-    @JoinTable(name = "sub_damage_skill", joinColumns = @JoinColumn(name = "subId"), inverseJoinColumns = @JoinColumn(name = "damageSkillId"))
-    List<DamageSkill> damageSkills;
-
-    @ManyToMany
-    @JoinTable(name = "sub_defence_skill", joinColumns = @JoinColumn(name = "subId"), inverseJoinColumns = @JoinColumn(name = "defenceSkillId"))
-    List<DefenceSkill> defenceSkills;
+    @OneToMany(mappedBy = "sub")
+    private List<SkillAbstract> skills;
 
     public Sub() {
         this.currency = new Currency();

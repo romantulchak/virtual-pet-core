@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS damage_skill
     icon              varchar      not null,
     damage            int          not null,
     critical_chance   float8       not null,
-    shop_id           bigint       not null references shop
+    shop_id           bigint references shop
 );
 
 CREATE TABLE IF NOT EXISTS defence_skill
@@ -26,5 +26,5 @@ CREATE TABLE IF NOT EXISTS defence_skill
     health            int          not null,
     defence           float8       not null,
     time_of_action    int          not null,
-    shop_id           bigint       not null references shop
+    shop_id           bigint references shop
 );

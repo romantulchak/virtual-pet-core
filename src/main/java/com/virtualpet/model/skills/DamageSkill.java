@@ -28,20 +28,9 @@ public class DamageSkill extends SkillAbstract {
     @JsonView(Views.ShopView.class)
     private double criticalChance;
 
-    @ManyToOne
-    private Shop shop;
-
-    @ManyToMany(mappedBy = "damageSkills")
-    private List<Sub> subs;
-
     public DamageSkill(){
 
     }
 
-    public DamageSkill(String name, ESkillCategory skillCategory, int price, String skillDescription, LocalDateTime cooldown, long id, int damage, double criticalChance, int maxCooldown, String skillImage) {
-        super(id, name, skillCategory, price, skillDescription, cooldown, maxCooldown, skillImage);
-        this.damage = damage;
-        this.criticalChance = criticalChance;
-    }
 }
 

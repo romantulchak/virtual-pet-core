@@ -7,9 +7,9 @@ import com.virtualpet.exeption.LevelNotFoundException;
 import com.virtualpet.exeption.sub.SubNotEnoughMoneyException;
 import com.virtualpet.exeption.sub.SubNotFoundException;
 import com.virtualpet.model.Boss;
-import com.virtualpet.model.sub.Currency;
 import com.virtualpet.model.Level;
 import com.virtualpet.model.Sub;
+import com.virtualpet.model.sub.Currency;
 import com.virtualpet.model.sub.Money;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.projection.SubMoneyCurrencyProjection;
@@ -17,7 +17,6 @@ import com.virtualpet.repository.BossRepository;
 import com.virtualpet.repository.LevelRepository;
 import com.virtualpet.repository.SubRepository;
 import com.virtualpet.service.GameService;
-import com.virtualpet.transformer.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,6 @@ public class GameServiceImpl implements GameService {
     private final SubRepository subRepository;
     private final LevelRepository levelRepository;
     private final BossRepository bossRepository;
-    private final Transformer transformer;
     private List<Boss> bosses = new ArrayList<>();
     private Boss currentBoss;
 
@@ -77,7 +75,7 @@ public class GameServiceImpl implements GameService {
             currentBoss = bosses.get(randomIndex);
             bosses.remove(currentBoss);
             if (level.getLevel() > 1) {
-                Random random = new SecureRandom();
+                Random random = new Random();
                 return new BossLevelDTO(currentBoss, level.getLevel() * random.nextDouble() * (0.90 - 0.45) + 0.45, level.getLevel());
             }
             return new BossLevelDTO(currentBoss, level.getLevel());

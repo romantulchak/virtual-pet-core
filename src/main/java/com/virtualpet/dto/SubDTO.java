@@ -71,8 +71,6 @@ public class SubDTO {
         this.health = sub.getHealth() + sub.getSubType().getHealth();
         this.dressedItems = new DressedItemDTO(sub.getDressedItems());
         this.iconPath = sub.getIconPath();
-        this.damageSkills = sub.getDamageSkills().stream().map(DamageSkillDTO::new).collect(Collectors.toList());
-        this.defenceSkills = sub.getDefenceSkills().stream().map(DefenceSkillDTO::new).collect(Collectors.toList());
     }
 
 }

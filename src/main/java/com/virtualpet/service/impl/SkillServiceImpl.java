@@ -1,6 +1,8 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.DamageSkillDTO;
+import com.virtualpet.dto.DefenceSkillDTO;
+import com.virtualpet.dto.SkillAbstractDTO;
 import com.virtualpet.exeption.skill.SkillAlreadyExistException;
 import com.virtualpet.exeption.skill.SkillNotFoundException;
 import com.virtualpet.model.SkillAbstract;
@@ -12,6 +14,7 @@ import com.virtualpet.repository.DamageSkillRepository;
 import com.virtualpet.repository.DefenceSkillRepository;
 import com.virtualpet.repository.SkillRepository;
 import com.virtualpet.repository.SubRepository;
+import com.virtualpet.service.ShopService;
 import com.virtualpet.service.SkillService;
 import com.virtualpet.utils.AppHelper;
 import com.virtualpet.utils.FileSaver;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 public class SkillServiceImpl implements SkillService {
     private final DamageSkillRepository damageSkillRepository;
     private final DefenceSkillRepository defenceSkillRepository;
+    private final ShopService shopService;
     private final SkillRepository skillRepository;
     private final SubRepository subRepository;
     private final ModelMapper modelMapper;
@@ -42,10 +46,11 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
-             if (!damageSkillRepository.existsByName(damageSkill.getName())) {
+             if (!skillRepository.existsByName(damageSkill.getName())) {
                  damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
                  damageSkill.setIcon(skillImage);
-                 damageSkillRepository.save(damageSkill);
+                 damageSkill.setShop(shopService.getShop());
+                 skillRepository.save(damageSkill);
                  return new DamageSkillDTO(damageSkill);
              }else {
                  throw new SkillAlreadyExistException(damageSkill.getName());
@@ -56,7 +61,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<SkillAbstract> getSkills(String page) {
+    public List<SkillAbstractDTO> getSkills(String page) {
         Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
         return skillRepository.findAll(pageable)
                 .getContent()
@@ -91,18 +96,29 @@ public class SkillServiceImpl implements SkillService {
         switch (skillCategory){
             case PHYS_DAMAGE:
                 DamageSkill damageSkill = damageSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
-                returnSkillPrice(damageSkill.getPrice(), damageSkill.getSubs());
+//                returnSkillPrice(damageSkill.getPrice(), damageSkill.getSubs());//TODO: fix it
                 damageSkillRepository.delete(damageSkill);
                 break;
             case DEFENCE:
                 DefenceSkill defenceSkill = defenceSkillRepository.findById(skillId).orElseThrow(SkillNotFoundException::new);
-                returnSkillPrice(defenceSkill.getPrice(), defenceSkill.getSubs());
+//                returnSkillPrice(defenceSkill.getPrice(), defenceSkill.getSubs());
                 defenceSkillRepository.delete(defenceSkill);
                 break;
             case MONEY:
                 break;
         }
     }
+
+    @Override
+    public List<SkillAbstractDTO> getSkillsInShopForSub(long subId, String page) {
+        Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
+        return skillRepository.findAllBySubIdNot(subId, pageable)
+                .getContent()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private void returnSkillPrice(long skillPrice, List<Sub> subs){
         subs.forEach(sub -> {
             sub.getCurrency().setMoney(sub.getCurrency().getMoney() + skillPrice);
@@ -110,27 +126,13 @@ public class SkillServiceImpl implements SkillService {
         });
     }
 
-    private SkillAbstract convertToDTO(SkillAbstract skillAbstract){
-        SkillAbstract skill;
+    private SkillAbstractDTO convertToDTO(SkillAbstract skillAbstract){
+        SkillAbstractDTO skill;
         if (skillAbstract instanceof DamageSkill){
             skill = modelMapper.map(skillAbstract, DamageSkillDTO.class);
         }else{
-            skill = modelMapper.map(skillAbstract, DefenceSkill.class);
+            skill = modelMapper.map(skillAbstract, DefenceSkillDTO.class);
         }
         return skill;
     }
-
-    private DamageSkillDTO convertToDefenceSkillDTO(DefenceSkill damageSkill){
-        DamageSkillDTO map = modelMapper.map(damageSkill, DamageSkillDTO.class);
-        System.out.println(map);
-        return map;
-    }
-
-
-//    private DamageSkillDTO convertToDamageSkillDTO(DamageSkill damageSkill){
-//        return new DamageSkillDTO(damageSkill);
-//    }
-//    private DefenceSkillDTO convertToDefenceSkillDTO(DefenceSkill defenceSkill){
-//        return new DefenceSkillDTO(defenceSkill);
-//    }
 }

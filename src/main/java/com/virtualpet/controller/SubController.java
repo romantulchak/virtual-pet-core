@@ -24,6 +24,7 @@ public class SubController {
     public void createSubType(@RequestBody SubType subType){
         subService.createSub(subType);
     }
+
     @PostMapping("/uploadSubTypeImage")
     @PreAuthorize("hasRole('ADMIN')")
     public void uploadSubTypeImage(@RequestBody MultipartFile file){

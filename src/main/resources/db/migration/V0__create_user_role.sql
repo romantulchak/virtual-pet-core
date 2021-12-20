@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS user_roles
 
 
 INSERT INTO users
-VALUES (3, 'Kzz', 'test@gmail.com', '1111', 5);
+VALUES (3, 'Kzz', 'test@gmail.com', '$2a$10$avmXDPz/rWQtOdDKhG2ZyerMeDJ4rxWsBUPJYaiM3nsHNngFpOAnS', 5);
 INSERT INTO role
 VALUES (1, 'ROLE_USER'),
        (2, 'ROLE_ADMIN');
