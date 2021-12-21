@@ -2,8 +2,8 @@ package com.virtualpet.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dto.ShopDTO;
-import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.*;
+import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.service.impl.ShopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +23,7 @@ public class ShopController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @JsonView(Views.ShopView.class)
     public ShopDTO getShop(@RequestParam("subId")Sub sub){
         return shopService.getShopForSub(sub);
@@ -48,16 +48,15 @@ public class ShopController {
     }
 
     @PostMapping("/buyItem/{subId}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public void buyItem(@RequestBody Item item, @PathVariable("subId") long subId){
         shopService.buyItem(item, subId);
     }
 
     @PostMapping("/buySkill/{subId}")
-    @PreAuthorize("hasRole('USER')")
-    @JsonView(Views.SubView.class)
-    public SubDTO buySkill(@RequestBody SkillAbstract skillAbstract, @PathVariable("subId") long subId){
-       return shopService.buySkill(skillAbstract, subId);
+    @PreAuthorize("isAuthenticated()")
+    public void buySkill(@RequestBody long id, @PathVariable("subId") long subId){
+       shopService.buySkill(id, subId);
     }
 }
 

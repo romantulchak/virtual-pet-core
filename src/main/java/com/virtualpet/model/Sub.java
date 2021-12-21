@@ -1,8 +1,7 @@
 package com.virtualpet.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.virtualpet.model.skills.DamageSkill;
-import com.virtualpet.model.skills.DefenceSkill;
+import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.model.sub.Currency;
 import com.virtualpet.model.sub.Money;
 import lombok.Getter;

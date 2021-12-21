@@ -5,7 +5,7 @@ import com.virtualpet.dto.DefenceSkillDTO;
 import com.virtualpet.dto.SkillAbstractDTO;
 import com.virtualpet.exeption.skill.SkillAlreadyExistException;
 import com.virtualpet.exeption.skill.SkillNotFoundException;
-import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.skills.DamageSkill;
@@ -47,7 +47,7 @@ public class SkillServiceImpl implements SkillService {
     public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
              if (!skillRepository.existsByName(damageSkill.getName())) {
-                 damageSkill.setSkillCategory(ESkillCategory.PHYS_DAMAGE);
+                 damageSkill.setCategory(ESkillCategory.PHYS_DAMAGE);
                  damageSkill.setIcon(skillImage);
                  damageSkill.setShop(shopService.getShop());
                  skillRepository.save(damageSkill);
@@ -81,7 +81,7 @@ public class SkillServiceImpl implements SkillService {
     public void createDefenceSkill(DefenceSkill defenceSkill) {
         if (defenceSkill != null) {
             if (!defenceSkillRepository.existsByName(defenceSkill.getName())) {
-                defenceSkill.setSkillCategory(ESkillCategory.DEFENCE);
+                defenceSkill.setCategory(ESkillCategory.DEFENCE);
                 defenceSkillRepository.save(defenceSkill);
             } else {
                 throw new SkillAlreadyExistException(defenceSkill.getName());
@@ -112,7 +112,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public List<SkillAbstractDTO> getSkillsInShopForSub(long subId, String page) {
         Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
-        return skillRepository.findAllBySubIdNot(subId, pageable)
+        return skillRepository.findAllBySubIdIsNull(pageable)
                 .getContent()
                 .stream()
                 .map(this::convertToDTO)

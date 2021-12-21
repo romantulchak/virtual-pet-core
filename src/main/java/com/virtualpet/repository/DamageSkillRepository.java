@@ -15,5 +15,6 @@ public interface DamageSkillRepository extends JpaRepository<DamageSkill, Long> 
 
     @Query("SELECT d FROM DamageSkill d ORDER BY d.id DESC")
     List<DamageSkill> allOrderByDesc();
-    Optional<DamageSkill> findDamageSkillByNameAndSkillCategory(String skillName, ESkillCategory eSkillCategory);
+
+    Optional<DamageSkill> findDamageSkillByNameAndCategory(String skillName, ESkillCategory eSkillCategory);
 }

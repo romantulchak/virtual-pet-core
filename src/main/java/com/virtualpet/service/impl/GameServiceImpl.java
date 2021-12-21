@@ -59,7 +59,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void saveMoney(SubRequest subRequest, long money) {
         if (subRepository.existsById(subRequest.getId())){
-            subRepository.updateSubCurrency(subRequest.getId(), money);
+            subRepository.updateSubPlusCurrency(subRequest.getId(), money);
         }else{
             throw new SubNotFoundException(subRequest.getId());
         }

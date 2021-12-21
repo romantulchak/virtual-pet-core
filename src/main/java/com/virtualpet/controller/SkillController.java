@@ -33,7 +33,7 @@ public class SkillController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @JsonView(Views.SkillView.class)
     public List<SkillAbstractDTO> getSkills(@RequestParam("page") String page) {
         return skillService.getSkills(page);

@@ -25,6 +25,7 @@ public class DamageSkillDTO extends SkillAbstractDTO {
     private List<Sub> subs;
 
     private Shop shop;
+
     @JsonView(Views.SkillView.class)
     private boolean inShop = false;
 

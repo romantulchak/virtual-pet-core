@@ -1,11 +1,12 @@
-package com.virtualpet.model;
+package com.virtualpet.model.skills;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.model.Shop;
+import com.virtualpet.model.Sub;
+import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
-import com.virtualpet.model.skills.DamageSkill;
-import com.virtualpet.model.skills.DefenceSkill;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,7 +42,7 @@ public abstract class SkillAbstract {
 
     @Enumerated(EnumType.STRING)
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
-    private ESkillCategory skillCategory;
+    private ESkillCategory category;
 
     @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private int price;
@@ -49,7 +50,7 @@ public abstract class SkillAbstract {
     @JsonView({Views.SkillView.class, Views.SubView.class,Views.InventoryView.class})
     @NotBlank
     @Size(max = 300)
-    private String skillDescription;
+    private String description;
 
     @JsonView({Views.SkillView.class, Views.SubView.class, Views.InventoryView.class})
     private LocalDateTime cooldown;
@@ -66,16 +67,30 @@ public abstract class SkillAbstract {
     @ManyToOne
     private Shop shop;
 
+    protected SkillAbstract() {
+    }
+
+    protected SkillAbstract(SkillAbstract skillAbstract, Sub sub) {
+        this.name = skillAbstract.getName();
+        this.category = skillAbstract.getCategory();
+        this.price = skillAbstract.getPrice();
+        this.description = skillAbstract.getDescription();
+        this.cooldown = skillAbstract.getCooldown();
+        this.maxCooldown = skillAbstract.getMaxCooldown();
+        this.icon = skillAbstract.getIcon();
+        this.sub = sub;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SkillAbstract)) return false;
         SkillAbstract that = (SkillAbstract) o;
-        return id == that.id && Objects.equals(name, that.name) && skillCategory == that.skillCategory;
+        return id == that.id && Objects.equals(name, that.name) && category == that.category;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, skillCategory);
+        return Objects.hash(id, name, category);
     }
 }

@@ -34,7 +34,7 @@ public class ProfileController {
     }
 
     @GetMapping("/getSubsForUser")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @JsonView(Views.SubView.class)
     public List<SubDTO> getSubsForUser(Authentication authentication){
         return profileService.getSubsForUser(authentication);

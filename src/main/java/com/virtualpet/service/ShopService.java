@@ -4,7 +4,7 @@ import com.virtualpet.dto.ShopDTO;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.Shop;
-import com.virtualpet.model.SkillAbstract;
+import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.model.Sub;
 
 public interface ShopService {
@@ -14,5 +14,5 @@ public interface ShopService {
     void addItemToShop(Item item);
     void removeSkillFromShop(SkillAbstract skillAbstract);
     void buyItem(Item item, long subId);
-    SubDTO buySkill(SkillAbstract skillAbstract, long subId);
+    void buySkill(long id, long subId);
 }

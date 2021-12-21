@@ -1,20 +1,14 @@
 package com.virtualpet.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
-import com.virtualpet.model.skills.DamageSkill;
-import com.virtualpet.model.skills.DefenceSkill;
+import com.virtualpet.model.skills.SkillAbstract;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter

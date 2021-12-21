@@ -26,14 +26,14 @@ public class GameController {
 
     @PutMapping("/upMoneyLevel")
     @JsonView(Views.MoneyCurrencyView.class)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public MoneyCurrencyDTO upMoneyLevel(@RequestBody SubRequest subRequest) {
         return gameService.upMoneyLevel(subRequest);
     }
 
     @PutMapping("/saveMoney/{money}")
     @JsonView(Views.SubView.class)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public void saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money) {
         gameService.saveMoney(subRequest, money);
     }
@@ -45,7 +45,7 @@ public class GameController {
 
     @PutMapping("/upSubAttack")
     @JsonView(Views.SubView.class)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public SubDTO upSubAttack(@RequestBody SubRequest subRequest) {
         return gameService.upSubAttack(subRequest);
     }

@@ -1,7 +1,6 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.ShopDTO;
-import com.virtualpet.dto.SubDTO;
 import com.virtualpet.exeption.InventoryNotFoundException;
 import com.virtualpet.exeption.NotEnoughMoneyException;
 import com.virtualpet.exeption.ShopNotFoundException;
@@ -16,10 +15,12 @@ import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
+import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -52,7 +53,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void addSkillToShop(SkillAbstract skillAbstract) {
         if (skillAbstract != null) {
-            DamageSkill damageSkill = damageSkillRepository.findDamageSkillByNameAndSkillCategory(skillAbstract.getName(), skillAbstract.getSkillCategory())
+            DamageSkill damageSkill = damageSkillRepository.findDamageSkillByNameAndCategory(skillAbstract.getName(), skillAbstract.getCategory())
                     .orElseThrow(SkillNotFoundException::new);
             Shop shop = getShop();
             if (!shop.getSkills().contains(damageSkill)) {
@@ -123,21 +124,42 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    @Transactional
     @Override
-    public SubDTO buySkill(SkillAbstract skill, long subId) {
-        if (skill != null) {
-            Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
-            checkEnoughMoney(sub, skill.getPrice());
-            if (!sub.getSkills().contains(skill)) {
-                sub.getSkills().add(skill);
-                sub.getCurrency().setMoney(sub.getCurrency().getMoney() - skill.getPrice());
-                subRepository.save(sub);
-                return new SubDTO(sub);
-            } else {
-                throw new SkillAlreadyBoughtException(sub.getName(), skill.getName());
-            }
+    public void buySkill(long id, long subId) {
+        if (skillRepository.existsByIdAndSubId(id, subId)) {
+            throw new SkillAlreadyBoughtException();
         }
-        throw new SkillNotFoundException();
+        SkillAbstract skill = skillRepository.findByIdAndShopNotNull(id)
+                .orElseThrow(SkillNotFoundException::new);
+        Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
+        checkEnoughMoney(sub, skill.getPrice());
+        SkillAbstract boughtSkill = getBoughtSkill(skill, sub);
+        if (boughtSkill != null) {
+            long subMoney = sub.getCurrency().getMoney() - skill.getPrice();
+            subRepository.updateSubCurrency(subId, subMoney);
+            skillRepository.save(boughtSkill);
+        }
+    }
+
+    private SkillAbstract getBoughtSkill(SkillAbstract skill, Sub sub){
+        SkillAbstract skillForSub = null;
+        switch (skill.getCategory()) {
+            case PHYS_DAMAGE:
+                skillForSub = generateDamageSkill(skill, sub);
+                break;
+            case DEFENCE:
+                break;
+            case MONEY:
+                break;
+            default:
+                throw new SkillNotFoundException();
+        }
+        return skillForSub;
+    }
+
+    private DamageSkill generateDamageSkill(SkillAbstract skillAbstract, Sub sub){
+        return new DamageSkill((DamageSkill) skillAbstract, sub);
     }
 
     private void addItemToInventory(Item item, Inventory inventory) {

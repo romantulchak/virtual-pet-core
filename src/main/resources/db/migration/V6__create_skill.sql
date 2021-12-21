@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS damage_skill
 (
     id                bigserial    not null primary key,
-    name              varchar(46)  not null unique,
+    name              varchar(46)  not null,
     skill_category    varchar      not null,
     price             int          not null,
     skill_description varchar(300) not null,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS damage_skill
 CREATE TABLE IF NOT EXISTS defence_skill
 (
     id                bigserial    not null primary key,
-    name              varchar(46)  not null unique,
+    name              varchar(46)  not null,
     skill_category    varchar      not null,
     price             int          not null,
     skill_description varchar(300) not null,

@@ -31,6 +31,10 @@ public interface SubRepository extends JpaRepository<Sub, Long> {
 
     @Modifying
     @Query("UPDATE Sub s SET s.currency.money = s.currency.money + :money WHERE s.id = :id")
+    void updateSubPlusCurrency(@Param("id") long id, @Param("money") long money);
+
+    @Modifying
+    @Query("UPDATE Sub s SET s.currency.money = :money WHERE s.id = :id")
     void updateSubCurrency(@Param("id") long id, @Param("money") long money);
 
     @Modifying

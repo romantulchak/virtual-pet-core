@@ -11,16 +11,19 @@ import java.time.LocalDateTime;
 public class SkillAbstractDTO {
 
     @JsonView({Views.SubView.class, Views.SkillView.class})
+    private long id;
+
+    @JsonView({Views.SubView.class, Views.SkillView.class})
     private String name;
 
     @JsonView({Views.SubView.class, Views.SkillView.class})
-    private ESkillCategory skillCategory;
+    private ESkillCategory category;
 
     @JsonView({Views.SubView.class, Views.SkillView.class})
     private int price;
 
     @JsonView({Views.SubView.class, Views.SkillView.class})
-    private String skillDescription;
+    private String description;
 
     @JsonView({Views.SubView.class, Views.SkillView.class})
     private LocalDateTime cooldown;
