@@ -17,6 +17,7 @@ import com.virtualpet.repository.BossRepository;
 import com.virtualpet.repository.LevelRepository;
 import com.virtualpet.repository.SubRepository;
 import com.virtualpet.service.GameService;
+import com.virtualpet.transformer.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class GameServiceImpl implements GameService {
     private final SubRepository subRepository;
     private final LevelRepository levelRepository;
     private final BossRepository bossRepository;
+    private final Transformer transformer;
     private List<Boss> bosses = new ArrayList<>();
     private Boss currentBoss;
 
@@ -49,7 +51,7 @@ public class GameServiceImpl implements GameService {
             money.setMoneyUpLevel(money.getMoneyUpLevel() + 1);
             money.setMoneyMultiplier(5 * money.getMoneyUpLevel());
             subRepository.updateSubMoneyCurrency(subRequest.getId(), currency, money);
-            return new MoneyCurrencyDTO(money, currency);
+            return transformer.getMoneyCurrencyDTO(money, currency);
         } else {
             throw new SubNotEnoughMoneyException(subRequest.getName(), currency.getMoney(), money.getMoneyUpPrice());
         }
@@ -96,7 +98,7 @@ public class GameServiceImpl implements GameService {
             sub.getSubAttack().setAttackMultiplier(5 * sub.getMoney().getMoneyUpLevel());
             sub.setAttack(sub.getAttack() + ((int) (0.6 * sub.getSubAttack().getAttackUpLevel())));
             subRepository.save(sub);
-            return new SubDTO(sub);
+            return transformer.getSubDTO(sub);
         } else {
             throw new SubNotEnoughMoneyException(sub, sub.getSubAttack().getAttackMoneyUp());
         }

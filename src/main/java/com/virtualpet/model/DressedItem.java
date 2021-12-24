@@ -42,6 +42,4 @@ public class DressedItem {
     @OneToOne
     private Armor shield;
 
-    public DressedItem(){
-    }
 }

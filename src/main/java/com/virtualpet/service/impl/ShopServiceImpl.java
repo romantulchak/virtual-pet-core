@@ -127,11 +127,11 @@ public class ShopServiceImpl implements ShopService {
     @Transactional
     @Override
     public void buySkill(long id, long subId) {
-        if (skillRepository.existsByIdAndSubId(id, subId)) {
-            throw new SkillAlreadyBoughtException();
-        }
         SkillAbstract skill = skillRepository.findByIdAndShopNotNull(id)
                 .orElseThrow(SkillNotFoundException::new);
+        if (skillRepository.existsByReferenceAndSubId(skill.getReference(), subId)) {
+            throw new SkillAlreadyBoughtException();
+        }
         Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
         checkEnoughMoney(sub, skill.getPrice());
         SkillAbstract boughtSkill = getBoughtSkill(skill, sub);

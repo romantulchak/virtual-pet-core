@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +50,7 @@ public class SkillServiceImpl implements SkillService {
              if (!skillRepository.existsByName(damageSkill.getName())) {
                  damageSkill.setCategory(ESkillCategory.PHYS_DAMAGE);
                  damageSkill.setIcon(skillImage);
+                 damageSkill.setReference(UUID.randomUUID());
                  damageSkill.setShop(shopService.getShop());
                  skillRepository.save(damageSkill);
                  return new DamageSkillDTO(damageSkill);
@@ -63,7 +65,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public List<SkillAbstractDTO> getSkills(String page) {
         Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
-        return skillRepository.findAll(pageable)
+        return skillRepository.findAllBySubIsNull(pageable)
                 .getContent()
                 .stream()
                 .map(this::convertToDTO)
@@ -82,6 +84,7 @@ public class SkillServiceImpl implements SkillService {
         if (defenceSkill != null) {
             if (!defenceSkillRepository.existsByName(defenceSkill.getName())) {
                 defenceSkill.setCategory(ESkillCategory.DEFENCE);
+                defenceSkill.setReference(UUID.randomUUID());
                 defenceSkillRepository.save(defenceSkill);
             } else {
                 throw new SkillAlreadyExistException(defenceSkill.getName());
@@ -111,8 +114,9 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillAbstractDTO> getSkillsInShopForSub(long subId, String page) {
+        List<UUID> subSkillReferences = skillRepository.findSubSkillReferences(subId);
         Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
-        return skillRepository.findAllBySubIdIsNull(pageable)
+        return skillRepository.findAllBySubIdIsNullAndReferenceNotInOrReferenceIsNull(subSkillReferences, pageable)
                 .getContent()
                 .stream()
                 .map(this::convertToDTO)

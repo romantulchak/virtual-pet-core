@@ -7,7 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SubRequest {
+
     private String name;
+
     private User user;
+
     private long id;
 }

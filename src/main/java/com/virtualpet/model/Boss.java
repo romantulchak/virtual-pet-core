@@ -25,14 +25,6 @@ public class Boss extends SubAbstract {
 
     private int droppedMoney;
 
-    public Boss(String name, int attack, int defence, String iconPath, String modelPath, int health) {
-        super(attack, defence);
-        setIconPath(iconPath);
-        setModelPath(modelPath);
-        setHealth(health);
-        setName(name);
-    }
-
     public Boss() {
 
     }

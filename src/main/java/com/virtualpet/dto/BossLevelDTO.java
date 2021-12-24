@@ -1,7 +1,6 @@
 package com.virtualpet.dto;
 
 import com.virtualpet.model.Boss;
-import org.springframework.beans.factory.annotation.Value;
 
 public class BossLevelDTO {
     private Boss boss = new Boss();

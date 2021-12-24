@@ -12,10 +12,11 @@ import lombok.Setter;
 public class SetItemRequest {
 
     private long subId;
+
     private EItemCategory bodyPosition;
+
     private long itemId;
+
     private EItemType itemType;
 
-    public SetItemRequest() {
-    }
 }

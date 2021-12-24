@@ -2,11 +2,13 @@ package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.exeption.InventoryNotFoundException;
+import com.virtualpet.exeption.item.ItemCategoryNotFoundException;
 import com.virtualpet.exeption.item.ItemNotFoundException;
 import com.virtualpet.exeption.sub.SubNotFoundException;
 import com.virtualpet.model.Inventory;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.Item;
+import com.virtualpet.model.enums.EItemType;
 import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.Sub;
@@ -15,6 +17,7 @@ import com.virtualpet.repository.InventoryRepository;
 import com.virtualpet.repository.ItemRepository;
 import com.virtualpet.repository.SubRepository;
 import com.virtualpet.service.InventoryService;
+import com.virtualpet.transformer.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,29 +30,28 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository inventoryRepository;
     private final SubRepository subRepository;
     private final ItemRepository itemRepository;
+    private final Transformer transformer;
 
     @Override
     public SubDTO setItem(SetItemRequest setItemRequest) {
         Sub sub = subRepository.findById(setItemRequest.getSubId()).orElseThrow(() -> new SubNotFoundException(setItemRequest.getSubId()));
-        switch (setItemRequest.getItemType()) {
-            case ARMOR:
-                Armor armor = (Armor) sub.getInventory().getItems()
-                        .stream()
-                        .filter(item -> item.getId() == setItemRequest.getItemId())
-                        .findFirst()
-                        .orElseThrow(ItemNotFoundException::new);
-                setArmor(sub, armor, armor.getItemCategory());
-                break;
-            case WEAPON:
-                Sword weapon = (Sword) sub.getInventory().getItems()
-                        .stream()
-                        .filter(item -> item.getId() == setItemRequest.getItemId())
-                        .findFirst().orElseThrow(ItemNotFoundException::new);
-                setWeapon(sub, weapon);
-                break;
+        if (setItemRequest.getItemType() == EItemType.ARMOR) {
+            Armor armor = (Armor) sub.getInventory().getItems()
+                    .stream()
+                    .filter(item -> item.getId() == setItemRequest.getItemId())
+                    .findFirst()
+                    .orElseThrow(ItemNotFoundException::new);
+            setArmor(sub, armor, armor.getItemCategory());
+        } else if (setItemRequest.getItemType() == EItemType.WEAPON) {
+            Sword weapon = (Sword) sub.getInventory().getItems()
+                    .stream()
+                    .filter(item -> item.getId() == setItemRequest.getItemId())
+                    .findFirst().orElseThrow(ItemNotFoundException::new);
+            setWeapon(sub, weapon);
+        } else {
+            throw new ItemCategoryNotFoundException();
         }
-        return new SubDTO(sub);
-
+        return transformer.getSubDTO(sub);
     }
 
     private void setWeapon(Sub sub, Sword sword) {
@@ -68,8 +70,6 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     private void armorIsExist(Sub sub, Armor armor, EItemCategory eItemCategory) {
-
-
     }
 
     private void setArmor(Sub sub, Armor armor, EItemCategory itemCategory) {
@@ -99,6 +99,8 @@ public class InventoryServiceImpl implements InventoryService {
                 currentArmor = sub.getDressedItems().getHead();
                 sub.getDressedItems().setHead(armor);
                 break;
+            default:
+                throw new ItemCategoryNotFoundException();
         }
         if (currentArmor != null) {
             sub.setHealth(sub.getHealth() - currentArmor.getHealth());
@@ -108,7 +110,6 @@ public class InventoryServiceImpl implements InventoryService {
         sub.setHealth(sub.getHealth() + armor.getHealth());
         sub.setDefence(sub.getDefence() + armor.getArmor());
         subRepository.save(sub);
-
     }
 
 
@@ -119,7 +120,7 @@ public class InventoryServiceImpl implements InventoryService {
         sub.getDressedItems().setSword(null);
         sub.setAttack(sub.getAttack() - sword.getAttack());
         subRepository.save(sub);
-        return new SubDTO(sub);
+        return transformer.getSubDTO(sub);
     }
 
     @Override
@@ -129,13 +130,13 @@ public class InventoryServiceImpl implements InventoryService {
         if (armor != null) {
             armor.setHasDressed(false);
             subRepository.save(sub);
-            return new SubDTO(sub);
+            return transformer.getSubDTO(sub);
         }
         throw new ItemNotFoundException(setItemRequest.getItemId());
     }
 
     private Armor getArmor(EItemCategory bodyPosition, Sub sub) {
-        Armor armor = null;
+        Armor armor;
         switch (bodyPosition) {
             case SHOULDERS:
                 armor = sub.getDressedItems().getShoulders();
@@ -161,6 +162,8 @@ public class InventoryServiceImpl implements InventoryService {
                 armor = sub.getDressedItems().getHead();
                 sub.getDressedItems().setHead(null);
                 break;
+            default:
+                throw new ItemCategoryNotFoundException();
         }
         if (armor != null) {
             sub.setDefence(sub.getDefence() - armor.getArmor());
@@ -179,21 +182,20 @@ public class InventoryServiceImpl implements InventoryService {
         if (item != null) {
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
             Inventory inventory = inventoryRepository.findById(subId).orElseThrow(() -> new InventoryNotFoundException(sub.getName()));
-            switch (item.getItemType()) {
-                case WEAPON:
-                    checkDressedWeapon(sub);
-                    getMoneyForSell(item, sub);
-                    inventory.getItems().remove(item);
-                    break;
-                case ARMOR:
-                    getArmor(item.getItemCategory(), sub);
-                    getMoneyForSell(item, sub);
-                    inventory.getItems().remove(item);
-                    break;
+            if (item.getItemType() == EItemType.WEAPON) {
+                checkDressedWeapon(sub);
+                getMoneyForSell(item, sub);
+                inventory.getItems().remove(item);
+            } else if (item.getItemType() == EItemType.ARMOR) {
+                getArmor(item.getItemCategory(), sub);
+                getMoneyForSell(item, sub);
+                inventory.getItems().remove(item);
+            } else {
+                throw new ItemCategoryNotFoundException();
             }
             inventoryRepository.save(inventory);
             subRepository.save(sub);
-            return new SubDTO(sub);
+            return transformer.getSubDTO(sub);
 
         } else {
             throw new ItemNotFoundException();

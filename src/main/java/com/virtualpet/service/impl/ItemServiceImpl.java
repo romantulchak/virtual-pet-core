@@ -7,18 +7,14 @@ import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.repository.SwordRepository;
 import com.virtualpet.service.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private SwordRepository swordRepository;
 
-    @Autowired
-    public ItemServiceImpl(SwordRepository swordRepository){
-        this.swordRepository = swordRepository;
-    }
-
+    private final SwordRepository swordRepository;
 
     @Override
     public void createSword(Sword sword) {
@@ -27,7 +23,6 @@ public class ItemServiceImpl implements ItemService {
             sword.setItemType(EItemType.WEAPON);
             swordRepository.save(sword);
         }
-
         throw new ItemNotFoundException();
     }
 

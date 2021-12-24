@@ -28,7 +28,6 @@ public class Sub extends SubAbstract {
     @JsonView(Views.SubView.class)
     private long id;
 
-
     @JsonView({Views.SubView.class, Views.FriendView.class})
     @NotBlank
     @Size(max = 40)

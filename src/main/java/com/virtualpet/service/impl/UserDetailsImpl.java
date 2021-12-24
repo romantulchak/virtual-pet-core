@@ -41,8 +41,6 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
     }
 
-  
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -50,7 +48,6 @@ public class UserDetailsImpl implements UserDetails {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public void setEmail(String email) {
         this.email = email;
@@ -107,13 +104,16 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean equals(Object o){
-
         if(this == o)
             return true;
         if(o == null || getClass() != o.getClass())
             return false;
         UserDetailsImpl userDetails = (UserDetailsImpl) o;
         return Objects.equals(id, userDetails.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

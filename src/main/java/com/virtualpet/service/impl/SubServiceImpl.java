@@ -6,7 +6,7 @@ import com.virtualpet.model.SubType;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
 import com.virtualpet.utils.FileSaver;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,17 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class SubServiceImpl implements SubService {
 
-    private SubTypeRepository subTypeRepository;
+    private final SubTypeRepository subTypeRepository;
     private String filePath;
-
     @Value("${upload.path}")
     private String path;
-    @Autowired
-    public SubServiceImpl(SubTypeRepository subTypeRepository){
-        this.subTypeRepository = subTypeRepository;
-    }
 
 
     @Override

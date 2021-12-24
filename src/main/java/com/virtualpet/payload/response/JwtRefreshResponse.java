@@ -8,10 +8,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class JwtRefreshResponse {
+
     private String username;
+
     private String token;
 
-    public JwtRefreshResponse(){
-
-    }
 }

@@ -31,7 +31,6 @@ public class UserFriend {
     }
 
     public UserFriend(User user, User userRequest) {
-
         this.user = user;
         this.userRequest = userRequest;
     }

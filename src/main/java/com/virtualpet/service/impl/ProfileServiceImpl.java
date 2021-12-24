@@ -4,7 +4,8 @@ import com.virtualpet.dto.MoneyCurrencyDTO;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
-import com.virtualpet.exeption.*;
+import com.virtualpet.exeption.BadRequestException;
+import com.virtualpet.exeption.MaximumNumberOfSubsException;
 import com.virtualpet.exeption.sub.SubNotFoundException;
 import com.virtualpet.exeption.sub.SubTypeNotFoundException;
 import com.virtualpet.exeption.sub.SubWithNameAlreadyExistException;
@@ -16,12 +17,13 @@ import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.projection.SubMoneyCurrencyProjection;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ProfileService;
+import com.virtualpet.transformer.Transformer;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,24 +40,21 @@ public class ProfileServiceImpl implements ProfileService {
     private final LevelRepository levelRepository;
     private final DressedItemRepository dressedItemRepository;
     private final UserFriendRepository userFriendRepository;
-    private final ModelMapper modelMapper;
+    private final Transformer transformer;
 
     @Override
     public List<SubDTO> getSubsForUser(Authentication authentication) {
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         List<Sub> subs = subRepository.getAllSubsForUser(user.getId());
-        return subs.stream().map(this::subToSubDTO).collect(Collectors.toList());
+        return subs.stream().map(transformer::getSubDTO).collect(Collectors.toList());
     }
 
-    private SubDTO subToSubDTO(Sub sub) {
-        return modelMapper.map(sub, SubDTO.class);
-    }
 
     @Override
     public Set<UserDTO> getFriends(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findById(userInSystem.getId()).orElseThrow(() -> new UserNotFoundException(userInSystem.getUsername()));
-        return user.getFriends().stream().map(this::convertUserToDTO).collect(Collectors.toSet());
+        return user.getFriends().stream().map(transformer::getUserDTO).collect(Collectors.toSet());
     }
 
     @Override
@@ -66,7 +65,7 @@ public class ProfileServiceImpl implements ProfileService {
             return userFriendRepository.findAllByUser(user);
 
         }
-        return null;
+        return Collections.emptySet();
     }
 
     @Override
@@ -76,7 +75,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (user != null) {
             return userFriendRepository.findAllByUserRequest(user);
         }
-        return new HashSet<>();
+        return Collections.emptySet();
     }
 
     @Override
@@ -99,6 +98,7 @@ public class ProfileServiceImpl implements ProfileService {
         return new UserDTO(user, userInSystem);
     }
 
+    @Transactional
     @Override
     public void createSubForUser(SubRequest subRequest, Authentication authentication) {
         if (subRequest != null) {
@@ -106,7 +106,8 @@ public class ProfileServiceImpl implements ProfileService {
                 UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
                 User user = userRepository.findById(userInSystem.getId()).orElseThrow(UserNotFoundException::new);
                 if (subRepository.countSubByUser(user) <= user.getMaxNumberOfSubs()) {
-                    SubType subType = subTypeRepository.findById(subRequest.getId()).orElseThrow(() -> new SubTypeNotFoundException(subRequest.getName()));
+                    SubType subType = subTypeRepository.findById(subRequest.getId()).
+                            orElseThrow(() -> new SubTypeNotFoundException(subRequest.getName()));
                     Inventory inventory = new Inventory();
                     Level level = new Level();
                     DressedItem dressedItem = new DressedItem();
@@ -154,7 +155,7 @@ public class ProfileServiceImpl implements ProfileService {
         Sub sub = subRepository.findById(subId).orElse(null);
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         if (sub != null && user.getId().equals(sub.getUser().getId())) {
-            return subToSubDTO(sub);
+            return transformer.getSubDTO(sub);
         }
         throw new SubNotFoundException(subId);
     }
@@ -162,8 +163,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public List<SubTypeDTO> getSubTypes() {
         List<SubType> subTypes = subTypeRepository.findAll();
-        return subTypes.stream().map(this::convertSubTypeToDTO).collect(Collectors.toList());
-
+        return subTypes.stream().map(transformer::getSubTypeDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -178,7 +178,7 @@ public class ProfileServiceImpl implements ProfileService {
         userRepository.save(userInSystem);
         userRepository.save(user);
         userFriendRepository.delete(userFriend);
-        return convertUserToDTO(user);
+        return transformer.getUserDTO(user);
     }
 
     @Override
@@ -192,14 +192,7 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
-    private SubTypeDTO convertSubTypeToDTO(SubType subType) {
-        return new SubTypeDTO(subType);
-    }
-
-    private UserDTO convertUserToDTO(User user) {
-        return new UserDTO(user);
-    }
-
+    @Transactional
     @Override
     public void deleteFriend(long userId, long friendId, Authentication authentication) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);

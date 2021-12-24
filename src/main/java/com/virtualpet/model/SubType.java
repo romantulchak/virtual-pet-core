@@ -33,13 +33,4 @@ public class SubType extends SubAbstract{
     public SubType(){
 
     }
-
-    public SubType(String name, int attack , int defence, String modelPath, String iconPath, int health) {
-        super(attack, defence);
-        this.createdAt = LocalDateTime.now();
-        setModelPath(modelPath);
-        setIconPath(iconPath);
-        setName(name);
-        setHealth(health);
-    }
 }

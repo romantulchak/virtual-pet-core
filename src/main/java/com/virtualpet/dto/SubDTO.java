@@ -51,26 +51,4 @@ public class SubDTO {
     private List<DamageSkillDTO> damageSkills;
 
     private List<DefenceSkillDTO> defenceSkills;
-
-    public SubDTO(){
-
-    }
-
-    public SubDTO(Sub sub) {
-        this.id = sub.getId();
-        this.name = sub.getName();
-        this.attack = sub.getAttack() + sub.getSubType().getAttack();
-        this.defence = sub.getDefence() + sub.getSubType().getDefence();
-//        this.currency = sub.getCurrency();
-        this.inventory = sub.getInventory();
-        this.user = sub.getUser();
-//        this.moneyUpLevel = sub.getMoney().getMoneyUpLevel();
-//        this.moneyUpPrice = sub.getMoney().getMoneyUpPrice();
-//        this.moneyMultiplier = sub.getMoney().getMoneyMultiplier();
-        this.subAttack = sub.getSubAttack();
-        this.health = sub.getHealth() + sub.getSubType().getHealth();
-        this.dressedItems = new DressedItemDTO(sub.getDressedItems());
-        this.iconPath = sub.getIconPath();
-    }
-
 }

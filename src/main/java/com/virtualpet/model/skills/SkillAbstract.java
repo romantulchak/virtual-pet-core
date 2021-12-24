@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -67,6 +68,8 @@ public abstract class SkillAbstract {
     @ManyToOne
     private Shop shop;
 
+    private UUID reference;
+
     protected SkillAbstract() {
     }
 
@@ -78,6 +81,7 @@ public abstract class SkillAbstract {
         this.cooldown = skillAbstract.getCooldown();
         this.maxCooldown = skillAbstract.getMaxCooldown();
         this.icon = skillAbstract.getIcon();
+        this.reference = skillAbstract.getReference();
         this.sub = sub;
     }
 
