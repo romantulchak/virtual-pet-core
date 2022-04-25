@@ -7,7 +7,7 @@ import com.virtualpet.model.Views;
 import com.virtualpet.model.enums.ESkillCategory;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.service.impl.SkillServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,14 +17,10 @@ import java.util.List;
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600L)
 @RequestMapping("/api/skills")
+@RequiredArgsConstructor
 public class SkillController {
 
     private final SkillServiceImpl skillService;
-
-    @Autowired
-    public SkillController(SkillServiceImpl skillService) {
-        this.skillService = skillService;
-    }
 
     @PostMapping("/createDamageSkill")
     @PreAuthorize("hasRole('ADMIN')")

@@ -12,13 +12,13 @@ import javax.persistence.Embeddable;
 @Setter
 public class Money {
 
-    @JsonView({Views.MoneyCurrencyView.class})
+    @JsonView({Views.MoneyCurrencyView.class, Views.GameSubView.class})
     private int moneyMultiplier;
 
-    @JsonView({Views.MoneyCurrencyView.class})
+    @JsonView({Views.MoneyCurrencyView.class, Views.GameSubView.class})
     private int moneyUpLevel;
 
-    @JsonView({Views.MoneyCurrencyView.class})
+    @JsonView({Views.MoneyCurrencyView.class, Views.GameSubView.class})
     private long moneyUpPrice;
 
     public Money() {

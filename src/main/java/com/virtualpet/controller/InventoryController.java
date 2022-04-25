@@ -6,7 +6,7 @@ import com.virtualpet.model.Item;
 import com.virtualpet.model.Views;
 import com.virtualpet.payload.request.SetItemRequest;
 import com.virtualpet.service.impl.InventoryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inventory")
 @CrossOrigin(value = "*", maxAge = 3600L)
+@RequiredArgsConstructor
 public class InventoryController {
 
-    private InventoryServiceImpl inventoryService;
-
-    @Autowired
-    public InventoryController(InventoryServiceImpl inventoryService){
-        this.inventoryService = inventoryService;
-    }
+    private final InventoryServiceImpl inventoryService;
 
     @GetMapping("/getItems/{id}")
     @PreAuthorize("isAuthenticated() && @subAccess.hasAccess(#id, authentication)")

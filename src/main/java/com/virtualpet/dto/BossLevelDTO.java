@@ -1,7 +1,9 @@
 package com.virtualpet.dto;
 
 import com.virtualpet.model.Boss;
+import lombok.Data;
 
+@Data
 public class BossLevelDTO {
     private Boss boss = new Boss();
     
@@ -18,22 +20,6 @@ public class BossLevelDTO {
         this.boss = boss;
         this.boss.setHealth((int)(boss.getHealth() + (boss.getHealth() * multiplier) * 3));
         this.boss.setDroppedMoney((int)(boss.getDroppedMoney() + (boss.getDroppedMoney() * multiplier)));
-        this.level = level;
-    }
-
-    public Boss getBoss() {
-        return boss;
-    }
-
-    public void setBoss(Boss boss) {
-        this.boss = boss;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
         this.level = level;
     }
 }

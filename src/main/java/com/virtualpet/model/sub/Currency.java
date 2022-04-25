@@ -12,16 +12,16 @@ import javax.persistence.Embeddable;
 @Setter
 public class Currency {
 
-    @JsonView({Views.SubView.class, Views.MoneyCurrencyView.class})
+    @JsonView({Views.SubView.class, Views.MoneyCurrencyView.class, Views.GameSubView.class})
     private long money;
 
-    @JsonView({Views.SubView.class, Views.SubView.class})
+    @JsonView({Views.SubView.class, Views.SubView.class, Views.GameSubView.class})
     private long diamond;
 
-    @JsonView({Views.SubView.class, Views.SubView.class})
+    @JsonView({Views.SubView.class, Views.SubView.class, Views.GameSubView.class})
     private long emerald;
 
-    @JsonView({Views.SubView.class, Views.SubView.class})
+    @JsonView({Views.SubView.class, Views.SubView.class, Views.GameSubView.class})
     private int maxDiamond;
 
     public Currency() {

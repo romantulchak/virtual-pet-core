@@ -5,22 +5,17 @@ import com.virtualpet.dto.ShopDTO;
 import com.virtualpet.model.*;
 import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.service.impl.ShopServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600L)
 @RequestMapping("/api/shop")
+@RequiredArgsConstructor
 public class ShopController {
 
-    private ShopServiceImpl shopService;
-
-    @Autowired
-    public ShopController(ShopServiceImpl shopService){
-        this.shopService = shopService;
-    }
-
+    private final ShopServiceImpl shopService;
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")

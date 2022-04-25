@@ -10,28 +10,21 @@ import com.virtualpet.model.UserFriend;
 import com.virtualpet.model.Views;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.service.impl.ProfileServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.View;
 import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/api/profile")
 @CrossOrigin(value = "*", maxAge = 3600L)
+@RequiredArgsConstructor
 public class ProfileController {
 
-    private ProfileServiceImpl profileService;
-
-    @Autowired
-    public ProfileController(ProfileServiceImpl profileService){
-        this.profileService = profileService;
-    }
+    private final ProfileServiceImpl profileService;
 
     @GetMapping("/getSubsForUser")
     @PreAuthorize("isAuthenticated()")

@@ -69,21 +69,17 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public BossLevelDTO getBoss(long subId) {
-        Sub sub = subRepository.findById(subId).orElse(null);
-        if (sub != null) {
-            Level level = levelRepository.findById(sub.getLevel().getId()).orElseThrow(LevelNotFoundException::new);
-            initBosses(level);
-            int randomIndex = getRandomIndex();
-            currentBoss = bosses.get(randomIndex);
-            bosses.remove(currentBoss);
-            if (level.getLevel() > 1) {
-                Random random = new Random();
-                return new BossLevelDTO(currentBoss, level.getLevel() * random.nextDouble() * (0.90 - 0.45) + 0.45, level.getLevel());
-            }
-            return new BossLevelDTO(currentBoss, level.getLevel());
-
+        Sub sub = subRepository.findById(subId).orElseThrow(() -> new SubNotFoundException(subId));
+        Level level = levelRepository.findById(sub.getLevel().getId()).orElseThrow(LevelNotFoundException::new);
+        initBosses(level);
+        int randomIndex = getRandomIndex();
+        currentBoss = bosses.get(randomIndex);
+        bosses.remove(currentBoss);
+        if (level.getLevel() > 1) {
+            Random random = new Random();
+            return new BossLevelDTO(currentBoss, level.getLevel() * random.nextDouble() * (0.90 - 0.45) + 0.45, level.getLevel());
         }
-        throw new SubNotFoundException(subId);
+        return new BossLevelDTO(currentBoss, level.getLevel());
     }
 
     @Override

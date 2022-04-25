@@ -11,13 +11,13 @@ import javax.persistence.Embeddable;
 @Setter
 public class SubAttack {
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.GameSubView.class})
     private int attackUpLevel;
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.GameSubView.class})
     private int attackMultiplier;
 
-    @JsonView(Views.SubView.class)
+    @JsonView({Views.SubView.class, Views.GameSubView.class})
     private long attackMoneyUp;
 
     public SubAttack(){

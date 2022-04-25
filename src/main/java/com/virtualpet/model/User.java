@@ -23,12 +23,12 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.SubView.class, Views.FriendView.class})
+    @JsonView({Views.SubView.class, Views.FriendView.class, Views.GameSubView.class})
     private long id;
 
     @NotBlank
     @Size(max = 16)
-    @JsonView({Views.SubView.class,Views.FriendView.class})
+    @JsonView({Views.SubView.class,Views.FriendView.class, Views.GameSubView.class})
     private String username;
 
     @Email

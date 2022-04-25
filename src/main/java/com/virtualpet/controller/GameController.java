@@ -7,22 +7,17 @@ import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Views;
 import com.virtualpet.payload.request.SubRequest;
 import com.virtualpet.service.impl.GameServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(value = "*")
 @RequestMapping(value = "/api/game")
+@RequiredArgsConstructor
 public class GameController {
 
-    private GameServiceImpl gameService;
-
-    @Autowired
-    public GameController(GameServiceImpl gameService) {
-        this.gameService = gameService;
-    }
-
+    private final GameServiceImpl gameService;
 
     @PutMapping("/upMoneyLevel")
     @JsonView(Views.MoneyCurrencyView.class)
@@ -44,7 +39,7 @@ public class GameController {
     }
 
     @PutMapping("/upSubAttack")
-    @JsonView(Views.SubView.class)
+    @JsonView(Views.GameSubView.class)
     @PreAuthorize("isAuthenticated()")
     public SubDTO upSubAttack(@RequestBody SubRequest subRequest) {
         return gameService.upSubAttack(subRequest);

@@ -12,10 +12,10 @@ import java.util.Set;
 @Data
 public class UserDTO {
 
-    @JsonView({Views.UserView.class, Views.SubView.class, Views.FriendView.class})
+    @JsonView({Views.UserView.class, Views.SubView.class, Views.FriendView.class, Views.GameSubView.class})
     private long id;
 
-    @JsonView({Views.UserView.class, Views.SubView.class, Views.FriendView.class})
+    @JsonView({Views.UserView.class, Views.SubView.class, Views.FriendView.class, Views.GameSubView.class})
     private String username;
 
     @JsonView({Views.UserView.class, Views.FriendView.class})
@@ -29,6 +29,9 @@ public class UserDTO {
 
     @JsonView({Views.UserView.class, Views.FriendView.class}) 
     private boolean isFriend;
+
+    public UserDTO() {
+    }
 
     public UserDTO(User user, User currentUser){
         this.id = user.getId();

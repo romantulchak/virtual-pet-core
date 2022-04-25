@@ -2,6 +2,7 @@ package com.virtualpet.model;
 
 public class Views {
     public interface ProfileView{}
+    public interface GameSubView{}
     public interface UserView{}
     public interface SubView{}
     public interface InventoryView{}
