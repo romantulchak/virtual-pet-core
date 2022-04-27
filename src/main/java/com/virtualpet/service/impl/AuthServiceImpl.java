@@ -16,7 +16,6 @@ import com.virtualpet.repository.UserRepository;
 import com.virtualpet.security.jwt.JwtUtils;
 import com.virtualpet.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,13 +34,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private static final String USERNAME = "username";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -57,6 +58,9 @@ public class AuthServiceImpl implements AuthService {
                 roles);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void registerUser(SignupRequest signupRequest) {
         boolean isExistsByUsername = userRepository.existsByUsername(signupRequest.getUsername());
@@ -75,9 +79,12 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JwtRefreshResponse refreshToken(HttpServletRequest request) {
-        String username = request.getHeader("username");
+        String username = request.getHeader(USERNAME);
         if (username != null) {
             String token = jwtUtils.generateRefreshJwtToken(username);
             return new JwtRefreshResponse(username, token);

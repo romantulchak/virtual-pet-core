@@ -38,6 +38,9 @@ public class GameServiceImpl implements GameService {
     private List<Boss> bosses = new ArrayList<>();
     private Boss currentBoss;
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public MoneyCurrencyDTO upMoneyLevel(SubRequest subRequest) {
@@ -57,6 +60,9 @@ public class GameServiceImpl implements GameService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void saveMoney(SubRequest subRequest, long money) {
@@ -67,6 +73,9 @@ public class GameServiceImpl implements GameService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BossLevelDTO getBoss(long subId) {
         Sub sub = subRepository.findById(subId).orElseThrow(() -> new SubNotFoundException(subId));
@@ -82,6 +91,9 @@ public class GameServiceImpl implements GameService {
         return new BossLevelDTO(currentBoss, level.getLevel());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubDTO upSubAttack(SubRequest subRequest) {
         Sub sub = subRepository.findById(subRequest.getId())
@@ -100,7 +112,11 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-
+    /**
+     * Get bosses from system and set level
+     *
+     * @param level to create boss with required level
+     */
     private void initBosses(Level level) {
         if (bosses.isEmpty()) {
             level.setLevel(level.getLevel() + 1);
@@ -109,6 +125,11 @@ public class GameServiceImpl implements GameService {
         }
     }
 
+    /**
+     * Get an index to get the boss out of the system
+     *
+     * @return index to get random boss from system
+     */
     private int getRandomIndex() {
         Random random = new SecureRandom();
         int bossesSize = bosses.size();

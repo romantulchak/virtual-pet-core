@@ -16,6 +16,9 @@ public class ItemServiceImpl implements ItemService {
 
     private final SwordRepository swordRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createSword(Sword sword) {
         if(sword != null) {
@@ -26,8 +29,11 @@ public class ItemServiceImpl implements ItemService {
         throw new ItemNotFoundException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createArmor(Armor armor) {
-
+        //to be implemented
     }
 }
