@@ -42,6 +42,9 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserFriendRepository userFriendRepository;
     private final Transformer transformer;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SubDTO> getSubsForUser(Authentication authentication) {
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
@@ -49,7 +52,9 @@ public class ProfileServiceImpl implements ProfileService {
         return subs.stream().map(transformer::getSubDTO).collect(Collectors.toList());
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<UserDTO> getFriends(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
@@ -57,6 +62,9 @@ public class ProfileServiceImpl implements ProfileService {
         return user.getFriends().stream().map(transformer::getUserDTO).collect(Collectors.toSet());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<UserFriend> getFriendsRequest(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
@@ -68,6 +76,9 @@ public class ProfileServiceImpl implements ProfileService {
         return Collections.emptySet();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<UserFriend> getFriendsResponse(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
@@ -78,6 +89,9 @@ public class ProfileServiceImpl implements ProfileService {
         return Collections.emptySet();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserFriend friendRequest(Authentication authentication, User user) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -90,14 +104,22 @@ public class ProfileServiceImpl implements ProfileService {
         throw new UserAuthenticationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDTO getUserByUsername(String username, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User userInSystem = userRepository.findById(userDetails.getId()).orElseThrow(() -> new UserNotFoundException(userDetails.getUsername()));
-        User user = userRepository.findByUsername(username).filter(x -> !x.getUsername().equals(userDetails.getUsername())).orElseThrow(() -> new UserNotFoundException(username));
+        User user = userRepository.findByUsername(username)
+                .filter(x -> !x.getUsername().equals(userDetails.getUsername())).
+                orElseThrow(() -> new UserNotFoundException(username));
         return new UserDTO(user, userInSystem);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void createSubForUser(SubRequest subRequest, Authentication authentication) {
@@ -139,6 +161,9 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSubForUser(long id, Authentication authentication) {
         Sub sub = subRepository.findById(id).orElseThrow(() -> new SubNotFoundException(id));
@@ -150,6 +175,9 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubDTO chooseSub(long subId, long userId, Authentication authentication) {
         Sub sub = subRepository.findById(subId).orElse(null);
@@ -160,12 +188,18 @@ public class ProfileServiceImpl implements ProfileService {
         throw new SubNotFoundException(subId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SubTypeDTO> getSubTypes() {
         List<SubType> subTypes = subTypeRepository.findAll();
         return subTypes.stream().map(transformer::getSubTypeDTO).collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDTO acceptFriend(UserFriend userFriend, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -181,6 +215,9 @@ public class ProfileServiceImpl implements ProfileService {
         return transformer.getUserDTO(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deniedFriendRequest(long friendRequestId, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -192,6 +229,9 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void deleteFriend(long userId, long friendId, Authentication authentication) {
@@ -208,6 +248,9 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MoneyCurrencyDTO getSubMoneyCurrency(long id, String name) {
         SubMoneyCurrencyProjection projection = subRepository.findByIdAndName(id, name).orElseThrow(SubNotFoundException::new);

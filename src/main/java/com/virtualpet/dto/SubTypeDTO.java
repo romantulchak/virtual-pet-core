@@ -8,16 +8,16 @@ import lombok.Data;
 public class SubTypeDTO {
 
     @JsonView(Views.SubTypeView.class)
-    private Long id;
+    private long id;
 
     @JsonView(Views.SubTypeView.class)
     private String name;
 
     @JsonView(Views.SubTypeView.class)
-    private Integer attack;
+    private int attack;
 
     @JsonView(Views.SubTypeView.class)
-    private Integer defence;
+    private int defence;
 
     @JsonView(Views.SubTypeView.class)
     private String modelPath;

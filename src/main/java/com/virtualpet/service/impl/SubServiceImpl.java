@@ -24,6 +24,9 @@ public class SubServiceImpl implements SubService {
     private String path;
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createSub(SubType subType) {
         if(subType != null){
@@ -41,6 +44,9 @@ public class SubServiceImpl implements SubService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSub(Long id) {
         SubType subType = subTypeRepository.findById(id).orElse(null);
@@ -51,6 +57,9 @@ public class SubServiceImpl implements SubService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseEntity<?> editSub() {
         return null;
@@ -64,6 +73,4 @@ public class SubServiceImpl implements SubService {
             throw new RuntimeException("File not found");
         }
     }
-
-
 }

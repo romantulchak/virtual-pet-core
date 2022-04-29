@@ -36,6 +36,9 @@ public class ShopServiceImpl implements ShopService {
     private final SubRepository subRepository;
     private final InventoryRepository inventoryRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ShopDTO getShopForSub(Sub sub) {
         Shop shop = getShop();
@@ -50,6 +53,9 @@ public class ShopServiceImpl implements ShopService {
         return shopRepository.findFirstByOrderById().orElseThrow(ShopNotFoundException::new);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSkillToShop(SkillAbstract skillAbstract) {
         if (skillAbstract != null) {
@@ -69,6 +75,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addItemToShop(Item item) {
         if (item != null) {
@@ -82,7 +91,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeSkillFromShop(SkillAbstract skillAbstract) {
         if (skillAbstract != null) {
@@ -92,20 +103,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
-    private void addSwordToShop(long itemId) {
-        Sword sword = swordRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        Shop shop = getShop();
-        shop.getItemSwords().add(sword);
-        shopRepository.save(shop);
-    }
-
-    private void addArmorToShop(long itemId) {
-        Armor armor = armorRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-        Shop shop = getShop();
-        shop.getItemArmors().add(armor);
-        shopRepository.save(shop);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void buyItem(Item item, long subId) {
         if (item != null) {
@@ -124,6 +124,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void buySkill(long id, long subId) {
@@ -142,6 +145,13 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    /**
+     * Gets category of skill to be bought
+     *
+     * @param skill to check its category
+     * @param sub form whom skill will be added
+     * @return correct category of skill that will be bought
+     */
     private SkillAbstract getBoughtSkill(SkillAbstract skill, Sub sub){
         SkillAbstract skillForSub = null;
         switch (skill.getCategory()) {
@@ -158,15 +168,29 @@ public class ShopServiceImpl implements ShopService {
         return skillForSub;
     }
 
+    /**
+     * Generates DamageSkill category object
+     *
+     * @param skillAbstract to be cast to damage skill category
+     * @param sub form whom skill will be added
+     * @return DamageSkill object for current sub
+     */
     private DamageSkill generateDamageSkill(SkillAbstract skillAbstract, Sub sub){
         return new DamageSkill((DamageSkill) skillAbstract, sub);
     }
 
+    /**
+     * Add item to sub inventory
+     *
+     * @param item to be added to inventory
+     * @param inventory to which inventory item should be added
+     */
     private void addItemToInventory(Item item, Inventory inventory) {
         inventory.getItems().add(item);
         inventoryRepository.save(inventory);
     }
 
+    @Deprecated(forRemoval = true)
     private ShopDTO convertShopToDTO(Shop shop, Sub sub) {
 //        List<DamageSkillDTO> damageSkillDTOS = shop.gets().stream().map(x -> new DamageSkillDTO(x, sub)).collect(Collectors.toList());
 //        List<DefenceSkillDTO> defenceSkillDTOS = shop.getDefenceSkills().stream().map(x -> new DefenceSkillDTO(x, sub)).collect(Collectors.toList());
@@ -176,11 +200,39 @@ public class ShopServiceImpl implements ShopService {
         return null;
     }
 
+    /**
+     * Checks if sub has enough money to buy skill/item
+     *
+     * @param sub to check its moneyy
+     * @param itemPrice price of item that will be bought
+     */
     private void checkEnoughMoney(Sub sub, int itemPrice) {
         if (sub.getCurrency().getMoney() <= itemPrice) {
             throw new NotEnoughMoneyException(sub.getName(), sub.getCurrency().getMoney(), itemPrice);
         }
     }
 
+    /**
+     * Adds sword to shop
+     *
+     * @param itemId sword id that will be added to shop
+     */
+    private void addSwordToShop(long itemId) {
+        Sword sword = swordRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        Shop shop = getShop();
+        shop.getItemSwords().add(sword);
+        shopRepository.save(shop);
+    }
 
+    /**
+     * Adds armor to shop
+     *
+     * @param itemId armor id that will be added to shop
+     */
+    private void addArmorToShop(long itemId) {
+        Armor armor = armorRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        Shop shop = getShop();
+        shop.getItemArmors().add(armor);
+        shopRepository.save(shop);
+    }
 }

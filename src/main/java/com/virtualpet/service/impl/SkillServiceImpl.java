@@ -44,6 +44,9 @@ public class SkillServiceImpl implements SkillService {
     private String path;
     private String skillImage;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DamageSkillDTO createDamageSkill(DamageSkill damageSkill) {
          if(damageSkill != null){
@@ -62,6 +65,9 @@ public class SkillServiceImpl implements SkillService {
          }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SkillAbstractDTO> getSkills(String page) {
         Pageable pageable = PageRequest.of(AppHelper.getCurrentPage(page), 10);
@@ -71,6 +77,7 @@ public class SkillServiceImpl implements SkillService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
     @Override
     public void uploadImageSkill(MultipartFile file) {
         if (file != null){
@@ -79,13 +86,18 @@ public class SkillServiceImpl implements SkillService {
             throw new RuntimeException("File not found");
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void createDefenceSkill(DefenceSkill defenceSkill) {
+    public DefenceSkillDTO createDefenceSkill(DefenceSkill defenceSkill) {
         if (defenceSkill != null) {
             if (!defenceSkillRepository.existsByName(defenceSkill.getName())) {
                 defenceSkill.setCategory(ESkillCategory.DEFENCE);
                 defenceSkill.setReference(UUID.randomUUID());
                 defenceSkillRepository.save(defenceSkill);
+                return new DefenceSkillDTO();
             } else {
                 throw new SkillAlreadyExistException(defenceSkill.getName());
             }
@@ -94,6 +106,9 @@ public class SkillServiceImpl implements SkillService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteSkill(long skillId, ESkillCategory skillCategory) {
         switch (skillCategory){
@@ -112,6 +127,9 @@ public class SkillServiceImpl implements SkillService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SkillAbstractDTO> getSkillsInShopForSub(long subId, String page) {
         List<UUID> subSkillReferences = skillRepository.findSubSkillReferences(subId);
@@ -123,6 +141,12 @@ public class SkillServiceImpl implements SkillService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gives the opportunity to return the money for the acquired skill in case of his removal from the game
+     *
+     * @param skillPrice to be returned to sub
+     * @param subs subs that have this skill bought
+     */
     private void returnSkillPrice(long skillPrice, List<Sub> subs){
         subs.forEach(sub -> {
             sub.getCurrency().setMoney(sub.getCurrency().getMoney() + skillPrice);
@@ -130,6 +154,12 @@ public class SkillServiceImpl implements SkillService {
         });
     }
 
+    /**
+     * Converts skills to DTO depends on the category (type)
+     *
+     * @param skillAbstract to be converted to DTO
+     * @return DTO of skill {@link DamageSkillDTO} or {@link DefenceSkillDTO}
+     */
     private SkillAbstractDTO convertToDTO(SkillAbstract skillAbstract){
         SkillAbstractDTO skill;
         if (skillAbstract instanceof DamageSkill){
