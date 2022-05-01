@@ -20,7 +20,7 @@ public class InventoryController {
 
     private final InventoryServiceImpl inventoryService;
 
-    @GetMapping("/getItems/{id}")
+    @GetMapping("/items/{id}")
     @PreAuthorize("isAuthenticated() && @subAccess.hasAccess(#id, authentication)")
     @JsonView(Views.InventoryView.class)
     public List<Item> getItems(@PathVariable("id") long id){
@@ -28,22 +28,22 @@ public class InventoryController {
     }
 
 
-    @PutMapping("/setItem")
+    @PutMapping("/set-item")
     @JsonView(Views.SubView.class)
     public SubDTO setItem(@RequestBody SetItemRequest setItemRequest){
        return inventoryService.setItem(setItemRequest);
     }
-    @PutMapping("/withdrawArmor")
+    @PutMapping("/withdraw-armor")
     @JsonView(Views.SubView.class)
     public SubDTO withdrawArmor(@RequestBody SetItemRequest setItemRequest){
         return inventoryService.withdrawArmor(setItemRequest);
     }
-    @PutMapping("/withdrawWeapon")
+    @PutMapping("/withdraw-weapon")
     @JsonView(Views.SubView.class)
     public SubDTO withdrawWeapon(@RequestBody SetItemRequest setItemRequest){
         return inventoryService.withdrawWeapon(setItemRequest);
     }
-    @PostMapping("/sellItem/{subId}")
+    @PostMapping("/sell-item/{subId}")
     @JsonView(Views.SubView.class)
     public SubDTO sellItem(@RequestBody Item item, @PathVariable("subId") long subId){
        return inventoryService.sellItem(item, subId);

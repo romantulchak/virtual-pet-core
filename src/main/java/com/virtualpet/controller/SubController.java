@@ -15,13 +15,13 @@ public class SubController {
 
     private final SubServiceImpl subService;
 
-    @PostMapping("/createSubType")
+    @PostMapping("/create-sub-type")
     @PreAuthorize("hasRole('ADMIN')")
     public void createSubType(@RequestBody SubType subType){
         subService.createSub(subType);
     }
 
-    @PostMapping("/uploadSubTypeImage")
+    @PostMapping("/upload-sub-image")
     @PreAuthorize("hasRole('ADMIN')")
     public void uploadSubTypeImage(@RequestBody MultipartFile file){
         subService.uploadFile(file);

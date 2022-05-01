@@ -26,83 +26,83 @@ public class ProfileController {
 
     private final ProfileServiceImpl profileService;
 
-    @GetMapping("/getSubsForUser")
+    @GetMapping("/subs-for-user")
     @PreAuthorize("isAuthenticated()")
     @JsonView(Views.SubView.class)
     public List<SubDTO> getSubsForUser(Authentication authentication){
         return profileService.getSubsForUser(authentication);
     }
 
-    @PostMapping("/createSub")
+    @PostMapping("/create-sub")
     @PreAuthorize("isAuthenticated()")
     public void createSub(@RequestBody SubRequest subRequest, Authentication authentication){
         profileService.createSubForUser(subRequest, authentication);
     }
 
-    @DeleteMapping("/deleteSubForUser/{subId}")
+    @DeleteMapping("/delete-sub/{subId}")
     @PreAuthorize("hasRole('USER')")
     public void deleteSub(@PathVariable("subId") long id, Authentication authentication){
         profileService.deleteSubForUser(id, authentication);
     }
 
-    @GetMapping("/getSubTypes")
+    @GetMapping("/sub-types")
     public List<SubTypeDTO> getSubTypes(){
         return profileService.getSubTypes();
     }
 
-    @GetMapping("/getInfoAboutSub")
+    @GetMapping("/info-about-sub")
     @PreAuthorize("isAuthenticated()")
     @JsonView(Views.SubView.class)
     public SubDTO chooseSub(@RequestParam(value = "subId") long subId, @RequestParam(value = "userId") long userId, Authentication authentication){
         return profileService.chooseSub(subId, userId, authentication);
     }
-    @GetMapping("/getFriends")
+    @GetMapping("/friends")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.UserView.class)
     public Set<UserDTO> friends(Authentication authentication){
         return profileService.getFriends(authentication);
     }
 
-    @PostMapping("/friendRequest")
+    @PostMapping("/send-friend-request")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.FriendView.class)
     public UserFriend friendRequest(@RequestBody User user, Authentication authentication){
         return profileService.friendRequest(authentication, user);
     }
-    @GetMapping("/getUserByUsername/{username}")
+    @GetMapping("/user-by/{username}")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.FriendView.class)
     public UserDTO getUserByUsername(@PathVariable("username") String username, Authentication authentication){
         return profileService.getUserByUsername(username, authentication);
     }
 
-    @GetMapping("/getFriendRequests")
+    @GetMapping("/friend-requests")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.FriendView.class)
     public Set<UserFriend> getFriendRequests(Authentication authentication){
         return profileService.getFriendsRequest(authentication);
 
     }
-    @GetMapping("/getFriendResponse")
+    @GetMapping("/friend-response")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.FriendView.class)
     public Set<UserFriend> getFriendResponse(Authentication authentication){
         return profileService.getFriendsResponse(authentication);
     }
 
-    @PostMapping("/acceptFriend")
+    @PostMapping("/accept-friend")
     @PreAuthorize("hasRole('USER')")
     @JsonView(Views.FriendView.class)
     public UserDTO acceptFriend(@RequestBody UserFriend userFriend, Authentication authentication){
         return profileService.acceptFriend(userFriend, authentication);
     }
-    @DeleteMapping("/deniedFriendRequest")
+    @DeleteMapping("/denied-friend-request")
     @PreAuthorize("hasRole('USER')")
     public void deniedFriendRequest(@RequestParam(name = "friendRequestId") long userFriendId, Authentication authentication){
         profileService.deniedFriendRequest(userFriendId, authentication);
     }
 
-    @DeleteMapping("/deleteFriend")
+    @DeleteMapping("/delete-friend")
     @PreAuthorize("hasRole('USER')")
     public void deleteFriend(@RequestParam(name = "userId") long userId, @RequestParam(name = "friendId") long friendId, Authentication authentication){
         profileService.deleteFriend(userId, friendId, authentication);

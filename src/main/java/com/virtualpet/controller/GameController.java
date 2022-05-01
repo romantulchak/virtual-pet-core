@@ -19,26 +19,26 @@ public class GameController {
 
     private final GameServiceImpl gameService;
 
-    @PutMapping("/upMoneyLevel")
+    @PutMapping("/up-moeny-level")
     @JsonView(Views.MoneyCurrencyView.class)
     @PreAuthorize("isAuthenticated()")
     public MoneyCurrencyDTO upMoneyLevel(@RequestBody SubRequest subRequest) {
         return gameService.upMoneyLevel(subRequest);
     }
 
-    @PutMapping("/saveMoney/{money}")
+    @PutMapping("/save-money/{money}")
     @JsonView(Views.SubView.class)
     @PreAuthorize("isAuthenticated()")
     public void saveMoney(@RequestBody SubRequest subRequest, @PathVariable("money") long money) {
         gameService.saveMoney(subRequest, money);
     }
 
-    @GetMapping("/getBoss/{subId}")
+    @GetMapping("/boss/{subId}")
     public BossLevelDTO getBoss(@PathVariable("subId") long subId) {
         return gameService.getBoss(subId);
     }
 
-    @PutMapping("/upSubAttack")
+    @PutMapping("/up-attack")
     @JsonView(Views.GameSubView.class)
     @PreAuthorize("isAuthenticated()")
     public SubDTO upSubAttack(@RequestBody SubRequest subRequest) {

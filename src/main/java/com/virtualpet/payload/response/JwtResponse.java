@@ -9,11 +9,11 @@ import java.util.List;
 @Setter
 public class JwtResponse {
 
+    private long id;
+
     private String token;
 
     private String type = "Bearer";
-
-    private Long id;
 
     private String username;
 
@@ -21,7 +21,7 @@ public class JwtResponse {
 
     private List<String> roles;
 
-    public JwtResponse(String jwt, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String jwt, long id, String username, String email, List<String> roles) {
         this.token = jwt;
         this.id = id;
         this.username = username;

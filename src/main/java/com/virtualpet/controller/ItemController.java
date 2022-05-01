@@ -14,7 +14,7 @@ public class ItemController {
 
     private final ItemServiceImpl itemService;
 
-    @PostMapping("/createSword")
+    @PostMapping("/create-sword")
     @PreAuthorize("hasRole('ADMIN')")
     public void createSword(@RequestBody Sword sword){
         itemService.createSword(sword);

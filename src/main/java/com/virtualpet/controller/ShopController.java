@@ -24,31 +24,31 @@ public class ShopController {
         return shopService.getShopForSub(sub);
     }
 
-    @PutMapping("/addSkillToShop")
+    @PutMapping("/add-skill-to-shop")
     @PreAuthorize("hasRole('ADMIN')")
     public void addSkillToShop(@RequestBody SkillAbstract skillAbstract){
         shopService.addSkillToShop(skillAbstract);
     }
 
-    @PutMapping("/addItemToShop")
+    @PutMapping("/add-item-to-shop")
     @PreAuthorize("hasRole('ADMIN')")
     public void addItemToShop(@RequestBody Item item){
         shopService.addItemToShop(item);
     }
 
-    @PutMapping("/removeSkillFromShop")
+    @PutMapping("/remove-skill-from-shop")
     @PreAuthorize("hasRole('ADMIN')")
     public void removeSkillFromShop(@RequestBody SkillAbstract skillAbstract){
         shopService.removeSkillFromShop(skillAbstract);
     }
 
-    @PostMapping("/buyItem/{subId}")
+    @PostMapping("/buy-item/{subId}")
     @PreAuthorize("isAuthenticated()")
     public void buyItem(@RequestBody Item item, @PathVariable("subId") long subId){
         shopService.buyItem(item, subId);
     }
 
-    @PostMapping("/buySkill/{subId}")
+    @PostMapping("/buy-skill/{subId}")
     @PreAuthorize("isAuthenticated()")
     public void buySkill(@RequestBody long id, @PathVariable("subId") long subId){
        shopService.buySkill(id, subId);

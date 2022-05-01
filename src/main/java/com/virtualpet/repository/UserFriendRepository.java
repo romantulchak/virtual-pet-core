@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Repository
 public interface UserFriendRepository extends JpaRepository<UserFriend, Long> {
-
     Set<UserFriend> findAllByUser(User user);
+
     Set<UserFriend> findAllByUserRequest(User user);
 }

@@ -19,4 +19,6 @@ public class SetItemRequest {
 
     private EItemType itemType;
 
+    public SetItemRequest() {
+    }
 }

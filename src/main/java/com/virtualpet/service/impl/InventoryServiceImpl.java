@@ -1,11 +1,9 @@
 package com.virtualpet.service.impl;
 
 import com.virtualpet.dto.SubDTO;
-import com.virtualpet.exeption.InventoryNotFoundException;
 import com.virtualpet.exeption.item.ItemCategoryNotFoundException;
 import com.virtualpet.exeption.item.ItemNotFoundException;
 import com.virtualpet.exeption.sub.SubNotFoundException;
-import com.virtualpet.model.Inventory;
 import com.virtualpet.model.enums.EItemCategory;
 import com.virtualpet.model.Item;
 import com.virtualpet.model.enums.EItemType;
@@ -100,19 +98,17 @@ public class InventoryServiceImpl implements InventoryService {
     public SubDTO sellItem(Item item, long subId) {
         if (item != null) {
             Sub sub = subRepository.findById(subId).orElseThrow(SubNotFoundException::new);
-            Inventory inventory = inventoryRepository.findById(subId).orElseThrow(() -> new InventoryNotFoundException(sub.getName()));
             if (item.getItemType() == EItemType.WEAPON) {
                 checkDressedWeapon(sub);
                 getMoneyForSell(item, sub);
-                inventory.getItems().remove(item);
             } else if (item.getItemType() == EItemType.ARMOR) {
                 getArmor(item.getItemCategory(), sub);
                 getMoneyForSell(item, sub);
-                inventory.getItems().remove(item);
             } else {
                 throw new ItemCategoryNotFoundException();
             }
-            inventoryRepository.save(inventory);
+            item.setInventory(null);
+            itemRepository.save(item);
             subRepository.save(sub);
             return transformer.getSubDTO(sub);
 

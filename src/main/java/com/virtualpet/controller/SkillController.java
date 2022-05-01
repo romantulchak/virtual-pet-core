@@ -22,7 +22,7 @@ public class SkillController {
 
     private final SkillServiceImpl skillService;
 
-    @PostMapping("/createDamageSkill")
+    @PostMapping("/create-damage-skill")
     @PreAuthorize("hasRole('ADMIN')")
     public DamageSkillDTO createDamageSkill(@RequestBody DamageSkill damageSkill) {
         return skillService.createDamageSkill(damageSkill);
@@ -49,7 +49,7 @@ public class SkillController {
         skillService.deleteSkill(id, eSkillCategory);
     }
 
-    @PostMapping("/uploadSkillImage")
+    @PostMapping("/upload-skill-image")
     @PreAuthorize("hasRole('ADMIN')")
     public void uploadSkillImage(@RequestBody MultipartFile file) {
         skillService.uploadImageSkill(file);

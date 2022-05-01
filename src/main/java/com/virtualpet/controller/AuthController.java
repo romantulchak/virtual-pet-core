@@ -18,17 +18,17 @@ public class AuthController {
 
     private final AuthServiceImpl authService;
 
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public void registerUser(@RequestBody SignupRequest signupRequest){
         authService.registerUser(signupRequest);
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public JwtResponse authenticateUser(@RequestBody LoginRequest loginRequest){
         return authService.authenticateUser(loginRequest);
     }
 
-    @GetMapping("/refreshToken")
+    @GetMapping("/refresh-token")
     public JwtRefreshResponse authenticateUser(HttpServletRequest request){
         return authService.refreshToken(request);
     }
