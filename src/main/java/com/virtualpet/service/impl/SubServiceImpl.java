@@ -1,8 +1,12 @@
 package com.virtualpet.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.virtualpet.constant.AppConstants;
 import com.virtualpet.exeption.sub.SubTypeIsNullException;
 import com.virtualpet.exeption.sub.SubTypeWithNameAlreadyExist;
 import com.virtualpet.model.SubType;
+import com.virtualpet.payload.request.SubTypeRequest;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
 import com.virtualpet.utils.FileSaver;
@@ -19,26 +23,32 @@ import java.time.LocalDateTime;
 public class SubServiceImpl implements SubService {
 
     private final SubTypeRepository subTypeRepository;
-    private String filePath;
     @Value("${upload.path}")
     private String path;
-
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void createSub(SubType subType) {
-        if(subType != null){
-            if(!subTypeRepository.existsByName(subType.getName())) {
-                subType.setIconPath(filePath);
-                subType.setModelPath(filePath);
-                subType.setCreatedAt(LocalDateTime.now());
+    public void createSub(String subTypeJson, MultipartFile image) throws JsonProcessingException {
+        if (subTypeJson != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            SubTypeRequest subTypeRequest = objectMapper.readValue(subTypeJson, SubTypeRequest.class);
+            if (!subTypeRepository.existsByName(subTypeRequest.getName())) {
+                String filePath = FileSaver.saveFile(image, path, AppConstants.SUB_TYPE_IMAGE_FOLDER);
+                SubType subType = new SubType()
+                        .setName(subTypeRequest.getName())
+                        .setCreatedAt(LocalDateTime.now())
+                        .setAttack(subTypeRequest.getAttack())
+                        .setDefence(subTypeRequest.getDefence())
+                        .setHealth(subTypeRequest.getHealth())
+                        .setIconPath(filePath)
+                        .setModelPath(filePath);
                 subTypeRepository.save(subType);
-            }else {
-                throw new SubTypeWithNameAlreadyExist(subType.getName());
+            } else {
+                throw new SubTypeWithNameAlreadyExist(subTypeRequest.getName());
             }
-        }else{
+        } else {
             throw new SubTypeIsNullException();
         }
 
@@ -50,9 +60,9 @@ public class SubServiceImpl implements SubService {
     @Override
     public void deleteSub(Long id) {
         SubType subType = subTypeRepository.findById(id).orElse(null);
-        if(subType != null){
+        if (subType != null) {
             subTypeRepository.delete(subType);
-        }else {
+        } else {
             throw new SubTypeIsNullException();
         }
     }
@@ -63,14 +73,5 @@ public class SubServiceImpl implements SubService {
     @Override
     public ResponseEntity<?> editSub() {
         return null;
-    }
-
-    @Override
-    public void uploadFile(MultipartFile multipartFile) {
-        if (multipartFile != null){
-            filePath = FileSaver.saveFile(multipartFile, path, "subTypeImages");
-        }else {
-            throw new RuntimeException("File not found");
-        }
     }
 }

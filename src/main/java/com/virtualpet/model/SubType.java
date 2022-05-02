@@ -3,6 +3,7 @@ package com.virtualpet.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +17,8 @@ import java.util.List;
 })
 @Getter
 @Setter
-public class SubType extends SubAbstract{
+@Accessors(chain = true)
+public class SubType extends SubAbstract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -30,7 +32,37 @@ public class SubType extends SubAbstract{
     @OneToMany(mappedBy = "subType")
     private List<Sub> subs;
 
-    public SubType(){
+    public SubType() {
 
+    }
+
+    @Override
+    public SubType setAttack(int attack) {
+        super.setAttack(attack);
+        return this;
+    }
+
+    @Override
+    public SubType setDefence(int defence) {
+        super.setDefence(defence);
+        return this;
+    }
+
+    @Override
+    public SubType setHealth(int health) {
+        super.setHealth(health);
+        return this;
+    }
+
+    @Override
+    public SubType setIconPath(String iconPath) {
+        super.setIconPath(iconPath);
+        return this;
+    }
+
+    @Override
+    public SubType setModelPath(String modelPath) {
+        super.setModelPath(modelPath);
+        return this;
     }
 }

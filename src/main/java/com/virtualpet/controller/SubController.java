@@ -1,6 +1,6 @@
 package com.virtualpet.controller;
 
-import com.virtualpet.model.SubType;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.virtualpet.service.impl.SubServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,14 +17,8 @@ public class SubController {
 
     @PostMapping("/create-sub-type")
     @PreAuthorize("hasRole('ADMIN')")
-    public void createSubType(@RequestBody SubType subType){
-        subService.createSub(subType);
-    }
-
-    @PostMapping("/upload-sub-image")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void uploadSubTypeImage(@RequestBody MultipartFile file){
-        subService.uploadFile(file);
+    public void createSubType(@RequestPart(name = "subType") String subType, @RequestPart(name = "image") MultipartFile image) throws JsonProcessingException {
+        subService.createSub(subType, image);
     }
 
     @DeleteMapping("/deleteSubType/{id}")
