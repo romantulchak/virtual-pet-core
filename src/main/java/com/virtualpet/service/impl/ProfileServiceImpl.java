@@ -13,7 +13,7 @@ import com.virtualpet.exeption.user.UserAuthenticationException;
 import com.virtualpet.exeption.user.UserFriendNotFoundException;
 import com.virtualpet.exeption.user.UserNotFoundException;
 import com.virtualpet.model.*;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 import com.virtualpet.projection.SubMoneyCurrencyProjection;
 import com.virtualpet.repository.*;
 import com.virtualpet.service.ProfileService;

@@ -1,11 +1,11 @@
-package com.virtualpet.dto;
+package com.virtualpet.dto.skill;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.model.Shop;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.Views;
-import com.virtualpet.model.skills.DamageSkill;
+import com.virtualpet.model.skills.template.DamageSkillTemplate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,9 +35,9 @@ public class DamageSkillDTO extends SkillAbstractDTO {
     public DamageSkillDTO() {
     }
 
-    public DamageSkillDTO(DamageSkill damageSkill) {
-        this.damage = damageSkill.getDamage();
-        this.criticalChance = damageSkill.getCriticalChance();
+    public DamageSkillDTO(DamageSkillTemplate damageSkillTemplate) {
+        this.damage = damageSkillTemplate.getDamage();
+        this.criticalChance = damageSkillTemplate.getCriticalChance();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.virtualpet.payload.request;
+package com.virtualpet.payload.request.sub;
 
 import com.virtualpet.model.User;
 import lombok.Getter;

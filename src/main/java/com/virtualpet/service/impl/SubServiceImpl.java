@@ -6,7 +6,7 @@ import com.virtualpet.constant.AppConstants;
 import com.virtualpet.exeption.sub.SubTypeIsNullException;
 import com.virtualpet.exeption.sub.SubTypeWithNameAlreadyExist;
 import com.virtualpet.model.SubType;
-import com.virtualpet.payload.request.SubTypeRequest;
+import com.virtualpet.payload.request.sub.SubTypeRequest;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
 import com.virtualpet.utils.FileSaver;

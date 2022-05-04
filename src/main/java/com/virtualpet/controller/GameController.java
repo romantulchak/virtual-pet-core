@@ -5,7 +5,7 @@ import com.virtualpet.dto.BossLevelDTO;
 import com.virtualpet.dto.MoneyCurrencyDTO;
 import com.virtualpet.dto.SubDTO;
 import com.virtualpet.model.Views;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 import com.virtualpet.service.impl.GameServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

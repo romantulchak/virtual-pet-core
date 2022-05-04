@@ -1,6 +1,7 @@
-package com.virtualpet.repository;
+package com.virtualpet.repository.skill;
 
 import com.virtualpet.model.skills.SkillAbstract;
+import com.virtualpet.model.skills.template.SkillAbstractTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,11 +21,11 @@ public interface SkillRepository extends JpaRepository<SkillAbstract, Long> {
 
     boolean existsByReferenceAndSubId(UUID reference, long subId);
 
-    Page<SkillAbstract> findAllBySubIsNull(Pageable pageable);
+    Page<SkillAbstractTemplate> findAllBySubIsNull(Pageable pageable);
 
-    Optional<SkillAbstract> findByIdAndShopNotNull(long id);
+    Optional<SkillAbstractTemplate> findById(long id);
 
-    Page<SkillAbstract> findAllBySubIdIsNullAndReferenceNotIn(Collection<UUID> reference, Pageable pageable);
+    Page<SkillAbstractTemplate> findAllBySubIdIsNullAndReferenceNotIn(Collection<UUID> reference, Pageable pageable);
 
     Page<SkillAbstract> findAllBySubIdIsNullAndReferenceNotInOrReferenceIsNull(Collection<UUID> reference, Pageable pageable);
 

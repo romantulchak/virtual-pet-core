@@ -3,7 +3,7 @@ package com.virtualpet.service;
 import com.virtualpet.dto.BossLevelDTO;
 import com.virtualpet.dto.MoneyCurrencyDTO;
 import com.virtualpet.dto.SubDTO;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 
 public interface GameService {
 

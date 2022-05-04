@@ -1,7 +1,7 @@
 package com.virtualpet.service;
 
-import com.virtualpet.payload.request.LoginRequest;
-import com.virtualpet.payload.request.SignupRequest;
+import com.virtualpet.payload.request.auth.LoginRequest;
+import com.virtualpet.payload.request.auth.SignupRequest;
 import com.virtualpet.payload.response.JwtRefreshResponse;
 import com.virtualpet.payload.response.JwtResponse;
 

@@ -1,4 +1,4 @@
-package com.virtualpet.payload.request;
+package com.virtualpet.payload.request.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

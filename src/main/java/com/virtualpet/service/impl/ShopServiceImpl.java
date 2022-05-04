@@ -16,7 +16,11 @@ import com.virtualpet.model.items.Armor;
 import com.virtualpet.model.items.Sword;
 import com.virtualpet.model.skills.DamageSkill;
 import com.virtualpet.model.skills.SkillAbstract;
+import com.virtualpet.model.skills.template.DamageSkillTemplate;
+import com.virtualpet.model.skills.template.SkillAbstractTemplate;
 import com.virtualpet.repository.*;
+import com.virtualpet.repository.skill.SkillRepository;
+import com.virtualpet.repository.skill.SkillTemplateRepository;
 import com.virtualpet.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,13 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopServiceImpl implements ShopService {
 
     private final ShopRepository shopRepository;
-    private final DamageSkillRepository damageSkillRepository;
-    private final DefenceSkillRepository defenceSkillRepository;
     private final SkillRepository skillRepository;
     private final SwordRepository swordRepository;
     private final ArmorRepository armorRepository;
     private final SubRepository subRepository;
     private final InventoryRepository inventoryRepository;
+    private final SkillTemplateRepository skillTemplateRepository;
 
     /**
      * {@inheritDoc}
@@ -57,28 +60,6 @@ public class ShopServiceImpl implements ShopService {
      * {@inheritDoc}
      */
     @Override
-    public void addSkillToShop(SkillAbstract skillAbstract) {
-        if (skillAbstract != null) {
-            DamageSkill damageSkill = damageSkillRepository.findDamageSkillByNameAndCategory(skillAbstract.getName(), skillAbstract.getCategory())
-                    .orElseThrow(SkillNotFoundException::new);
-            Shop shop = getShop();
-            if (!shop.getSkills().contains(damageSkill)) {
-                shop.getSkills().add(damageSkill);
-                damageSkill.setShop(shop);
-                shopRepository.save(shop);
-                damageSkillRepository.save(damageSkill);
-            } else {
-                throw new SkillAlreadyExistException(damageSkill.getName());
-            }
-        } else {
-            throw new SkillNotFoundException();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void addItemToShop(Item item) {
         if (item != null) {
             if (item.getItemCategory() == EItemCategory.SWORD) {
@@ -88,18 +69,6 @@ public class ShopServiceImpl implements ShopService {
             }
         } else {
             throw new ItemNotFoundException();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeSkillFromShop(SkillAbstract skillAbstract) {
-        if (skillAbstract != null) {
-            skillRepository.delete(skillAbstract);
-        } else {
-            throw new SkillNotFoundException();
         }
     }
 
@@ -130,7 +99,7 @@ public class ShopServiceImpl implements ShopService {
     @Transactional
     @Override
     public void buySkill(long id, long subId) {
-        SkillAbstract skill = skillRepository.findByIdAndShopNotNull(id)
+        SkillAbstractTemplate skill = skillTemplateRepository.findById(id)
                 .orElseThrow(SkillNotFoundException::new);
         if (skillRepository.existsByReferenceAndSubId(skill.getReference(), subId)) {
             throw new SkillAlreadyBoughtException();
@@ -152,7 +121,7 @@ public class ShopServiceImpl implements ShopService {
      * @param sub form whom skill will be added
      * @return correct category of skill that will be bought
      */
-    private SkillAbstract getBoughtSkill(SkillAbstract skill, Sub sub){
+    private SkillAbstract getBoughtSkill(SkillAbstractTemplate skill, Sub sub){
         SkillAbstract skillForSub = null;
         switch (skill.getCategory()) {
             case PHYS_DAMAGE:
@@ -171,12 +140,13 @@ public class ShopServiceImpl implements ShopService {
     /**
      * Generates DamageSkill category object
      *
-     * @param skillAbstract to be cast to damage skill category
+     * @param skillAbstractTemplate to be cast to damage skill category
      * @param sub form whom skill will be added
      * @return DamageSkill object for current sub
      */
-    private DamageSkill generateDamageSkill(SkillAbstract skillAbstract, Sub sub){
-        return new DamageSkill((DamageSkill) skillAbstract, sub);
+    private DamageSkill generateDamageSkill(SkillAbstractTemplate skillAbstractTemplate, Sub sub){
+        DamageSkillTemplate damageSkillTemplate = (DamageSkillTemplate) skillAbstractTemplate;
+        return new DamageSkill(damageSkillTemplate, sub);
     }
 
     /**

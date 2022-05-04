@@ -1,6 +1,8 @@
 package com.virtualpet.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.virtualpet.dto.skill.DamageSkillDTO;
+import com.virtualpet.dto.skill.DefenceSkillDTO;
 import com.virtualpet.model.*;
 import com.virtualpet.model.sub.Currency;
 import com.virtualpet.model.sub.Money;

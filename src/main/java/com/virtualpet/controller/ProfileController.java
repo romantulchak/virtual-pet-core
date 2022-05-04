@@ -8,7 +8,7 @@ import com.virtualpet.dto.UserDTO;
 import com.virtualpet.model.User;
 import com.virtualpet.model.UserFriend;
 import com.virtualpet.model.Views;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 import com.virtualpet.service.impl.ProfileServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

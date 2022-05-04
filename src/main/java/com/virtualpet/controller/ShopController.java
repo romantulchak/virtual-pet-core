@@ -3,7 +3,6 @@ package com.virtualpet.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.virtualpet.dto.ShopDTO;
 import com.virtualpet.model.*;
-import com.virtualpet.model.skills.SkillAbstract;
 import com.virtualpet.service.impl.ShopServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,22 +23,10 @@ public class ShopController {
         return shopService.getShopForSub(sub);
     }
 
-    @PutMapping("/add-skill-to-shop")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void addSkillToShop(@RequestBody SkillAbstract skillAbstract){
-        shopService.addSkillToShop(skillAbstract);
-    }
-
     @PutMapping("/add-item-to-shop")
     @PreAuthorize("hasRole('ADMIN')")
     public void addItemToShop(@RequestBody Item item){
         shopService.addItemToShop(item);
-    }
-
-    @PutMapping("/remove-skill-from-shop")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void removeSkillFromShop(@RequestBody SkillAbstract skillAbstract){
-        shopService.removeSkillFromShop(skillAbstract);
     }
 
     @PostMapping("/buy-item/{subId}")

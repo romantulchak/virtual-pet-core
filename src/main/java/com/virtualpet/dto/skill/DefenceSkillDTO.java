@@ -1,4 +1,4 @@
-package com.virtualpet.dto;
+package com.virtualpet.dto.skill;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;

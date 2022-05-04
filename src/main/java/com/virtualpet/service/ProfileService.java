@@ -6,7 +6,7 @@ import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.dto.UserDTO;
 import com.virtualpet.model.User;
 import com.virtualpet.model.UserFriend;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;

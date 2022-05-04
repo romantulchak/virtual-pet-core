@@ -11,7 +11,7 @@ import com.virtualpet.model.Level;
 import com.virtualpet.model.Sub;
 import com.virtualpet.model.sub.Currency;
 import com.virtualpet.model.sub.Money;
-import com.virtualpet.payload.request.SubRequest;
+import com.virtualpet.payload.request.sub.SubRequest;
 import com.virtualpet.projection.SubMoneyCurrencyProjection;
 import com.virtualpet.repository.BossRepository;
 import com.virtualpet.repository.LevelRepository;

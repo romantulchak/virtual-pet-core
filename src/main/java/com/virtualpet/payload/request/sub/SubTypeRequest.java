@@ -1,4 +1,4 @@
-package com.virtualpet.payload.request;
+package com.virtualpet.payload.request.sub;
 
 import lombok.Data;
 

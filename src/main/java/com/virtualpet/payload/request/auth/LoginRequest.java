@@ -1,4 +1,4 @@
-package com.virtualpet.payload.request;
+package com.virtualpet.payload.request.auth;
 
 import lombok.Getter;
 import lombok.Setter;
