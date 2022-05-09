@@ -32,30 +32,23 @@ import java.util.UUID;
 public abstract class SkillAbstractTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({Views.ShopView.class, Views.SubView.class, Views.SkillView.class})
     private long id;
 
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class})
     @NotBlank
     @Size(max = 46)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private ESkillCategory category;
 
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private int price;
 
-    @JsonView({Views.SkillView.class, Views.SubView.class,Views.InventoryView.class})
     @NotBlank
     @Size(max = 300)
     private String description;
 
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private int maxCooldown;
 
-    @JsonView({Views.SkillView.class, Views.ShopView.class, Views.SubView.class, Views.InventoryView.class})
     private String icon;
 
     private UUID reference;

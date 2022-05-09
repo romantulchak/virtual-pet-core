@@ -1,8 +1,11 @@
 package com.virtualpet.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.virtualpet.dto.SubTypeDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface SubService {
 
@@ -25,4 +28,11 @@ public interface SubService {
      * TODO: to be implemented
      */
     ResponseEntity<?> editSub();
+
+    /**
+     * Gets all subtypes in system and return its DTO
+     *
+     * @return list of subtypes DTO
+     */
+    List<SubTypeDTO> getSubtypes();
 }

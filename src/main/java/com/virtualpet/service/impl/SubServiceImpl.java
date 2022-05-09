@@ -3,12 +3,14 @@ package com.virtualpet.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.virtualpet.constant.AppConstants;
+import com.virtualpet.dto.SubTypeDTO;
 import com.virtualpet.exeption.sub.SubTypeIsNullException;
 import com.virtualpet.exeption.sub.SubTypeWithNameAlreadyExist;
 import com.virtualpet.model.SubType;
 import com.virtualpet.payload.request.sub.SubTypeRequest;
 import com.virtualpet.repository.SubTypeRepository;
 import com.virtualpet.service.SubService;
+import com.virtualpet.transformer.Transformer;
 import com.virtualpet.utils.FileSaver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SubServiceImpl implements SubService {
 
     private final SubTypeRepository subTypeRepository;
+    private final Transformer transformer;
     @Value("${upload.path}")
     private String path;
 
@@ -73,5 +78,16 @@ public class SubServiceImpl implements SubService {
     @Override
     public ResponseEntity<?> editSub() {
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SubTypeDTO> getSubtypes() {
+        return subTypeRepository.findAll()
+                .stream()
+                .map(transformer::getSubTypeDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -20,13 +20,10 @@ import java.util.Objects;
 @Setter
 public class DefenceSkillTemplate extends SkillAbstractTemplate {
 
-    @JsonView(Views.ShopView.class)
     private int health;
 
-    @JsonView(Views.ShopView.class)
     private double defence;
 
-    @JsonView(Views.ShopView.class)
     private int timeOfAction;
 
     public DefenceSkillTemplate() {

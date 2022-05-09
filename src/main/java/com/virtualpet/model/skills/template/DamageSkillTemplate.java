@@ -24,10 +24,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class DamageSkillTemplate extends SkillAbstractTemplate {
 
-    @JsonView(Views.ShopView.class)
     private int damage;
 
-    @JsonView(Views.ShopView.class)
     private double criticalChance;
 
     public DamageSkillTemplate(){

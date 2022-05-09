@@ -58,8 +58,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Set<UserDTO> getFriends(Authentication authentication) {
         UserDetailsImpl userInSystem = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findById(userInSystem.getId()).orElseThrow(() -> new UserNotFoundException(userInSystem.getUsername()));
-        return user.getFriends().stream().map(transformer::getUserDTO).collect(Collectors.toSet());
+        return userRepository.findUserFriends(userInSystem.getId()).stream().map(transformer::getUserDTO).collect(Collectors.toSet());
     }
 
     /**
