@@ -24,9 +24,11 @@ public abstract class SubAbstract {
 
     protected SubAbstract(){}
 
-    protected SubAbstract(Integer attack, Integer defence) {
+    protected SubAbstract(int attack, int defence, int health, String iconPath) {
         this.attack = attack;
         this.defence = defence;
+        this.health = health;
+        this.iconPath = iconPath;
     }
 
     public SubAbstract setAttack(int attack) {

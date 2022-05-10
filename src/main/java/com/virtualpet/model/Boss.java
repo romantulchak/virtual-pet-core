@@ -28,4 +28,10 @@ public class Boss extends SubAbstract {
     public Boss() {
 
     }
+
+    public Boss(int attack, int defence, int health, String name, int droppedMoney, String iconPath) {
+        super(attack, defence, health, iconPath);
+        this.name = name;
+        this.droppedMoney = droppedMoney;
+    }
 }
